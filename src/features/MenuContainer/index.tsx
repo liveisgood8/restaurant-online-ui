@@ -5,7 +5,7 @@ import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
 import { IDish } from '../../types/menu';
-import { addDishInCart } from '../CartContainer/actions';
+import { addPersistentDishInCart } from '../CartContainer/actions';
 
 export const MenuContainer: React.SFC = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export const MenuContainer: React.SFC = () => {
   }, [dispatch]);
 
   const onAddedInCart = (dish: IDish) => {
-    dispatch(addDishInCart(dish));
+    dispatch(addPersistentDishInCart(dish));
   };
 
   return (

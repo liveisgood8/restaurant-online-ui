@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigationBarContainer } from '../../features/NavigationBarContainer';
+import { ToastContainer } from 'react-toastify';
 
 export const Layout: React.SFC = ({ children }) => {
   return (
@@ -8,6 +9,7 @@ export const Layout: React.SFC = ({ children }) => {
       <main>
         {children}
       </main>
+      <ToastContainer />
     </React.Fragment>
   );
 };

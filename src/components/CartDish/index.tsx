@@ -1,16 +1,14 @@
+import './styles.scss';
+
 import React from 'react';
-import { IDish } from '../../types/menu';
+import { ICartDish } from '../../features/CartContainer/types';
 
-interface ICartDishProps {
-  dish: IDish;
-}
-
-export const CartDish: React.SFC<ICartDishProps> = ({ dish }) => {
+export const CartDish: React.SFC<ICartDish> = ({ dish, count }) => {
   return (
     <div className="border rounded p-2">
-      <img src={dish.imageUrl} alt={dish.name} className="d-inline-block" />
+      <img id="cart-dish-image" src={dish.imageUrl} alt={dish.name} className="d-inline-block" />
       <span>{dish.name}</span>
-      {/* <Button onClick={() => onCart(dish)}>В корзину</Button> */}
+      <span>Количество: {count}</span>
     </div>
   );
 };

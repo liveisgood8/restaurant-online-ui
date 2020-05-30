@@ -1,21 +1,26 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
-import { IDish } from '../../types/menu';
+import { Container, Button } from 'react-bootstrap';
 import { CartDish } from '../CartDish';
+import { ICartDish } from '../../features/CartContainer/types';
 
 interface ICartProps {
-  dishes: IDish[];
+  dishes: ICartDish[];
+  onCleanCart: () => void;
+  onMakeOrder: () => void;
 }
 
-export const Cart: React.SFC<ICartProps> = ({ dishes }) => {
+export const Cart: React.SFC<ICartProps> = ({ dishes, onCleanCart, onMakeOrder }) => {
   return (
     <Container>
       {dishes.map((e, i) => (
         <CartDish
           key={i}
-          dish={e}
+          dish={e.dish}
+          count={e.count}
         />
       ))}
+      <Button variant="danger" onClick={onCleanCart}>Очистить корзину</Button>
+      <Button variant="success" onClick={onMakeOrder}>Сделать заказ</Button>
     </Container>
   );
 };

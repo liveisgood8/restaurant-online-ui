@@ -14,7 +14,7 @@ export const MenuDish: React.SFC<IMenuDishProps> = ({ dish, onCart }) => {
       <p>Белки: {dish.protein}</p>
       <p>Жиры: {dish.fat}</p>
       <p>Углеводы: {dish.carbohydrates}</p>
-      <img src={dish.imageUrl} alt={dish.name} />
+      <img src={dish.imageUrl} alt={dish.name} className="mw-100" />
       <Button onClick={() => onCart(dish)}>В корзину</Button>
     </div>
   );

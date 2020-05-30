@@ -1,0 +1,31 @@
+#admin-sidebar {
+  background-color: #42a5f5;
+  position: sticky;
+  width: 100px;
+  height: 100vh;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2em;
+
+  .selected-menu-element {
+    background-color: #0077c2;
+    transition: background-color 0.3s ease-out;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    color: white;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    cursor: pointer;
+    transition: height 0.15s ease-out;
+
+    &:hover {
+      width: 42px;
+      height: 42px;
+    }
+  }
+}

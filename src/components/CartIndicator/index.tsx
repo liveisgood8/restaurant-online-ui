@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { RoutePath } from '../../Routes';
+import { RoutePath } from '../../routes/paths';
 
 export interface ICartIndicatorProps {
   cartDishesNumber: number;

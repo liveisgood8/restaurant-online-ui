@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import { ICartIndicatorProps, CartIndicator } from '../CartIndicator';
-import { RoutePath } from '../../Routes';
+import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
 
 interface INavigationBarProps {

@@ -1,15 +1,14 @@
 import React from 'react';
+import { RootLayout } from '../Root';
 import { NavigationBarContainer } from '../../features/NavigationBarContainer';
-import { ToastContainer } from 'react-toastify';
 
-export const Layout: React.SFC = ({ children }) => {
+export const CartLayout: React.SFC = ({ children }) => {
   return (
-    <React.Fragment>
+    <RootLayout>
       <NavigationBarContainer />
       <main>
         {children}
       </main>
-      <ToastContainer />
-    </React.Fragment>
+    </RootLayout>
   );
 };

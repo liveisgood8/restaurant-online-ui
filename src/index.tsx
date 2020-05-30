@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { Routes } from './Routes';
+import { Routes } from './routes';
 
 ReactDOM.render(
   <React.StrictMode>

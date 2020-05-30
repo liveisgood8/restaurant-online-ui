@@ -28,7 +28,8 @@ interface IApiRequestThunkCreatorOptions<DataType, BodyType> {
 }
 
 interface IApiRequestThunkOptions<BodyType> {
-  body?: BodyType;
+  body?: BodyType; // Используется для тела запрос при методах POST, PATCH
+  entity?: BodyType; // Передается в action при методе DELETE
   endpoint?: {
     bindings: { [key: string]: string | number };
   };
@@ -58,10 +59,9 @@ function axiosFunctionFromMethodName(method: Methods) {
 
 function isBodyMethod(method: Methods) {
   switch (method) {
+    case 'DELETE':
     case 'GET':
       return false;
-    case 'DELETE':
-      return AxiosInstance.delete;
     case 'POST':
     case 'PUT':
     case 'PATCH':
@@ -107,10 +107,17 @@ export function createApiRequestThunk<DataType = any, BodyType = DataType>(
         response = await axiosMethod(endpointUrl);
       }
       if (typeof(actions.success) === 'string') {
-        dispatch({
-          type: actions.success,
-          payload: response.data,
-        });
+        if (method === 'DELETE') {
+          dispatch({
+            type: actions.success,
+            payload: thunkOptions?.entity,
+          });
+        } else {
+          dispatch({
+            type: actions.success,
+            payload: response.data,
+          });
+        }
       } else {
         if (!actions.success.preventDefault) {
           dispatch({

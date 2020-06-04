@@ -6,16 +6,18 @@ import {
   getCategoriesStatusSelector,
   clearDishes,
   deleteDishThunk,
-  addDishThunk
+  addDishThunk,
+  addCategoryThunk,
+  updateDishThunk
 } from './actions';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
-import { IDish } from '../../types/menu';
 import { addPersistentDishInCart } from '../CartContainer/actions';
 import { useLocation } from 'react-router-dom';
-import { IDishInfoWithFile } from '../../components/AddDish';
 import { toast } from 'react-toastify';
+import { IDish, INewDishWithFile } from '../../api/dishes';
+import { INewCategoryWithFile } from '../../api/categories';
 
 const getCategoryIdFromUrlSearch = (searchPartOfUrl: string): number | undefined => {
   const categoryIdString = new URLSearchParams(searchPartOfUrl).get('categoryId');
@@ -58,11 +60,16 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
     dispatch(addPersistentDishInCart(dish));
   };
 
-  const onAddNewDish = (dishInfo: IDishInfoWithFile) => {
+  const onAddNewDish = (dish: Omit<INewDishWithFile, 'category'>) => {
     if (!categoryId) {
       toast.error('Для добавления блюда необходимо выбрать категорию!');
     } else {
-      dispatch(addDishThunk(dishInfo, categoryId));
+      dispatch(addDishThunk({
+        ...dish,
+        category: {
+          id: categoryId,
+        },
+      }));
     }
   };
 
@@ -77,8 +84,13 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
     }));
   };
 
-  const onEditDish = (dish: IDish) => {
-    // TODO
+  const onChangeDish = (dish: IDish) => {
+    console.log(dish);
+    dispatch(updateDishThunk(dish));
+  }
+
+  const onAddNewCategory = (category: INewCategoryWithFile) => {
+    dispatch(addCategoryThunk(category));
   }
 
   return (
@@ -94,7 +106,8 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
           onPutDishInCart={onPutDishInCart}
           onAddNewDish={onAddNewDish}
           onDeleteDish={onDeleteDish}
-          onEditDish={onEditDish}
+          onChangeDish={onChangeDish}
+          onAddNewCategory={onAddNewCategory}
         />
       )}
     </React.Fragment>

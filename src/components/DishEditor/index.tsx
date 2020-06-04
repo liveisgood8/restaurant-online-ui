@@ -5,44 +5,42 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ControlChangeEvent, FormEvent } from '../../types/ui';
 import { ImageUploader, IFileWithPreviewUrl } from '../ImageUploader';
 import { MenuDish } from '../MenuDish';
-import { IDishBaseInfo } from '../../types/menu';
-
-export interface IDishInfoWithFile extends IDishBaseInfo {
-  image: File;
-}
+import { IDish, INewDishWithFile } from '../../api/dishes';
 
 enum ViewMode {
   ADD,
   EDIT,
-  PREVIEW,
 }
 
-interface IAddDishProps {
-  onAdd: (dish: IDishInfoWithFile) => void;
+interface IDishEditorProps {
+  onSubmit?: (dish: Omit<INewDishWithFile, 'category'>) => void;
+  dish?: IDish;
 }
 
-export const AddDish: React.FC<IAddDishProps> = (props) => {
-  const [viewMode, setViewMode] = useState(ViewMode.ADD);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [protein, setProtein] = useState<number | null>(null);
-  const [fat, setFat] = useState<number | null>(null);
-  const [carbohydrates, setCarbohydrates] = useState<number | null>(null);
+export const DishEditor: React.FC<IDishEditorProps> = (props) => {
+  const [viewMode, setViewMode] = useState(props?.dish ? ViewMode.EDIT : ViewMode.ADD);
+  const [isPreviewEnabled, setPreviewEnabled] = useState(false);
+  const [name, setName] = useState(props?.dish?.name || '');
+  const [description, setDescription] = useState(props?.dish?.description || '');
+  const [protein, setProtein] = useState<number | null>(props?.dish?.protein || null);
+  const [fat, setFat] = useState<number | null>(props?.dish?.fat || null);
+  const [carbohydrates, setCarbohydrates] = useState<number | null>(props?.dish?.carbohydrates || null);
   const [imageFiles, setImageFiles] = useState<IFileWithPreviewUrl[]>([]);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    props.onAdd(getDishInfo());
+    props.onSubmit?.(getDishInfo());
+    setViewMode(ViewMode.ADD);
   };
 
-  const getDishInfo = (): IDishInfoWithFile => {
+  const getDishInfo = (): Omit<INewDishWithFile, 'category'> => {
     return {
       name,
       description,
       protein,
       fat,
       carbohydrates,
-      image: imageFiles[0],
+      image: imageFiles.length ? imageFiles[0] : undefined,
     };
   };
 
@@ -92,11 +90,10 @@ export const AddDish: React.FC<IAddDishProps> = (props) => {
             value={carbohydrates || ''}
           />
           <ImageUploader
-            required
-            initialFiles={imageFiles}
+            initialFilesOrImageUrls={props?.dish?.imageUrl || imageFiles}
             onDropFiles={(images) => setImageFiles(images)}
           />
-          <Button variant="secondary" onClick={() => setViewMode(ViewMode.PREVIEW)}>
+          <Button variant="secondary" onClick={() => setPreviewEnabled(!isPreviewEnabled)}>
             Просмотреть
           </Button>
           <Button type="submit">Добавить</Button>
@@ -106,7 +103,9 @@ export const AddDish: React.FC<IAddDishProps> = (props) => {
   };
 
   const getPreviewComponentIfPreviewMode = () => {
-    if (viewMode === ViewMode.PREVIEW) {
+    if (isPreviewEnabled) {
+      const imageUrl =  imageFiles.length ? imageFiles[0].preview : 
+        props?.dish?.imageUrl ? props.dish.imageUrl : 'Изображение блюда';
       return (
         <React.Fragment>
           <MenuDish
@@ -114,12 +113,9 @@ export const AddDish: React.FC<IAddDishProps> = (props) => {
             dish={{
               ...getDishInfo(),
               id: 0,
-              imageUrl: imageFiles.length ? imageFiles[0].preview : 'Изображение блюда',
+              imageUrl,
             }}
           />
-          <Button variant="secondary" onClick={() => setViewMode(ViewMode.EDIT)}>
-            К редактированию
-          </Button>
         </React.Fragment>
         
       )

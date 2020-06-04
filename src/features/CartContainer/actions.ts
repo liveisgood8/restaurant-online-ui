@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-import { IDish } from '../../types/menu';
 import { AppThunk, AppDispatch } from '../../app/store';
 import {
   getCartFromLocalStorage,
@@ -7,6 +6,7 @@ import {
   cleanCartInLocalStorage,
 } from './helpers';
 import { toast } from 'react-toastify';
+import { IDish } from '../../api/dishes';
 
 export const addDishInCart = createAction<IDish>('@@cart/addDish');
 export const removeDishFromCart = createAction<IDish>('@@cart/removeDish');

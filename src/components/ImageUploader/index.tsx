@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { toast } from 'react-toastify';
 
 const baseStyle: React.CSSProperties = {
   flex: 1,
@@ -55,7 +56,7 @@ export interface IFileWithPreviewUrl extends File {
 interface IImageUploaderProps {
   required?: boolean;
   onDropFiles?: (file: IFileWithPreviewUrl[]) => void;
-  initialFiles?: File[];
+  initialFilesOrImageUrls?: File[] | string[] | string;
 }
 
 const makePreviewUrlForFiles = (files: File[]): IFileWithPreviewUrl[] => {
@@ -64,9 +65,29 @@ const makePreviewUrlForFiles = (files: File[]): IFileWithPreviewUrl[] => {
   }));
 };
 
+const getImageUrlsIfAvailable = (initialFilesOrImageUrls?: File[] | string[] | string) => {
+  if (typeof initialFilesOrImageUrls === 'string') {
+    return [initialFilesOrImageUrls];
+  } else if (
+    initialFilesOrImageUrls?.length &&
+    typeof initialFilesOrImageUrls[0] === 'string'
+  ) {
+    return initialFilesOrImageUrls as string[];
+  }
+  return [];
+}
+
+const getFilesIfAvailable = (initialFilesOrImageUrls?: File[] | string[] | string) => {
+  if (Array.isArray(initialFilesOrImageUrls) &&
+      initialFilesOrImageUrls?.length &&
+      typeof initialFilesOrImageUrls[0] === 'object') {
+      return makePreviewUrlForFiles(initialFilesOrImageUrls as File[]);
+  }
+  return [];
+}
+
 export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
-  const [files, setFiles] = useState<File[]>(props.initialFiles ?
-    makePreviewUrlForFiles(props.initialFiles) : []);
+  const [files, setFiles] = useState<File[]>(getFilesIfAvailable(props.initialFilesOrImageUrls));
   const {getRootProps, getInputProps} = useDropzone({
     accept: 'image/*',
     onDrop: (acceptedFiles) => {
@@ -76,31 +97,54 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
     }
   });
   
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={(file as any).preview}
-          style={img}
-          alt="Загруженное изображение"
-        />
-      </div>
-    </div>
-  ));
+  const getThumbs = useCallback(() => {
+    let imageSrcUrls = [];
+
+    if (!files.length) {
+      imageSrcUrls = getImageUrlsIfAvailable(props.initialFilesOrImageUrls);
+    } else {
+      imageSrcUrls = files.map((file) => (file as IFileWithPreviewUrl).preview);
+    }
+
+    return (
+      imageSrcUrls.map((imageUrl, i) => (
+        <div style={thumb} key={i}>
+          <div style={thumbInner}>
+            <img
+              src={imageUrl}
+              style={img}
+              alt="Загруженное изображение"
+            />
+          </div>
+        </div>
+    )));
+  }, [files, props.initialFilesOrImageUrls])
 
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach(file => URL.revokeObjectURL((file as any).preview));
   }, [files]);
 
+  const onInvalidFileInput = () => {
+    if (props.required) {
+      toast.error('Необходимо выбрать изображение!', {
+        autoClose: 2000,
+      });
+    }
+  };
+
   return (
     <section className="container">
       <div {...getRootProps({ className: 'dropzone', style: baseStyle })}>
-        <input {...getInputProps()} required={props.required} />
+        <input
+          {...getInputProps()}
+          name="image"
+          onInvalid={onInvalidFileInput}
+          required={props.required} />
         <p>Перетащите картинки или выберите вручную</p>
       </div>
       <aside style={thumbsContainer}>
-        {thumbs}
+        {getThumbs()}
       </aside>
     </section>
   );

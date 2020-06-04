@@ -1,4 +1,4 @@
-import { IDish } from '../../types/menu';
+import { IDish } from '../../api/dishes';
 
 export interface ICartDish {
   dish: IDish;

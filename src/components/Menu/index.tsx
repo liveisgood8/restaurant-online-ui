@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Location } from 'history';
-import { IDish, ICategory } from '../../types/menu';
 import { MenuDish } from '../MenuDish';
 import { DishCategory } from '../DishCategory';
 import { Link } from 'react-router-dom';
-import { AddDish, IDishInfoWithFile } from '../AddDish';
+import { DishEditor } from '../DishEditor';
+import { CategoryEditor } from '../CategoryEditor';
+import { IDish, INewDishWithFile } from '../../api/dishes';
+import { ICategory, INewCategoryWithFile } from '../../api/categories';
 
 interface IMenuProps {
   dishes: IDish[];
@@ -13,9 +15,10 @@ interface IMenuProps {
   selectedCategoryId?: number;
   isAdminModeEnabled?: boolean;
   onPutDishInCart: (dish: IDish) => void;
-  onAddNewDish: (dish: IDishInfoWithFile) => void;
+  onAddNewDish: (dish: Omit<INewDishWithFile, 'category'>) => void;
   onDeleteDish: (dish: IDish) => void;
-  onEditDish: (dish: IDish) => void;
+  onChangeDish: (dish: IDish) => void;
+  onAddNewCategory: (category: INewCategoryWithFile) => void;
 }
 
 export const Menu: React.SFC<IMenuProps> = (props) => {
@@ -23,15 +26,29 @@ export const Menu: React.SFC<IMenuProps> = (props) => {
     return category.id === props.selectedCategoryId;
   };
 
-  const getAddDishElementIfAdminMode = () => {
+  const getCategoryEditorIfAdminMode = () => {
     if (!props.isAdminModeEnabled) {
       return;
     }
 
     return (
       <Col sm={12} md={4} lg={3}>
-        <AddDish
-          onAdd={props.onAddNewDish}
+        <CategoryEditor
+          onAdd={props.onAddNewCategory}
+        />
+      </Col>
+    );
+  };
+
+  const getDishEditorElementIfAdminMode = () => {
+    if (!props.isAdminModeEnabled) {
+      return;
+    }
+
+    return (
+      <Col sm={12} md={4} lg={3}>
+        <DishEditor
+          onSubmit={props.onAddNewDish}
         />
       </Col>
     );
@@ -41,6 +58,7 @@ export const Menu: React.SFC<IMenuProps> = (props) => {
     <React.Fragment>
       <Container fluid>
         <Row className="justify-content-center">
+          {getCategoryEditorIfAdminMode()}
           {props.categories.map((e, i) => (
             <Col key={i} sm={2} md={1}>
               <Link
@@ -60,7 +78,7 @@ export const Menu: React.SFC<IMenuProps> = (props) => {
           ))}
         </Row>
         <Row className="justify-content-center">
-          {getAddDishElementIfAdminMode()}
+          {getDishEditorElementIfAdminMode()}
           {props.dishes.map((e, i) => (
             <Col sm={12} md={4} lg={3} key={i}>
               <MenuDish
@@ -68,7 +86,7 @@ export const Menu: React.SFC<IMenuProps> = (props) => {
                 dish={e}
                 onCart={props.onPutDishInCart}
                 onDelete={props.onDeleteDish}
-                onEdit={props.onEditDish}
+                onChange={props.onChangeDish}
               />
             </Col>
           ))}

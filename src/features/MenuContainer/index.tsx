@@ -16,7 +16,7 @@ import { Menu } from '../../components/Menu';
 import { addPersistentDishInCart } from '../CartContainer/actions';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { IDish, INewDishWithFile } from '../../api/dishes';
+import { IDish, INewDish } from '../../api/dishes';
 import { INewCategoryWithFile } from '../../api/categories';
 
 const getCategoryIdFromUrlSearch = (searchPartOfUrl: string): number | undefined => {
@@ -60,7 +60,7 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
     dispatch(addPersistentDishInCart(dish));
   };
 
-  const onAddNewDish = (dish: Omit<INewDishWithFile, 'category'>) => {
+  const onAddNewDish = (dish: Omit<INewDish, 'category'>, image?: File) => {
     if (!categoryId) {
       toast.error('Для добавления блюда необходимо выбрать категорию!');
     } else {
@@ -69,7 +69,7 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
         category: {
           id: categoryId,
         },
-      }));
+      }, image));
     }
   };
 
@@ -84,9 +84,8 @@ export const MenuContainer: React.FC<IMenuContainerProps> = ({ isAdminModeEnable
     }));
   };
 
-  const onChangeDish = (dish: IDish) => {
-    console.log(dish);
-    dispatch(updateDishThunk(dish));
+  const onChangeDish = (dish: IDish, image?: File) => {
+    dispatch(updateDishThunk(dish, image));
   }
 
   const onAddNewCategory = (category: INewCategoryWithFile) => {

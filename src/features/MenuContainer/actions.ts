@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { createApiRequestThunk } from '../../helpers/fetch';
 import { AppThunk, AppDispatch } from '../../app/store';
-import { DishesApi, IDish, INewDishWithFile, IDishImage } from '../../api/dishes';
+import { DishesApi, IDish, INewDish } from '../../api/dishes';
 import { CategoriesApi, ICategory, INewCategoryWithFile } from '../../api/categories';
 import { DeepPartialWithId } from '../../types/utils';
+import { apiUrl } from '../../config';
 
 export const setDishes = createAction<IDish[]>('@@menu/setDishes');
 export const addDish = createAction<IDish>('@@menu/addDish');
@@ -16,17 +17,27 @@ export const addCategory = createAction<ICategory>('@@menu/addCategory');
 
 export const [getDishesThunk, getDishesStatusSelector] = createApiRequestThunk<IDish[]>({
   actions: {
-    success: setDishes.toString(),
+    success: {
+      type: setDishes.toString(),
+      handler: (dispatch: AppDispatch, dishes: IDish[]): void => {
+        dispatch(setDishes(dishes.map((e) => ({
+          ...e,
+          imageUrl: apiUrl + e.imageUrl,
+        }))))
+      },
+      preventDefault: true,
+    },
   },
   endpoint: '/menu/dishes?categoryId=:categoryId',
   method: 'GET',
 });
 
 export const addDishThunk = (
-  newDish: INewDishWithFile,
+  newDish: INewDish,
+  image?: File,
 ): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    const dish = await DishesApi.add(newDish);
+    const dish = await DishesApi.add(newDish, image);
     dispatch(addDish(dish));
   } catch(err) {
     // TODO
@@ -51,11 +62,12 @@ export const [deleteDishThunk] = createApiRequestThunk({
 });
 
 export const updateDishThunk = (
-  dish: DeepPartialWithId<IDish & IDishImage>,
+  dish: DeepPartialWithId<IDish>,
+  image?: File,
 ): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    DishesApi.update(dish);
-    dispatch(updateDish(dish));
+    const newDish = await DishesApi.update(dish, image);
+    dispatch(updateDish(newDish));
   } catch(err) {
     // TODO
     console.error(err);

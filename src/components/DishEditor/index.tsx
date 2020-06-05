@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ControlChangeEvent, FormEvent } from '../../types/ui';
 import { ImageUploader, IFileWithPreviewUrl } from '../ImageUploader';
 import { MenuDish } from '../MenuDish';
-import { IDish, INewDishWithFile } from '../../api/dishes';
+import { IDish, INewDish } from '../../api/dishes';
 
 enum ViewMode {
   ADD,
@@ -13,7 +13,7 @@ enum ViewMode {
 }
 
 interface IDishEditorProps {
-  onSubmit?: (dish: Omit<INewDishWithFile, 'category'>) => void;
+  onSubmit?: (dish: Omit<INewDish, 'category'>, image?: File) => void;
   dish?: IDish;
 }
 
@@ -29,18 +29,17 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    props.onSubmit?.(getDishInfo());
+    props.onSubmit?.(getDishInfo(), imageFiles.length ? imageFiles[0] : undefined);
     setViewMode(ViewMode.ADD);
   };
 
-  const getDishInfo = (): Omit<INewDishWithFile, 'category'> => {
+  const getDishInfo = (): Omit<INewDish, 'category'> => {
     return {
       name,
       description,
       protein,
       fat,
       carbohydrates,
-      image: imageFiles.length ? imageFiles[0] : undefined,
     };
   };
 

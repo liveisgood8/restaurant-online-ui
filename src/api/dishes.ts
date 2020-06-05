@@ -3,11 +3,11 @@ import { WithoutId, DeepPartialWithId } from '../types/utils';
 
 
 export const DishesApi = {
-  uploadImage: async (file: File): Promise<string> => {
+  uploadImage: async (dishId: number, file: File): Promise<string> => {
     const data = new FormData();
     data.append('file', file, file.name);
 
-    const response = await AxiosInstance.post('/menu/dishes/upload-image', data, {
+    const response = await AxiosInstance.post(`/menu/dishes/${dishId}/image`, data, {
       headers: {
         'accept': 'application/json',
         'Accept-Language': 'en-US,en;q=0.8',
@@ -17,38 +17,33 @@ export const DishesApi = {
     return response.data;
   },
 
-  add: async (newDish: INewDishWithFile): Promise<IDish> => {
-    let imageUrl;
-    if (newDish.image) {
-      imageUrl = await DishesApi.uploadImage(newDish.image);
+  add: async (newDish: INewDish, image?: File): Promise<IDish> => {
+    const response = await AxiosInstance.post('/menu/dishes', newDish);
+
+    const addedDish: IDish = response.data;
+
+    if (image) {
+      await DishesApi.uploadImage(addedDish.id, image);
     }
 
-    delete newDish.image;
-
-    const response = await AxiosInstance.post('/menu/dishes', {
-      ...newDish,
-      imageUrl,
-    });
     return response.data;
   },
 
-  update: async (dish: DeepPartialWithId<IDish & IDishImage>): Promise<DeepPartialWithId<IDish>> => {
+  update: async (dish: DeepPartialWithId<IDish>, image?: File): Promise<DeepPartialWithId<IDish>> => {
     let imageUrl;
-    if (dish.image) {
-      imageUrl = await DishesApi.uploadImage(dish.image as File);
+    if (image) {
+      imageUrl = await DishesApi.uploadImage(dish.id, image);
     }
 
-    delete dish.image;
-
-    const newDish: DeepPartialWithId<IDish> = {
-      ...dish,
-    };
     if (imageUrl) {
-      newDish.imageUrl = imageUrl;
+      dish.imageUrl = imageUrl;
     }
 
-    await AxiosInstance.patch(`/menu/dishes/${dish.id}`, newDish);
-    return newDish;
+    await AxiosInstance.patch(`/menu/dishes/${dish.id}`, {
+      ...dish,
+      imageUrl: undefined,
+    });
+    return dish;
   }
 }
 
@@ -68,12 +63,4 @@ export interface IDishWithCategory extends IDish {
   };
 }
 
-export interface IDishImage {
-  image?: File;
-}
-
-type INewDish = WithoutId<IDishWithCategory>;
-
-export interface INewDishWithFile extends Omit<WithoutId<IDishWithCategory>, 'imageUrl'> {
-  image?: File;
-}
+export type INewDish = WithoutId<IDishWithCategory>;

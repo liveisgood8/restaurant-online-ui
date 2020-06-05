@@ -7,10 +7,10 @@ const dishesReducer = createReducer<IDish[]>([], (builder) => {
   builder
     .addCase(setDishes, (state, action) => action.payload)
     .addCase(addDish, (state, action) => state.concat(action.payload))
-    .addCase(updateDish, (state, action) => state.map((e) => e.id === action.payload.id ? {
+    .addCase(updateDish, (state, action) => state.map((e) => e.id === action.payload.id ? ({
       ...e,
       ...action.payload,
-    } : e))
+    }) : e))
     .addCase(deleteDish, (state, action) => state.filter((e) => e.id !== action.payload.id))
     .addCase(clearDishes, () => []);
 });

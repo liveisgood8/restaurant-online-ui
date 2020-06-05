@@ -6,7 +6,7 @@ import { DishCategory } from '../DishCategory';
 import { Link } from 'react-router-dom';
 import { DishEditor } from '../DishEditor';
 import { CategoryEditor } from '../CategoryEditor';
-import { IDish, INewDishWithFile } from '../../api/dishes';
+import { IDish, INewDish } from '../../api/dishes';
 import { ICategory, INewCategoryWithFile } from '../../api/categories';
 
 interface IMenuProps {
@@ -15,9 +15,9 @@ interface IMenuProps {
   selectedCategoryId?: number;
   isAdminModeEnabled?: boolean;
   onPutDishInCart: (dish: IDish) => void;
-  onAddNewDish: (dish: Omit<INewDishWithFile, 'category'>) => void;
+  onAddNewDish: (dish: Omit<INewDish, 'category'>, image?: File) => void;
   onDeleteDish: (dish: IDish) => void;
-  onChangeDish: (dish: IDish) => void;
+  onChangeDish: (dish: IDish, image?: File) => void;
   onAddNewCategory: (category: INewCategoryWithFile) => void;
 }
 

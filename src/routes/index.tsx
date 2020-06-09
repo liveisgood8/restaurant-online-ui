@@ -8,7 +8,7 @@ import { CartContainer } from '../features/CartContainer';
 import { RouteWithLayout } from './RouteWithLayout';
 import { AdminLayout } from '../pages/AdminLayout';
 import { RoutePath } from './paths';
-import { MenuContainer } from '../features/MenuContainer';
+import { AdminMenuContainer } from '../features/AdminMenuContainer';
 
 export const Routes: React.SFC = () => {
   return (
@@ -17,7 +17,7 @@ export const Routes: React.SFC = () => {
         <RouteWithLayout layout={CartLayout} exact path={RoutePath.HOME} component={App} />
         <RouteWithLayout layout={CartLayout} exact path={RoutePath.CART} component={CartContainer} />
         <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_DISH_MENU}
-          component={() => <MenuContainer isAdminModeEnabled />} />
+          component={AdminMenuContainer} />
       </Switch>
     </ConnectedRouter>
   )

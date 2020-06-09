@@ -15,5 +15,8 @@ code {
 a.deco-none {
   color: #000000;
   text-decoration: none;
+}
 
+.cursor-pointer {
+  cursor: pointer;
 }

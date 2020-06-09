@@ -1,17 +1,24 @@
 import { AxiosInstance } from '../helpers/axios-instance';
-import { WithoutId } from '../types/utils';
+import { WithoutId, DeepPartialWithId } from '../types/utils';
 
 export const CategoriesApi = {
-  add: async (category: INewCategoryWithFile): Promise<ICategory> => {
+  add: async (newCategory: INewCategory, image?: File): Promise<ICategory> => {
     // TODO upload category image
-
-    delete category.image;
-
-    const newCategory: INewCategory = { ...category };
 
     const response = await AxiosInstance.post('/menu/categories', newCategory);
     return response.data;
   },
+
+  update: async (category: DeepPartialWithId<ICategory>, image?: File): Promise<DeepPartialWithId<ICategory>> => {
+    // TODO upload category image
+
+    await AxiosInstance.patch(`/menu/categories/${category.id}`, {
+      ...category,
+      dishes: undefined,
+      imageUrl: undefined,
+    });
+    return category;
+  }
 };
 
 export interface ICategory {
@@ -20,8 +27,4 @@ export interface ICategory {
   imageUrl?: string;
 }
 
-type INewCategory = WithoutId<ICategory>; 
-
-export interface INewCategoryWithFile extends Omit<WithoutId<ICategory>, 'imageUrl'> {
-  image?: File;
-}
+export type INewCategory = Omit<WithoutId<ICategory>, 'imageUrl'>; 

@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faStreetView, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ControlChangeEvent, FormEvent } from '../../types/ui';
-import { ImageUploader, IFileWithPreviewUrl } from '../ImageUploader';
-import { MenuDish } from '../MenuDish';
-import { IDish, INewDish } from '../../api/dishes';
-
-enum ViewMode {
-  ADD,
-  EDIT,
-}
+import { ControlChangeEvent, FormEvent } from '../../../types/ui';
+import { ImageUploader, IFileWithPreviewUrl } from '../../ImageUploader';
+import { MenuDish } from '../../MenuDish';
+import { IDish, INewDish } from '../../../api/dishes';
+import { ViewMode } from '../types';
 
 interface IDishEditorProps {
-  onSubmit?: (dish: Omit<INewDish, 'category'>, image?: File) => void;
+  onAdd: (dish: Omit<INewDish, 'category'>, image?: File) => void;
+  onDelete?: (dish: IDish) => void;
+  onChange?: (dish: IDish, image?: File) => void;
   dish?: IDish;
 }
 
 export const DishEditor: React.FC<IDishEditorProps> = (props) => {
-  const [viewMode, setViewMode] = useState(props?.dish ? ViewMode.EDIT : ViewMode.ADD);
-  const [isPreviewEnabled, setPreviewEnabled] = useState(false);
+  const [viewMode, setViewMode] = useState(props?.dish ? ViewMode.PREVIEW : ViewMode.ADD);
   const [name, setName] = useState(props?.dish?.name || '');
   const [description, setDescription] = useState(props?.dish?.description || '');
   const [protein, setProtein] = useState<number | null>(props?.dish?.protein || null);
@@ -29,8 +26,16 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    props.onSubmit?.(getDishInfo(), imageFiles.length ? imageFiles[0] : undefined);
-    setViewMode(ViewMode.ADD);
+    const image = imageFiles.length ? imageFiles[0] : undefined;
+    if (props.dish && props.onChange) {
+      props.onChange({
+        ...props.dish,
+        ...getDishInfo(),
+      }, image);
+    } else {
+      props.onAdd(getDishInfo(), image);
+      setViewMode(ViewMode.ADD);
+    }
   };
 
   const getDishInfo = (): Omit<INewDish, 'category'> => {
@@ -46,15 +51,19 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
   const getAddComponentIfAddMode = () => {
     if (viewMode === ViewMode.ADD) {
       return (
-        <div className="text-center p-3">
-          <FontAwesomeIcon icon={faPlus} onClick={() => setViewMode(ViewMode.EDIT)} />
-          <p>Добавить новое блюдо</p>
+        <div
+          className="text-center p-2 cursor-pointer"
+          onClick={() => setViewMode(ViewMode.EDIT)}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span className="d-block">Добавить новое <br /> блюдо</span>
         </div>
       );
     }
   };
 
   const getEditComponentIfEditMode = () => {
+    console.log(props);
     if (viewMode === ViewMode.EDIT) {
       return (
         <Form onSubmit={onSubmit}>
@@ -92,23 +101,43 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
             initialFilesOrImageUrls={props?.dish?.imageUrl || imageFiles}
             onDropFiles={(images) => setImageFiles(images)}
           />
-          <Button variant="secondary" onClick={() => setPreviewEnabled(!isPreviewEnabled)}>
-            Просмотреть
+          <Button type="submit">
+            {props.dish ? 'Применить' : 'Добавить'}
           </Button>
-          <Button type="submit">Добавить</Button>
         </Form>
       );
     }
   };
 
+  const getControlPanel = () => {
+    return (
+      <React.Fragment>
+        {viewMode === ViewMode.PREVIEW && (
+          <Button onClick={() => setViewMode(ViewMode.EDIT)}>
+            <FontAwesomeIcon icon={faEdit} />
+          </Button>
+        )}
+        {viewMode === ViewMode.EDIT && (
+          <Button onClick={() => setViewMode(ViewMode.PREVIEW)}>
+            <FontAwesomeIcon icon={faStreetView} />
+          </Button>
+        )}
+        {props.dish && (
+          <Button variant="danger" onClick={() => props.onDelete?.(props.dish as IDish)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        )}
+      </React.Fragment>
+    );
+  };
+
   const getPreviewComponentIfPreviewMode = () => {
-    if (isPreviewEnabled) {
-      const imageUrl =  imageFiles.length ? imageFiles[0].preview : 
+    if (viewMode === ViewMode.PREVIEW) {
+      const imageUrl = imageFiles.length ? imageFiles[0].preview :
         props?.dish?.imageUrl ? props.dish.imageUrl : 'Изображение блюда';
       return (
         <React.Fragment>
           <MenuDish
-            isAddInCartDisabled
             dish={{
               ...getDishInfo(),
               id: 0,
@@ -116,7 +145,7 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
             }}
           />
         </React.Fragment>
-        
+
       )
     }
   };
@@ -126,6 +155,7 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
       {getAddComponentIfAddMode()}
       {getEditComponentIfEditMode()}
       {getPreviewComponentIfPreviewMode()}
+      {getControlPanel()}
     </div>
   );
 }

@@ -108,10 +108,17 @@ export function createApiRequestThunk<DataType = any, BodyType = DataType>(
       }
       if (typeof(actions.success) === 'string') {
         if (method === 'DELETE') {
-          dispatch({
-            type: actions.success,
-            payload: thunkOptions?.entity,
-          });
+          if (thunkOptions?.entity) {
+            dispatch({
+              type: actions.success,
+              payload: thunkOptions.entity,
+            });
+          } else if (thunkOptions?.endpoint?.bindings?.id) {
+            dispatch({
+              type: actions.success,
+              payload: thunkOptions?.endpoint?.bindings?.id,
+            });
+          }
         } else {
           dispatch({
             type: actions.success,

@@ -7,7 +7,7 @@ const baseStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '20px',
+  padding: '1rem',
   borderWidth: 2,
   borderRadius: 2,
   borderColor: '#eeeeee',
@@ -15,7 +15,8 @@ const baseStyle: React.CSSProperties = {
   backgroundColor: '#fafafa',
   color: '#bdbdbd',
   outline: 'none',
-  transition: 'border .24s ease-in-out'
+  transition: 'border .24s ease-in-out',
+  textAlign: 'center',
 };
 
 const thumbsContainer: React.CSSProperties = {
@@ -134,14 +135,14 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
   };
 
   return (
-    <section className="container">
+    <section>
       <div {...getRootProps({ className: 'dropzone', style: baseStyle })}>
         <input
           {...getInputProps()}
           name="image"
           onInvalid={onInvalidFileInput}
           required={props.required} />
-        <p>Перетащите картинки или выберите вручную</p>
+        <p>Выберите изображение</p>
       </div>
       <aside style={thumbsContainer}>
         {getThumbs()}

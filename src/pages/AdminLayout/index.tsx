@@ -8,9 +8,9 @@ export const AdminLayout: React.SFC = ({ children }) => {
     <RootLayout>
       <Container fluid className="d-flex p-0">
         <AdminSidebarContainer />
-        <Container fluid>
+        <main className="container-fluid py-3">
           {children}
-        </Container>
+        </main>
       </Container>
     </RootLayout>
   )

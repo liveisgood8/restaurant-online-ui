@@ -23,7 +23,6 @@ export const DishCategory: React.SFC<IDishCategoryProps> = ({ category, isSelect
     </div>
   );
 
-  console.log(category)
   return (
     <React.Fragment>
       {category.id > 0 ? (

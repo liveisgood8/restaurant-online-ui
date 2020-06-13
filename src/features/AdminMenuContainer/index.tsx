@@ -4,18 +4,18 @@ import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { IDish, INewDish } from '../../api/dishes';
+import { IDish, INewDish, DishesApi } from '../../api/dishes';
 import { getCategoryIdFromUrlSearch } from '../../helpers/utils';
 import { getCategoriesStatusSelector,
   getCategoriesThunk,
   getDishesThunk,
   clearDishes,
   addDishThunk,
-  deleteDishThunk,
-  updateDishThunk,
   addCategoryThunk,
   updateCategoryThunk,
   deleteCategoryThunk,
+  updateDish,
+  deleteDish,
 } from '../MenuContainer/actions';
 import { AdminMenu } from '../../components/AdminMenu';
 import { INewCategory, ICategory } from '../../api/categories';
@@ -59,19 +59,28 @@ export const AdminMenuContainer: React.FC = () => {
     }
   };
 
-  const onDeleteDish = (dish: IDish) => {
-    dispatch(deleteDishThunk({
-      entity: dish,
-      endpoint: {
-        bindings: {
-          id: dish.id,
-        },
-      },
-    }));
+  const onDeleteDish = async (dish: IDish) => {
+    try {
+      await DishesApi.delete(dish.id);
+      dispatch(deleteDish(dish.id));
+      return true;
+    } catch (err) {
+      // TODO
+      console.error(err);
+      return false;
+    }
   };
 
-  const onChangeDish = (dish: IDish, image?: File) => {
-    dispatch(updateDishThunk(dish, image));
+  const onChangeDish = async (dish: IDish, image?: File) => {
+    try {
+      const newDish = await DishesApi.update(dish, image);
+      dispatch(updateDish(newDish));
+      return true;
+    } catch( err) {
+      // TODO
+      console.error(err);
+      return false;
+    }
   }
 
   const onAddNewCategory = (category: INewCategory, image?: File) => {

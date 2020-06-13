@@ -44,6 +44,10 @@ export const DishesApi = {
       imageUrl: undefined,
     });
     return dish;
+  },
+
+  delete: async (dishId: number): Promise<void> => {
+    await AxiosInstance.delete(`/menu/dishes/${dishId}`);
   }
 }
 

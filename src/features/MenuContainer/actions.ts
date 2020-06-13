@@ -55,27 +55,6 @@ export const [getCategoriesThunk, getCategoriesStatusSelector] = createApiReques
   method: 'GET',
 });
 
-export const [deleteDishThunk] = createApiRequestThunk({
-  actions: {
-    success: deleteDish.toString(),
-  },
-  endpoint: '/menu/dishes/:id',
-  method: 'DELETE',
-});
-
-export const updateDishThunk = (
-  dish: DeepPartialWithId<IDish>,
-  image?: File,
-): AppThunk => async (dispatch: AppDispatch) => {
-  try {
-    const newDish = await DishesApi.update(dish, image);
-    dispatch(updateDish(newDish));
-  } catch(err) {
-    // TODO
-    console.error(err);
-  }
-};
-
 export const addCategoryThunk = (
   categoryInfo: INewCategory,
   image?: File,
@@ -106,8 +85,10 @@ export const updateCategoryThunk = (
   try {
     const newCategory = await CategoriesApi.update(category, image);
     dispatch(updateCategory(newCategory));
+    return true;
   } catch(err) {
     // TODO
     console.error(err);
+    return false;
   }
 };

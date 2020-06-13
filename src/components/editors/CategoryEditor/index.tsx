@@ -88,17 +88,17 @@ export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
     return (
       <div className="px-2 mb-2 mt-2">
         {viewMode === ViewMode.PREVIEW && (
-          <Button onClick={() => setViewMode(ViewMode.EDIT)}>
+          <Button onClick={() => setViewMode(ViewMode.EDIT)} className="mr-2">
             <FontAwesomeIcon icon={faEdit} />
           </Button>
         )}
         {viewMode === ViewMode.EDIT && (
-          <Button onClick={() => setViewMode(ViewMode.PREVIEW)}>
+          <Button onClick={() => setViewMode(ViewMode.PREVIEW)} className="mr-2">
             <FontAwesomeIcon icon={faStreetView} />
           </Button>
         )}
         {viewMode !== ViewMode.ADD && props.category && (
-          <Button variant="danger" onClick={() => props.onDelete?.(props.category as ICategory)}>
+          <Button variant="danger" className="mr-2" onClick={() => props.onDelete?.(props.category as ICategory)}>
             <FontAwesomeIcon icon={faTrash} />
           </Button>
         )}

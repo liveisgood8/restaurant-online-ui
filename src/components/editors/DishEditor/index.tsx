@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { faPlus, faEdit, faStreetView, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faStreetView, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ControlChangeEvent, FormEvent } from '../../../types/ui';
 import { ImageUploader, IFileWithPreviewUrl } from '../../ImageUploader';
 import { MenuDish } from '../../MenuDish';
 import { IDish, INewDish } from '../../../api/dishes';
 import { ViewMode } from '../types';
+import { loadable } from '../../../helpers/utils';
 
 interface IDishEditorProps {
   onAdd: (dish: Omit<INewDish, 'category'>, image?: File) => void;
-  onDelete?: (dish: IDish) => void;
-  onChange?: (dish: IDish, image?: File) => void;
+  onDelete?: (dish: IDish) => Promise<boolean>;
+  onChange?: (dish: IDish, image?: File) => Promise<boolean>;
   dish?: IDish;
 }
 
@@ -23,18 +24,38 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
   const [fat, setFat] = useState<number | null>(props?.dish?.fat || null);
   const [carbohydrates, setCarbohydrates] = useState<number | null>(props?.dish?.carbohydrates || null);
   const [imageFiles, setImageFiles] = useState<IFileWithPreviewUrl[]>([]);
+  const [isUpdated, setUpdated] = useState(false);
+  const [isDeleted, setDeleted] = useState(false);
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const image = imageFiles.length ? imageFiles[0] : undefined;
     if (props.dish && props.onChange) {
-      props.onChange({
-        ...props.dish,
-        ...getDishInfo(),
-      }, image);
+      await loadable(async () => {
+        if (props.dish && props.onChange) {
+          const isUpdatedSucceed = await props.onChange({
+            ...props.dish,
+            ...getDishInfo(),
+          }, image);
+          if (isUpdatedSucceed) {
+            setImageFiles([]);
+            setViewMode(ViewMode.PREVIEW);
+          }
+        }
+      }, setUpdated);
     } else {
       props.onAdd(getDishInfo(), image);
       setViewMode(ViewMode.ADD);
+    }
+  };
+
+  const onDelete = async () => {
+    if (props.dish && props.onDelete) {
+      setDeleted(true);
+      const isDeletedSucceed = await props.onDelete?.(props.dish);
+      if (!isDeletedSucceed) {
+        setDeleted(false);
+      }
     }
   };
 
@@ -63,37 +84,41 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
   };
 
   const getEditComponentIfEditMode = () => {
-    console.log(props);
     if (viewMode === ViewMode.EDIT) {
       return (
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit} className="p-2">
           <Form.Control
             required
             placeholder="Наименование блюда"
+            className="mb-2"
             onChange={(e: ControlChangeEvent) => setName(e.currentTarget.value)}
             value={name}
           />
           <Form.Control
             required
             placeholder="Описание блюда"
+            className="mb-2"
             onChange={(e: ControlChangeEvent) => setDescription(e.currentTarget.value)}
             value={description}
           />
           <Form.Control
             type="number"
             placeholder="Белки"
+            className="mb-2"
             onChange={(e: ControlChangeEvent) => setProtein(+e.currentTarget.value)}
             value={protein || ''}
           />
           <Form.Control
             type="number"
             placeholder="Жиры"
+            className="mb-2"
             onChange={(e: ControlChangeEvent) => setFat(+e.currentTarget.value)}
             value={fat || ''}
           />
           <Form.Control
             type="number"
             placeholder="Углеводы"
+            className="mb-2"
             onChange={(e: ControlChangeEvent) => setCarbohydrates(+e.currentTarget.value)}
             value={carbohydrates || ''}
           />
@@ -101,8 +126,18 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
             initialFilesOrImageUrls={props?.dish?.imageUrl || imageFiles}
             onDropFiles={(images) => setImageFiles(images)}
           />
-          <Button type="submit">
+          <Button type="submit" className="w-100 mb-2" disabled={isUpdated}>
             {props.dish ? 'Применить' : 'Добавить'}
+            {isUpdated && (
+              <FontAwesomeIcon icon={faSpinner} spin className="ml-2" />
+            )}
+          </Button>
+          <Button
+            variant="danger"
+            className="w-100"
+            onClick={() => setViewMode(props?.dish ? ViewMode.PREVIEW : ViewMode.ADD)}
+          >
+            Отмена
           </Button>
         </Form>
       );
@@ -111,23 +146,27 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
 
   const getControlPanel = () => {
     return (
-      <React.Fragment>
+      <div className="my-2 px-2">
         {viewMode === ViewMode.PREVIEW && (
-          <Button onClick={() => setViewMode(ViewMode.EDIT)}>
+          <Button onClick={() => setViewMode(ViewMode.EDIT)} className="mr-2">
             <FontAwesomeIcon icon={faEdit} />
           </Button>
         )}
         {viewMode === ViewMode.EDIT && (
-          <Button onClick={() => setViewMode(ViewMode.PREVIEW)}>
+          <Button onClick={() => setViewMode(ViewMode.PREVIEW)} className="mr-2">
             <FontAwesomeIcon icon={faStreetView} />
           </Button>
         )}
         {props.dish && (
-          <Button variant="danger" onClick={() => props.onDelete?.(props.dish as IDish)}>
-            <FontAwesomeIcon icon={faTrash} />
+          <Button variant="danger" className="mr-2" onClick={onDelete}>
+            {isDeleted ? (
+              <FontAwesomeIcon icon={faSpinner} spin />
+            ) : (
+              <FontAwesomeIcon icon={faTrash} />
+            )}
           </Button>
         )}
-      </React.Fragment>
+      </div>
     );
   };
 

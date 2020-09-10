@@ -1,10 +1,10 @@
 import { WithoutId } from '../types/utils'
 import { AxiosInstance } from '../helpers/axios-instance';
-import { IAuthRequestBody, IAuthTokenResponseBody } from './payloads/auth';
+import { IAuthRequestBody } from './payloads/auth';
 
 export const AuthApi = {
-  auth: async (data: IAuthRequestBody): Promise<IAuthTokenResponseBody> => {
-    const response = await AxiosInstance.post<IAuthTokenResponseBody>('/auth', data);
+  auth: async (data: IAuthRequestBody): Promise<IAuthToken> => {
+    const response = await AxiosInstance.post<IAuthToken>('/auth', data);
     return response.data;
   },
 
@@ -20,4 +20,8 @@ export interface IUser {
   password: string;
   name?: string;
   surname?: string;
+}
+
+export interface IAuthToken {
+  accessToken: string;
 }

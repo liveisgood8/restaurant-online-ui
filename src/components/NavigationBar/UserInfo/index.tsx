@@ -13,6 +13,7 @@ interface IUserInfoProps {
 export const UserInfo: React.SFC<IUserInfoProps> = ({ className, userInfo }) => {
   return (
     <Button className={cn(className, 'navbar__outline-element')} variant="outline-light">
+      <span className="font-weight-bold mr-2">{userInfo.bonuses}₽</span>
       <span>{userInfo.name || 'Аноним'}</span>
     </Button>
   )

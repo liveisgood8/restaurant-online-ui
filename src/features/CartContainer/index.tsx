@@ -18,6 +18,7 @@ export const CartContainer: React.FC = () => {
   const onMakeOrder = async () => {
     const order = await OrdersApi.makeOrder(Object.values(dishes));
     setOrder(order);
+    onCleanCart();
   };
 
   if (order) {

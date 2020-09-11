@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { CartDish } from '../CartDish';
-import { ICartDish } from '../../features/CartContainer/types';
+import { ICartDish } from '../types';
 
 interface ICartProps {
   dishes: ICartDish[];

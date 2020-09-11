@@ -4,6 +4,7 @@ import { IAuthRequestBody } from '../../api/payloads/auth';
 import { authService } from '../../services/auth-service';
 import { Redirect } from 'react-router-dom';
 import { RoutePath } from '../../routes/paths';
+import { CenteredContainer } from '../../components/core/CenteredContainer';
 
 export const LoginPage: React.FC = () => {
   const [isAuthenticated, setAuthenticated] = useState(authService.isAuthenticated());
@@ -24,10 +25,10 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <CenteredContainer>
       <LoginForm
         onSubmit={onLogin}
       />
-    </div>
+    </CenteredContainer>
   );
 };

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { IUser } from '../../api/auth';
-import { WithoutId } from '../../types/utils';
+import { IRegistrationRequestBody } from '../../api/payloads/auth';
 
 interface IRegistrationForm {
-  onSubmit: (user: WithoutId<IUser>) => void;
+  onSubmit: (registrationRequest: IRegistrationRequestBody) => void;
 }
 
 const validatePassword = (password: string, passwordConfirm: string): boolean => {
@@ -15,7 +14,7 @@ const validatePassword = (password: string, passwordConfirm: string): boolean =>
 };
 
 export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [name, setName] = useState<string>();
@@ -23,7 +22,7 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
   const [isPasswordEquals, setPasswordEquals] = useState(true);
 
   const isDataFilled = (): boolean => {
-    return login !== '' && password !== '' && isPasswordEquals;
+    return email !== '' && password !== '' && isPasswordEquals;
   }
 
   const onPasswordChange = (newPassword: string) => {
@@ -39,7 +38,7 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmit({
-      login,
+      email,
       password,
       name,
       surname,
@@ -49,11 +48,12 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
   return (
     <Form onSubmit={onSubmitForm}>
       <Form.Group>
-        <Form.Label>Логин</Form.Label>
+        <Form.Label>Почтовый адрес</Form.Label>
         <Form.Control
           required
-          value={login}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setLogin(e.currentTarget.value)}
+          type="email"
+          value={email}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
         />
       </Form.Group>
       <Form.Group>

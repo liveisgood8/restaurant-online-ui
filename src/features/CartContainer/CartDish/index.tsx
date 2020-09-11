@@ -1,7 +1,7 @@
 import './styles.scss';
 
 import React from 'react';
-import { ICartDish } from '../../features/CartContainer/types';
+import { ICartDish } from '../types';
 
 export const CartDish: React.SFC<ICartDish> = ({ dish, count }) => {
   return (

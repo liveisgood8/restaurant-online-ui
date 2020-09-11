@@ -7,13 +7,13 @@ interface ILoginForm {
 }
 
 export const LoginForm: React.FC<ILoginForm> = ({ onSubmit: onSubmitProp }) => {
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmitProp({
-      login,
+      email,
       password,
     });
   };
@@ -21,11 +21,12 @@ export const LoginForm: React.FC<ILoginForm> = ({ onSubmit: onSubmitProp }) => {
   return (
     <Form onSubmit={onSubmit}>
       <Form.Group>
-        <Form.Label>Логин</Form.Label>
+        <Form.Label>Почтовый адрес</Form.Label>
         <Form.Control 
           required
-          value={login}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setLogin(e.currentTarget.value)}
+          type="email"
+          value={email}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
         />
       </Form.Group>
       <Form.Group>

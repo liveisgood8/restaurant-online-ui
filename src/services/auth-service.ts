@@ -1,29 +1,33 @@
 import { IAuthRequestBody } from '../api/payloads/auth';
-import { AxiosInstance } from '../helpers/axios-instance';
-import { IAuthToken } from '../api/auth';
+import { AxiosInstance, getBearerAuthorizationHeader } from '../helpers/axios-instance';
+import { IAuthInfo } from '../api/auth';
 
 const localStorageDataKey = 'authData';
 
 class AuthService {
 
-  public async auth(data: IAuthRequestBody): Promise<IAuthToken> {
-    const response = await AxiosInstance.post<IAuthToken>('/auth', data);
+  public async auth(data: IAuthRequestBody): Promise<IAuthInfo> {
+    const response = await AxiosInstance.post<IAuthInfo>('/auth', data);
     localStorage.setItem(localStorageDataKey, JSON.stringify(response.data));
+    AxiosInstance.defaults.headers = {
+      ...AxiosInstance.defaults.headers,
+      ...getBearerAuthorizationHeader(),
+    };
     return response.data;
   }
 
-  public getAccessToken(): string | null {
+  public getAuthInfo(): IAuthInfo | null {
     const rawData = localStorage.getItem(localStorageDataKey);
     if (!rawData) {
       return null;
     }
 
-    const authData = JSON.parse(rawData) as IAuthToken;
-    return authData.accessToken;
+    const authInfo = JSON.parse(rawData) as IAuthInfo;
+    return authInfo;
   }
 
   public isAuthenticated(): boolean {
-    return this.getAccessToken() != null;
+    return this.getAuthInfo() != null;
   }
 
 }

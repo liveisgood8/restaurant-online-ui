@@ -6,7 +6,7 @@ export const CartLayout: React.SFC = ({ children }) => {
   return (
     <RootLayout>
       <NavigationBarContainer />
-      <main className="container-fluid py-3">
+      <main className="container-fluid flex-grow-1 py-3">
         {children}
       </main>
     </RootLayout>

@@ -1,15 +1,14 @@
-import { WithoutId } from '../types/utils'
 import { AxiosInstance } from '../helpers/axios-instance';
-import { IAuthRequestBody } from './payloads/auth';
+import { IAuthRequestBody, IRegistrationRequestBody } from './payloads/auth';
 
 export const AuthApi = {
-  auth: async (data: IAuthRequestBody): Promise<IAuthToken> => {
-    const response = await AxiosInstance.post<IAuthToken>('/auth', data);
+  auth: async (data: IAuthRequestBody): Promise<IAuthInfo> => {
+    const response = await AxiosInstance.post<IAuthInfo>('/auth', data);
     return response.data;
   },
 
-  registration: async (user: WithoutId<IUser>): Promise<IUser> => {
-    const response = await AxiosInstance.post<IUser>(`/auth/registration`, user);
+  registration: async (registrationRequest: IRegistrationRequestBody): Promise<IUser> => {
+    const response = await AxiosInstance.post<IUser>(`/auth/registration`, registrationRequest);
     return response.data;
   }
 }
@@ -22,6 +21,9 @@ export interface IUser {
   surname?: string;
 }
 
-export interface IAuthToken {
+export type IUserMinimalInfo = Pick<IUser, 'id' | 'login' | 'name' | 'surname'>;
+
+export interface IAuthInfo {
   accessToken: string;
+  userInfo: IUserMinimalInfo; 
 }

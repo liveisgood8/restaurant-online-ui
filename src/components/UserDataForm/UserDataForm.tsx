@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { IRegistrationRequestBody } from '../../api/payloads/auth';
+import { IUserMinimalInfo } from '../../api/auth';
 
-interface IRegistrationForm {
-  onSubmit: (registrationRequest: IRegistrationRequestBody) => void;
+export interface IUserData {
+  email: string;
+  password?: string;
+  name?: string;
+  surname?: string;
+}
+
+interface IRegistrationFormProps {
+  className?: string;
+  additionalButtons?: React.ReactElement;
+  userInfo?: IUserMinimalInfo | null;
+  submitButtonText: string;
+  isEmailEditDisabled?: boolean;
+  isPasswordRequired?: boolean;
+  onSubmit: (userData: IUserData) => void;
 }
 
 const validatePassword = (password: string, passwordConfirm: string): boolean => {
@@ -13,17 +26,50 @@ const validatePassword = (password: string, passwordConfirm: string): boolean =>
   return Boolean(passwordConfirm) && password === passwordConfirm;
 };
 
-export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
+// eslint-disable-next-line no-useless-escape
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export const UserDataForm: React.FC<IRegistrationFormProps> = ({
+  className,
+  additionalButtons,
+  userInfo,
+  submitButtonText, 
+  isEmailEditDisabled,
+  isPasswordRequired,
+  onSubmit,
+ }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [name, setName] = useState<string>();
   const [surname, setSurname] = useState<string>();
+  const [isEmailInvalid, setEmailInvalid] = useState(false);
   const [isPasswordEquals, setPasswordEquals] = useState(true);
 
+  useEffect(() => {
+    if (userInfo) {
+      setEmail(userInfo.email);
+      setName(userInfo.name);
+      setSurname(userInfo.surname);
+    }
+  }, [userInfo]);
+
   const isDataFilled = (): boolean => {
-    return email !== '' && password !== '' && isPasswordEquals;
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+    if (password || passwordConfirm || isPasswordRequired) {
+      return (Boolean(password) || Boolean(passwordConfirm)) && isPasswordEquals;
+    }
+    return true;
   }
+
+  const onEmailChange = (newEmail: string) => {
+    if (newEmail) {
+      setEmailInvalid(!emailRegex.test(newEmail));
+    }
+    setEmail(newEmail);
+  };
 
   const onPasswordChange = (newPassword: string) => {
     setPassword(newPassword);
@@ -46,16 +92,22 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
   };
 
   return (
-    <Form onSubmit={onSubmitForm}>
+    <Form className={className} onSubmit={onSubmitForm}>
       <Form.Group>
         <Form.Label>Почтовый адрес</Form.Label>
         <Form.Control
           required
+          disabled={isEmailEditDisabled}
           type="email"
           value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onEmailChange(e.currentTarget.value)}
         />
       </Form.Group>
+      {isEmailInvalid && (
+        <Form.Group>
+          <span className="text-danger font-smaller font-weight-light">Некорректный адрес</span>
+        </Form.Group>
+      )}
       <Form.Group>
         <Form.Label>Пароль</Form.Label>
         <Form.Control
@@ -76,7 +128,7 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
       </Form.Group>
       {!isPasswordEquals && (
         <Form.Group>
-          <span>Пароли не совпадают</span>
+          <span className="text-danger font-smaller font-weight-light">Пароли не совпадают</span>
         </Form.Group>
       )}
       <Form.Group>
@@ -93,13 +145,16 @@ export const UserDataForm: React.FC<IRegistrationForm> = ({ onSubmit }) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSurname(e.currentTarget.value)}
         />
       </Form.Group>
-      <Button 
-        type="submit" 
-        variant="success"
-        disabled={!isDataFilled()}
-      >
-        Зарегистрироваться
-      </Button>
+      <div className="d-flex">
+        <Button
+          type="submit" 
+          variant="success"
+          disabled={!isDataFilled()}
+          >
+          {submitButtonText}
+        </Button>
+        {additionalButtons}
+      </div>
     </Form>
   );
 };

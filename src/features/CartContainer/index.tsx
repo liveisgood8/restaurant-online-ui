@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
 import { Cart } from './Cart';
 import { cleanPersistentCart } from './actions';
-import { OrdersApi, IOrder } from '../../api/orders';
+import { OrdersApi, IOrderWithBonuses } from '../../api/orders';
 import { OrderConfirmation } from './OrderConfirmation';
 
 export const CartContainer: React.FC = () => {
   const dispatch = useDispatch();
   const dishes = useSelector((state: RootState) => state.cart.dishes);
-  const [order, setOrder] = useState<IOrder>();
+  const [orderWithBonuses, setOrderWithBonuses] = useState<IOrderWithBonuses>();
 
   const onCleanCart = () => {
     dispatch(cleanPersistentCart());
@@ -17,14 +17,14 @@ export const CartContainer: React.FC = () => {
 
   const onMakeOrder = async () => {
     const order = await OrdersApi.makeOrder(Object.values(dishes));
-    setOrder(order);
+    setOrderWithBonuses(order);
     onCleanCart();
   };
 
-  if (order) {
+  if (orderWithBonuses) {
     return (
       <OrderConfirmation 
-        order={order}
+        orderWithBonuses={orderWithBonuses}
       />
     )
   }

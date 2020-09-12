@@ -1,13 +1,13 @@
 import Axios from 'axios';
+import { getAuthInfo } from '../app/auth/utils';
 import { apiUrl } from '../config';
-import { authService } from '../services/auth-service';
 
 interface IBearerAuthorizationHeader {
   Authorization?: string;
 }
 
 export function getBearerAuthorizationHeader(): IBearerAuthorizationHeader {
-  const authInfo = authService.getAuthInfo();
+  const authInfo = getAuthInfo();
   if (!authInfo) {
     return {};
   }

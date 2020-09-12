@@ -3,13 +3,16 @@ import { IDish } from './dishes';
 import { AxiosInstance } from '../helpers/axios-instance';
 
 export const OrdersApi = {
-  makeOrder: async (dishes: ICartDish[]): Promise<IOrder> => {
-    const { data } = await AxiosInstance.post<IOrderWithoutDate & { createdAt: string }>('/orders', {
+  makeOrder: async (dishes: ICartDish[]): Promise<IOrderWithBonuses> => {
+    const { data } = await AxiosInstance.post<IOrderWithBonuses>('/orders', {
       entries: dishes,
     });
     return {
       ...data,
-      createdAt: new Date(data.createdAt),
+      order: {
+        ...data.order,
+        createdAt: new Date(data.order.createdAt),
+      },
     };
   }
 };
@@ -18,11 +21,13 @@ interface IOrderInfo {
   dish: IDish;
 }
 
-interface IOrderWithoutDate {
+export interface IOrder {
   id: number;
+  createdAt: Date;
   orderInfos: IOrderInfo[];
 }
 
-export interface IOrder extends IOrderWithoutDate {
-  createdAt: Date;
+export interface IOrderWithBonuses {
+  order: IOrder;
+  bonuses: number;
 }

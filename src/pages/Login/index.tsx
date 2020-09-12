@@ -1,31 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LoginForm } from './LoginForm';
 import { IAuthRequestBody } from '../../api/payloads/auth';
-import { authService } from '../../services/auth-service';
-import { Redirect } from 'react-router-dom';
-import { RoutePath } from '../../routes/paths';
 import { CenteredContainer } from '../../components/core/CenteredContainer';
+import { useDispatch } from 'react-redux';
+import { login } from '../../app/auth/actions';
 
 export const LoginPage: React.FC = () => {
-  const [isAuthenticated, setAuthenticated] = useState(authService.isAuthenticated());
+  const dispatch = useDispatch();
 
   const onLogin = async (data: IAuthRequestBody): Promise<void> => {
-    try {
-      await authService.auth(data);
-      setAuthenticated(true);
-    } catch (ex) {
-      console.error(ex);
-    }
-  }
-  
-  if (isAuthenticated) {
-    return (
-      <Redirect to={RoutePath.HOME} />
-    );
+    dispatch(login(data));
   }
 
   return (
-    <CenteredContainer>
+    <CenteredContainer centerVertically>
       <LoginForm
         onSubmit={onLogin}
       />

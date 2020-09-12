@@ -15,14 +15,14 @@ export const AuthApi = {
 
 export interface IUser {
   id: number;
-  login: string;
+  email: string;
   password: string;
   name?: string;
   surname?: string;
   bonuses: number;
 }
 
-export type IUserMinimalInfo = Pick<IUser, 'id' | 'login' | 'name' | 'surname' | 'bonuses'>;
+export type IUserMinimalInfo = Pick<IUser, 'id' | 'email' | 'name' | 'surname' | 'bonuses'>;
 
 export interface IAuthInfo {
   accessToken: string;

@@ -4,7 +4,7 @@ import {
   getDishesThunk,
   getCategoriesThunk,
   getCategoriesStatusSelector,
-  clearDishes} from './actions';
+  clearDishes, likeDishThunk, dislikeDishThunk} from './actions';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
@@ -43,6 +43,13 @@ export const MenuContainer: React.FC = () => {
     dispatch(addPersistentDishInCart(dish));
   };
 
+  const onDishLike = (dish: IDish) => {
+    dispatch(likeDishThunk(dish.id));
+  };
+
+  const onDishDislike = (dish: IDish) => {
+    dispatch(dislikeDishThunk(dish.id));
+  };
   
   return (
     <React.Fragment>
@@ -54,6 +61,8 @@ export const MenuContainer: React.FC = () => {
           categories={categories}
           selectedCategoryId={categoryId}
           onPutDishInCart={onPutDishInCart}
+          onDishLike={onDishLike}
+          onDishDislike={onDishDislike}
         />
       )}
     </React.Fragment>

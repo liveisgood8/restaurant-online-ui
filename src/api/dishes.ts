@@ -48,7 +48,15 @@ export const DishesApi = {
 
   delete: async (dishId: number): Promise<void> => {
     await AxiosInstance.delete(`/menu/dishes/${dishId}`);
-  }
+  },
+
+  like: async (dishId: number): Promise<void> => {
+    await AxiosInstance.post(`/menu/dishes/${dishId}/likes/like`);
+  },
+
+  dislike: async (dishId: number): Promise<void> => {
+    await AxiosInstance.post(`/menu/dishes/${dishId}/likes/dislike`);
+  },
 }
 
 export interface IDish {
@@ -59,6 +67,15 @@ export interface IDish {
   fat: number | null;
   carbohydrates: number | null;
   imageUrl?: string;
+  weight: number;
+  price: number;
+  likes: IDishLikes;
+}
+
+interface IDishLikes {
+  id: number;
+  likeCount: number;
+  dislikeCount: number;
 }
 
 export interface IDishWithCategory extends IDish {
@@ -67,4 +84,4 @@ export interface IDishWithCategory extends IDish {
   };
 }
 
-export type INewDish = WithoutId<IDishWithCategory>;
+export type INewDish = WithoutId<Omit<IDishWithCategory, 'likes'>>;

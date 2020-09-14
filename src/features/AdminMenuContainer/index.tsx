@@ -46,7 +46,7 @@ export const AdminMenuContainer: React.FC = () => {
     }
   }, [categoryId, dispatch])
 
-  const onAddNewDish = (dish: Omit<INewDish, 'category'>, image?: File) => {
+  const onAddNewDish = (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => {
     if (!categoryId) {
       toast.error('Для добавления блюда необходимо выбрать категорию!');
     } else {

@@ -9,6 +9,8 @@ import { apiUrl } from '../../config';
 export const setDishes = createAction<IDish[]>('@@menu/setDishes');
 export const addDish = createAction<IDish>('@@menu/addDish');
 export const updateDish = createAction<DeepPartialWithId<IDish>>('@@menu/updateDish');
+export const likeDish = createAction<Pick<IDish, 'id'>>('@@menu/likeDish');
+export const dislikeDish = createAction<Pick<IDish, 'id'>>('@@menu/dislikeDish');
 export const deleteDish = createAction<number>('@@menu/deleteDish');
 export const clearDishes = createAction('@@menu/clearDishes');
 
@@ -46,6 +48,30 @@ export const addDishThunk = (
     console.error(err);
   }
 };
+
+export const likeDishThunk = (dishId: number): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
+  try {
+    await DishesApi.like(dishId);
+    dispatch(likeDish({
+      id: dishId,
+    }));
+  } catch (err) {
+    // TODO
+    console.error(err);
+  }
+}
+
+export const dislikeDishThunk = (dishId: number): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
+  try {
+    await DishesApi.dislike(dishId);
+    dispatch(dislikeDish({
+      id: dishId,
+    }));
+  } catch (err) {
+    // TODO
+    console.error(err);
+  }
+}
 
 export const [getCategoriesThunk, getCategoriesStatusSelector] = createApiRequestThunk<ICategory[]>({
   actions: {

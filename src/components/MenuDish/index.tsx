@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { IDish } from '../../api/dishes';
 
 interface IMenuDishProps {
   dish: IDish;
   onCart?: (dish: IDish) => void;
+  onLike?: (dish: IDish) => void;
+  onDislike?: (dish: IDish) => void;
 }
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
@@ -25,8 +27,14 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
         <span>Б: {dish.protein}, </span>
         <span>Ж: {dish.fat}, </span>
         <span>У: {dish.carbohydrates}</span>
+        <p className="my-0">Вес: {dish.weight}</p>
+        <p className="my-0">Цена: {dish.price}</p>
+        <p className="my-0">Лайков: {dish.likes.likeCount}</p>
+        <p className="my-0">Дизлайков: {dish.likes.dislikeCount}</p>
       </div>
       <Button onClick={() => props.onCart?.(dish)} disabled={!props.onCart}>В корзину</Button>
+      <Button onClick={() => props.onLike?.(dish)} disabled={!props.onLike}>Лайк</Button>
+      <Button onClick={() => props.onDislike?.(dish)} disabled={!props.onDislike}>Дизлайк</Button>
     </div>
   );
 };

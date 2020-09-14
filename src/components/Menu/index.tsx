@@ -10,9 +10,11 @@ interface IMenuProps {
   categories: ICategory[];
   selectedCategoryId?: number;
   onPutDishInCart: (dish: IDish) => void;
+  onDishLike: (dish: IDish) => void;
+  onDishDislike: (dish: IDish) => void;
 }
 
-export const Menu: React.SFC<IMenuProps> = (props) => {
+export const Menu: React.FC<IMenuProps> = (props) => {
   return (
     <React.Fragment>
       <Container fluid>
@@ -32,6 +34,8 @@ export const Menu: React.SFC<IMenuProps> = (props) => {
               <MenuDish
                 dish={e}
                 onCart={props.onPutDishInCart}
+                onLike={props.onDishLike}
+                onDislike={props.onDishDislike}
               />
             </Col>
           ))}

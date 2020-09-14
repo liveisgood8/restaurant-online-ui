@@ -9,7 +9,7 @@ interface IAdminMenuProps {
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number;
-  onAddNewDish: (dish: Omit<INewDish, 'category'>, image?: File) => void;
+  onAddNewDish: (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => void;
   onDeleteDish: (dish: IDish) => Promise<boolean>;
   onChangeDish: (dish: IDish, image?: File) => Promise<boolean>;
   onAddNewCategory: (category: INewCategory, image?: File) => void;

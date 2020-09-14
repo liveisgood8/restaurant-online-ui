@@ -10,7 +10,7 @@ import { ViewMode } from '../types';
 import { loadable } from '../../../helpers/utils';
 
 interface IDishEditorProps {
-  onAdd: (dish: Omit<INewDish, 'category'>, image?: File) => void;
+  onAdd: (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => void;
   onDelete?: (dish: IDish) => Promise<boolean>;
   onChange?: (dish: IDish, image?: File) => Promise<boolean>;
   dish?: IDish;
@@ -23,6 +23,8 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
   const [protein, setProtein] = useState<number | null>(props?.dish?.protein || null);
   const [fat, setFat] = useState<number | null>(props?.dish?.fat || null);
   const [carbohydrates, setCarbohydrates] = useState<number | null>(props?.dish?.carbohydrates || null);
+  const [weight, setWeight] = useState<number>(props?.dish?.weight || 0);
+  const [price, setPrice] = useState<number>(props?.dish?.price || 0);
   const [imageFiles, setImageFiles] = useState<IFileWithPreviewUrl[]>([]);
   const [isUpdated, setUpdated] = useState(false);
   const [isDeleted, setDeleted] = useState(false);
@@ -59,13 +61,15 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
     }
   };
 
-  const getDishInfo = (): Omit<INewDish, 'category'> => {
+  const getDishInfo = (): Omit<INewDish, 'category' | 'likes'> => {
     return {
       name,
       description,
       protein,
       fat,
       carbohydrates,
+      weight,
+      price,
     };
   };
 
@@ -122,6 +126,22 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
             onChange={(e: ControlChangeEvent) => setCarbohydrates(+e.currentTarget.value)}
             value={carbohydrates || ''}
           />
+          <Form.Control
+            required
+            type="number"
+            placeholder="Вес"
+            className="mb-2"
+            onChange={(e: ControlChangeEvent) => setWeight(+e.currentTarget.value)}
+            value={weight || ''}
+          />
+          <Form.Control
+            required
+            type="number"
+            placeholder="Цена"
+            className="mb-2"
+            onChange={(e: ControlChangeEvent) => setPrice(+e.currentTarget.value)}
+            value={price || ''}
+          />
           <ImageUploader
             initialFilesOrImageUrls={props?.dish?.imageUrl || imageFiles}
             onDropFiles={(images) => setImageFiles(images)}
@@ -174,6 +194,11 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
     if (viewMode === ViewMode.PREVIEW) {
       const imageUrl = imageFiles.length ? imageFiles[0].preview :
         props?.dish?.imageUrl ? props.dish.imageUrl : 'Изображение блюда';
+      const likes = props?.dish?.likes || {
+        id: 0,
+        likeCount: 0,
+        dislikeCount: 0,
+      };
       return (
         <React.Fragment>
           <MenuDish
@@ -181,6 +206,7 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
               ...getDishInfo(),
               id: 0,
               imageUrl,
+              likes,
             }}
           />
         </React.Fragment>

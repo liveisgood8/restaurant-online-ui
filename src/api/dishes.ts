@@ -12,8 +12,8 @@ export const DishesApi = {
         'accept': 'application/json',
         'Accept-Language': 'en-US,en;q=0.8',
         'Content-Type': `multipart/form-data`,
-      }
-    })
+      },
+    });
     return response.data;
   },
 
@@ -57,7 +57,7 @@ export const DishesApi = {
   dislike: async (dishId: number): Promise<void> => {
     await AxiosInstance.post(`/menu/dishes/${dishId}/likes/dislike`);
   },
-}
+};
 
 export interface IDish {
   id: number;
@@ -72,7 +72,7 @@ export interface IDish {
   likes: IDishLikes;
 }
 
-interface IDishLikes {
+export interface IDishLikes {
   id: number;
   likeCount: number;
   dislikeCount: number;

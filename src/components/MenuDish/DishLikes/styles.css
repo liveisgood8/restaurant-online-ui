@@ -1,0 +1,13 @@
+.like-icon {
+  /* width: 32px; */
+  /* height: 32px; */
+  transition: color 0.5s;
+}
+
+.like-icon__positive:hover {
+  color: green;
+}
+
+.like-icon__negative:hover {
+  color: red;
+}

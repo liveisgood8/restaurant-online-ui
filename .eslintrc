@@ -33,7 +33,6 @@
         "require-jsdoc": "off",
         "max-len": ["error", 120],
         "object-curly-spacing": ["error", "always"],
-        "@typescript-eslint/interface-name-prefix": ["warn", "always"],
         "indent": [
           "warn",
           2,

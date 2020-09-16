@@ -7,7 +7,8 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "google"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -18,7 +19,7 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 11,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": [
@@ -28,6 +29,30 @@
     "rules": {
         "react/prop-types": [
             "off"
+        ],
+        "require-jsdoc": "off",
+        "max-len": ["error", 120],
+        "object-curly-spacing": ["error", "always"],
+        "@typescript-eslint/interface-name-prefix": ["warn", "always"],
+        "indent": [
+          "warn",
+          2,
+          {
+            "MemberExpression": 1,
+            "FunctionExpression": {
+              "body": 1,
+              "parameters": 1
+            },
+            "CallExpression": {
+              "arguments": 1
+            },
+            "SwitchCase": 1
+          }
         ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

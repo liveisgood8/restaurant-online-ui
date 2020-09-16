@@ -27,7 +27,7 @@ export const [getDishesThunk, getDishesStatusSelector] = createApiRequestThunk<I
         dispatch(setDishes(dishes.map((e) => ({
           ...e,
           imageUrl: e.imageUrl ? apiUrl + e.imageUrl : undefined,
-        }))))
+        }))));
       },
       preventDefault: true,
     },
@@ -39,11 +39,11 @@ export const [getDishesThunk, getDishesStatusSelector] = createApiRequestThunk<I
 export const addDishThunk = (
   newDish: INewDish,
   image?: File,
-): AppThunk => async (dispatch: AppDispatch) => {
+): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
     const dish = await DishesApi.add(newDish, image);
     dispatch(addDish(dish));
-  } catch(err) {
+  } catch (err) {
     // TODO
     console.error(err);
   }
@@ -59,7 +59,7 @@ export const likeDishThunk = (dishId: number): AppThunk => async (dispatch: AppD
     // TODO
     console.error(err);
   }
-}
+};
 
 export const dislikeDishThunk = (dishId: number): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
@@ -71,7 +71,7 @@ export const dislikeDishThunk = (dishId: number): AppThunk => async (dispatch: A
     // TODO
     console.error(err);
   }
-}
+};
 
 export const [getCategoriesThunk, getCategoriesStatusSelector] = createApiRequestThunk<ICategory[]>({
   actions: {
@@ -87,10 +87,10 @@ export const addCategoryThunk = (
 ): AppThunk => async (dispatch: AppDispatch) => {
   try {
     // TODO Upload image
-    
+
     const category = await CategoriesApi.add(categoryInfo, image);
     dispatch(addCategory(category));
-  } catch(err) {
+  } catch (err) {
     // TODO
     console.error(err);
   }
@@ -112,7 +112,7 @@ export const updateCategoryThunk = (
     const newCategory = await CategoriesApi.update(category, image);
     dispatch(updateCategory(newCategory));
     return true;
-  } catch(err) {
+  } catch (err) {
     // TODO
     console.error(err);
     return false;

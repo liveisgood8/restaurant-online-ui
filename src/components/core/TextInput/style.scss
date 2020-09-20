@@ -1,0 +1,21 @@
+@import 'variables.scss';
+
+.components__input-holder {
+  @include ro-basic-shadow-transition;
+
+  display: flex;
+  background-color: white;
+  border-radius: 60px;
+
+  input {
+    border-radius: 60px;
+    border: none;
+    outline: none;
+    padding: 5px 15px;
+    width: 100%;
+  }
+
+  &:focus-within {
+    @include ro-basic-shadow;
+  }
+}

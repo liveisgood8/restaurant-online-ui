@@ -1,0 +1,19 @@
+$ro-colors-background: #F5F5F5;
+$ro-colors-primary: #1E88E5;
+$ro-colors-secondary: #6AB7FF;
+$ro-colors-toggled: #275CC2;
+$ro-colors-base-element-background: #FFFFFF;
+$ro-colors-warning: #FFA000;
+$ro-colors-error: #E64A19;
+
+$ro-colors-gray-light: #EFEFEF;
+$ro-colors-gray-medium: #BDBDBD;
+$ro-colors-gray-dark: #8D8D8D;
+
+@mixin ro-basic-shadow-transition {
+  transition: box-shadow ease-out 300ms;
+}
+
+@mixin ro-basic-shadow {
+  box-shadow: 0px 0px 35px rgba(95, 95, 95, 0.29);
+}

@@ -1,0 +1,38 @@
+@import 'variables.scss';
+
+
+.ro-bg-primary {
+  background-color: $ro-colors-primary;
+}
+
+.ro-bg-toggled {
+  background-color: $ro-colors-toggled;
+}
+
+.ro-bg-base-element {
+  background-color: $ro-colors-base-element-background;
+}
+
+.ro-text-warning {
+  color: $ro-colors-warning;
+}
+
+.ro-border-warning {
+  border: 1px solid $ro-colors-warning;
+}
+
+.ro-vector-fill-warning {
+  fill: $ro-colors-warning;
+}
+
+.ro-text-error {
+  color: $ro-colors-error;
+}
+
+.ro-border-error {
+  border: 1px solid $ro-colors-error;
+}
+
+.ro-vector-fill-error {
+  fill: $ro-colors-error;
+}

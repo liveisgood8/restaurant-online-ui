@@ -1,5 +1,4 @@
 import './styles.scss';
-import logo from './logo.svg';
 
 import React from 'react';
 import { Button, Navbar } from 'react-bootstrap';
@@ -14,17 +13,17 @@ interface INavigationBarProps {
   userInfo?: IUserMinimalInfo | null;
 }
 
-export const NavigationBar: React.SFC<INavigationBarProps> = ({ cart, userInfo }) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo }) => {
   return (
-    <Navbar bg="primary" variant="dark">
-      <Link to={RoutePath.HOME} className="deco-none">
-        <img id="logo" src={logo} alt="logo" />
+    <Navbar className="flex-column flex-md-row">
+      <Link to={RoutePath.HOME} className="text-dark text-decoration-none mb-2 mb-md-0">
+        <span className="ro-font-medium-middle">Ресторан</span>
       </Link>
-      <div className="ml-auto text-white">
+      <div className="ml-md-auto d-flex">
         {userInfo ? (
           <UserInfo
-            className="d-inline"
-            userInfo={userInfo} 
+            userInfo={userInfo}
+            className="mr-4"
           />
         ) : (
           <Link to={RoutePath.LOGIN} className="deco-none">
@@ -34,7 +33,6 @@ export const NavigationBar: React.SFC<INavigationBarProps> = ({ cart, userInfo }
           </Link>
         )}
         <CartIndicator
-          className="ml-2"
           {...cart}
         />
       </div>

@@ -14,12 +14,12 @@ const App: React.FC = () => {
       dispatch(setUserInfo(authInfo.userInfo));
     }
   }, [dispatch]);
-  
+
   return (
     <React.Fragment>
       <Routes />
     </React.Fragment>
   );
-}
+};
 
 export default App;

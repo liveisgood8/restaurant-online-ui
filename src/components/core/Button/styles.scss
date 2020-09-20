@@ -1,0 +1,12 @@
+@import 'variables.scss';
+
+.components__button {
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 30px;
+
+  &:hover {
+    background-color: $ro-colors-toggled;
+  }
+}

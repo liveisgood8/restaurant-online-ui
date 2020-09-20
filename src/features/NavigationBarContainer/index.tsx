@@ -3,7 +3,7 @@ import { NavigationBar } from '../../components/NavigationBar';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 
-export const NavigationBarContainer: React.SFC = () => {
+export const NavigationBarContainer: React.FC = () => {
   const cartDishesNumber = useSelector((state: RootState) => Object.keys(state.cart.dishes).length);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
@@ -14,5 +14,5 @@ export const NavigationBarContainer: React.SFC = () => {
         cartDishesNumber,
       }}
     />
-  )
+  );
 };

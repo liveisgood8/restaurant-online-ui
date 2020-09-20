@@ -1,0 +1,13 @@
+@import 'variables.scss';
+
+.ro-basic-shadow {
+  @include ro-basic-shadow();
+}
+
+.ro-basic-shadow-hover {
+  @include ro-basic-shadow-transition();
+
+  &:hover {
+    @include ro-basic-shadow();
+  }
+}

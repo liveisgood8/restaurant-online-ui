@@ -4,7 +4,7 @@ import {
   getDishesThunk,
   getCategoriesThunk,
   getCategoriesStatusSelector,
-  clearDishes, likeDishThunk, dislikeDishThunk} from './actions';
+  clearDishes, likeDishThunk, dislikeDishThunk } from './actions';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
@@ -17,6 +17,7 @@ export const MenuContainer: React.FC = () => {
   const { search } = useLocation();
   const categoryId = getCategoryIdFromUrlSearch(search);
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.authInfo.isAuthenticated);
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
   const isCategoriesLoading = useSelector(getCategoriesStatusSelector);
@@ -37,7 +38,7 @@ export const MenuContainer: React.FC = () => {
     } else {
       dispatch(clearDishes());
     }
-  }, [categoryId, dispatch])
+  }, [categoryId, dispatch]);
 
   const onPutDishInCart = (dish: IDish) => {
     dispatch(addPersistentDishInCart(dish));
@@ -50,7 +51,7 @@ export const MenuContainer: React.FC = () => {
   const onDishDislike = (dish: IDish) => {
     dispatch(dislikeDishThunk(dish.id));
   };
-  
+
   return (
     <React.Fragment>
       {isCategoriesLoading ? (
@@ -60,11 +61,12 @@ export const MenuContainer: React.FC = () => {
           dishes={dishes}
           categories={categories}
           selectedCategoryId={categoryId}
+          canLikeDishes={isAuthenticated}
           onPutDishInCart={onPutDishInCart}
           onDishLike={onDishLike}
           onDishDislike={onDishDislike}
         />
       )}
     </React.Fragment>
-  )
+  );
 };

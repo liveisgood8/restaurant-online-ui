@@ -5,7 +5,6 @@ import {
   saveCartInLocalStorage,
   cleanCartInLocalStorage,
 } from './helpers';
-import { toast } from 'react-toastify';
 import { IDish } from '../../api/dishes';
 
 export const addDishInCart = createAction<IDish>('@@cart/addDish');
@@ -36,10 +35,31 @@ export const addPersistentDishInCart = (dish: IDish): AppThunk => (dispatch: App
     saveCartInLocalStorage(currentCart);
   }
   dispatch(addDishInCart(dish));
-  toast.success(`${dish.name} добавлено в корзину!`, {
-    autoClose: 1500,
-    position: 'top-left',
-  });
+  // TODO Вынести уведомление в другое место
+  // toast.success(`${dish.name} добавлено в корзину!`, {
+  //   autoClose: 1500,
+  //   position: 'top-left',
+  // });
+};
+
+export const removePersistentDishInCart = (dish: IDish): AppThunk => (dispatch: AppDispatch): void => {
+  const currentCart = getCartFromLocalStorage();
+  if (!currentCart) {
+    return;
+  }
+
+  const currentDish = currentCart.dishes[dish.id];
+  if (!currentDish) {
+    return;
+  } else {
+    if (currentDish.count === 1) {
+      delete currentCart.dishes[dish.id];
+    } else {
+      currentDish.count--;
+    }
+  }
+  saveCartInLocalStorage(currentCart);
+  dispatch(removeDishFromCart(dish));
 };
 
 export const cleanPersistentCart = (): AppThunk => (dispatch: AppDispatch): void => {

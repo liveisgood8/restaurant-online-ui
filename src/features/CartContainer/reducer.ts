@@ -9,7 +9,7 @@ const initialCartDishesState = currentCart ? currentCart.dishes : {};
 const cartDishesReducer = createReducer<ICartDishes>(initialCartDishesState, (builder) => {
   builder
     .addCase(addDishInCart, (state, { payload }) => {
-      const dishInCart = state[payload.id]; 
+      const dishInCart = state[payload.id];
       if (!dishInCart) {
         state[payload.id] = {
           dish: payload,
@@ -21,7 +21,7 @@ const cartDishesReducer = createReducer<ICartDishes>(initialCartDishesState, (bu
       return state;
     })
     .addCase(removeDishFromCart, (state, { payload }) => {
-      const dishInCart = state[payload.id]; 
+      const dishInCart = state[payload.id];
       if (dishInCart) {
         if (dishInCart.count === 1) {
           delete state[payload.id];

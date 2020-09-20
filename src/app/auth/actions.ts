@@ -22,14 +22,14 @@ export const login = (authRequestData: IAuthRequestBody): AppThunk => async (dis
   dispatch(setAccessToken(data.accessToken));
   dispatch(setUserInfo(data.userInfo));
   dispatch(push(RoutePath.HOME));
-}
+};
 
 export const logout = (): AppThunk => (dispatch: AppDispatch): void => {
   setAuthInfo(null);
   dispatch(setAccessToken(null));
   dispatch(setUserInfo(null));
   dispatch(push(RoutePath.HOME));
-}
+};
 
 export const addUserBonusesThunk = (additionalBonuses: number): AppThunk => (dispatch: AppDispatch): void => {
   const authInfo = getAuthInfo();
@@ -45,4 +45,4 @@ export const addUserBonusesThunk = (additionalBonuses: number): AppThunk => (dis
     },
   });
   dispatch(addUserBonuses(additionalBonuses));
-}
+};

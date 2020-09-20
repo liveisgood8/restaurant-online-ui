@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { IDish } from '../../api/dishes';
 import { DishLikes } from './DishLikes';
 
 interface IMenuDishProps {
   dish: IDish;
+  canLike?: boolean;
   onCart?: (dish: IDish) => void;
   onLike?: (dish: IDish) => void;
   onDislike?: (dish: IDish) => void;
@@ -12,6 +13,7 @@ interface IMenuDishProps {
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
   const { dish } = props;
+  console.log(props.canLike);
   return (
     <div className="border rounded p-3 text-center">
       <h4>{dish.name}</h4>
@@ -27,6 +29,7 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
       </div>
       <DishLikes
         likes={dish.likes}
+        disabled={!props.canLike}
         onLike={() => props.onLike?.(dish)}
         onDislike={() => props.onDislike?.(dish)}
       />

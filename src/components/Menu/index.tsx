@@ -9,6 +9,7 @@ interface IMenuProps {
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number;
+  canLikeDishes?: boolean;
   onPutDishInCart: (dish: IDish) => void;
   onDishLike: (dish: IDish) => void;
   onDishDislike: (dish: IDish) => void;
@@ -33,6 +34,7 @@ export const Menu: React.FC<IMenuProps> = (props) => {
             <Col sm={12} md={4} lg={3} key={i}>
               <MenuDish
                 dish={e}
+                canLike={props.canLikeDishes}
                 onCart={props.onPutDishInCart}
                 onLike={props.onDishLike}
                 onDislike={props.onDishDislike}

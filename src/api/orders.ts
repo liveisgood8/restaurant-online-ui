@@ -14,7 +14,7 @@ export const OrdersApi = {
         createdAt: new Date(data.order.createdAt),
       },
     };
-  }
+  },
 };
 
 interface IOrderInfo {
@@ -30,4 +30,9 @@ export interface IOrder {
 export interface IOrderWithBonuses {
   order: IOrder;
   bonuses: number;
+}
+
+export enum PaymentMethod {
+  OFFLINE = 0,
+  ONLINE = 1,
 }

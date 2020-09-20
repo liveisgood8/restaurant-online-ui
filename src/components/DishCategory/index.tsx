@@ -1,8 +1,8 @@
-import './styles.css';
+import './styles.scss';
 
 import React from 'react';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import cn from 'classnames';
 import { Location } from 'history';
 import { ICategory } from '../../api/categories';
 
@@ -11,35 +11,21 @@ interface IDishCategoryProps {
   isSelected?: boolean;
 }
 
-export const DishCategory: React.SFC<IDishCategoryProps> = ({ category, isSelected }) => {
-  const DishComponent = (
-    <div
-      id="dish-category"
-      className={classNames('border', 'rounded', 'embed-responsive', 'embed-responsive-1by1', { 'selected': isSelected })}
-    >
-      <div className="embed-responsive-item text-center">
-        <p>{category.name}</p>
-      </div>
-    </div>
-  );
-
+export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelected }) => {
   return (
-    <React.Fragment>
-      {category.id > 0 ? (
-        <Link
-          className="deco-none"
-          to={(location: Location) => ({
-            ...location,
-            search: `?categoryId=${category.id}`,
-          })}
-        >
-          {DishComponent}
-        </Link>
-      ) : (
-        <React.Fragment>
-          {DishComponent}
-        </React.Fragment>
-      )}
-    </React.Fragment>
-  )
+    <Link
+      className="text-decoration-none"
+      to={(location: Location) => ({
+        ...location,
+        search: `?categoryId=${category.id}`,
+      })}
+    >
+      <div className={cn('component__category', { 'component__category_selected': isSelected })}>
+        <div className="category__image-container">
+          <img src={category.imageUrl} className="w-100" alt={category.name} />
+        </div>
+        <p className="ro-font-regular-small mt-3 text-center">{category.name}</p>
+      </div>
+    </Link>
+  );
 };

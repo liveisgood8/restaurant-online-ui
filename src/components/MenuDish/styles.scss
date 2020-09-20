@@ -1,0 +1,13 @@
+@import '../../variables.scss';
+
+.component__dish {
+  width: 270px;
+  height: 310px;
+  background-color: $ro-colors-base-element-background;
+  border-radius: 25px;
+
+  img {
+    width: 180px;
+    height: 180px;
+  }
+}

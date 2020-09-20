@@ -1,12 +1,13 @@
 import './styles.scss';
 
 import React from 'react';
-import { Button, Navbar } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import { ICartIndicatorProps, CartIndicator } from './CartIndicator';
 import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
 import { IUserMinimalInfo } from '../../api/auth';
 import { UserInfo } from './UserInfo';
+import { Bubble } from './Bubble';
 
 interface INavigationBarProps {
   cart: ICartIndicatorProps;
@@ -26,10 +27,10 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo })
             className="mr-4"
           />
         ) : (
-          <Link to={RoutePath.LOGIN} className="deco-none">
-            <Button className="navbar__outline-element" variant="outline-light">
+          <Link to={RoutePath.LOGIN} className="text-decoration-none text-dark">
+            <Bubble className="mr-4">
               Войти
-            </Button>
+            </Bubble>
           </Link>
         )}
         <CartIndicator

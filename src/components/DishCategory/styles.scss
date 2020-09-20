@@ -1,0 +1,30 @@
+@import '../../variables.scss';
+
+.component__category {
+  width: 125px;
+  height: 165px;
+  border-radius: 20px;
+  background-color: $ro-colors-base-element-background;
+  padding: 7px 0;
+  color: $ro-colors-gray-medium;
+  transition: $ro-effects-base-shadow-transition, background-color linear 300ms;
+
+  .category__image-container {
+    background-color: $ro-colors-base-element-background;
+    border: 1px solid $ro-colors-gray-medium;
+    border-radius: 20px;
+    width: 110px;
+    height: 110px;
+    margin: 0 7px;
+    padding: 20px;
+  }
+
+  &:hover {
+    @include ro-basic-shadow();
+  }
+}
+
+.component__category_selected {
+  background-color: $ro-colors-primary;
+  color: white;
+}

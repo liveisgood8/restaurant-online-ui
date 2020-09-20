@@ -1,7 +1,9 @@
+import './styles.scss';
+
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { IDish } from '../../api/dishes';
 import { DishLikes } from './DishLikes';
+import { DishAttributeLabel } from './DishAttributeLabel';
 
 interface IMenuDishProps {
   dish: IDish;
@@ -13,27 +15,23 @@ interface IMenuDishProps {
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
   const { dish } = props;
-  console.log(props.canLike);
   return (
-    <div className="border rounded p-3 text-center">
-      <h4>{dish.name}</h4>
-      <div>
-        <img src={dish.imageUrl} alt={dish.name} className="w-75" />
-      </div>
-      <div>
-        <span>Б: {dish.protein}, </span>
-        <span>Ж: {dish.fat}, </span>
-        <span>У: {dish.carbohydrates}</span>
-        <p className="my-0">Вес: {dish.weight}</p>
-        <p className="my-0">Цена: {dish.price}</p>
-      </div>
+    <div className="component__dish d-flex flex-column ro-basic-shadow-hover p-2">
       <DishLikes
+        className="ml-auto mr-2"
         likes={dish.likes}
         disabled={!props.canLike}
-        onLike={() => props.onLike?.(dish)}
-        onDislike={() => props.onDislike?.(dish)}
+        onLike={(): void => props.onLike?.(dish)}
+        onDislike={(): void => props.onDislike?.(dish)}
       />
-      <Button onClick={() => props.onCart?.(dish)} disabled={!props.onCart}>В корзину</Button>
+      <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
+      <div className="mx-2">
+        <div className="d-flex align-items-center">
+          <span className="ro-font-thin-small">{dish.name}</span>
+          <DishAttributeLabel className="ml-2" label={`${dish.weight} г`} />
+        </div>
+        <span className="ro-font-regular-small">{dish.price}₽</span>
+      </div>
     </div>
   );
 };

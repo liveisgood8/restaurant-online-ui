@@ -10,8 +10,12 @@ $ro-colors-gray-light: #EFEFEF;
 $ro-colors-gray-medium: #BDBDBD;
 $ro-colors-gray-dark: #8D8D8D;
 
+$ro-colors-dish-card-label: transparentize(#C3C3C3, 0.7);
+
+$ro-effects-base-shadow-transition: box-shadow ease-out 300ms;
+
 @mixin ro-basic-shadow-transition {
-  transition: box-shadow ease-out 300ms;
+  transition: $ro-effects-base-shadow-transition;
 }
 
 @mixin ro-basic-shadow {

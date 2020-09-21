@@ -1,0 +1,7 @@
+@import '../../variables.scss';
+
+.component__counter {
+  border: 1px solid $ro-colors-gray-medium;
+  border-radius: 30px;
+  min-height: 30px;
+}

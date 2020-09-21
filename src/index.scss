@@ -23,6 +23,11 @@ html, body, #root {
   background-color: $ro-colors-background;
 }
 
+// Override bootstrap modal dialog borders
+.modal-content {
+  border: none !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -40,3 +45,4 @@ a.deco-none {
 .ro-text-small {
   font-size: 0.8rem;
 }
+

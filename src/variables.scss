@@ -21,3 +21,7 @@ $ro-effects-base-shadow-transition: box-shadow ease-out 300ms;
 @mixin ro-basic-shadow {
   box-shadow: 0px 0px 35px rgba(95, 95, 95, 0.29);
 }
+
+@mixin ro-small-shadow {
+  box-shadow: 0px 0px 15px rgba(95, 95, 95, 0.29);
+}

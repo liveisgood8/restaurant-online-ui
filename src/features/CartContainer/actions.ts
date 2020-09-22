@@ -11,7 +11,7 @@ export const addDishInCart = createAction<IDish>('@@cart/addDish');
 export const removeDishFromCart = createAction<IDish>('@@cart/removeDish');
 export const cleanCart = createAction('@@cart/clean');
 
-export const addPersistentDishInCart = (dish: IDish): AppThunk => (dispatch: AppDispatch): void => {
+export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk => (dispatch: AppDispatch): void => {
   const currentCart = getCartFromLocalStorage();
   if (!currentCart) {
     saveCartInLocalStorage({
@@ -25,7 +25,7 @@ export const addPersistentDishInCart = (dish: IDish): AppThunk => (dispatch: App
   } else {
     const currentDish = currentCart.dishes[dish.id];
     if (currentDish) {
-      currentDish.count++;
+      currentDish.count += count;
     } else {
       currentCart.dishes[dish.id] = {
         dish,

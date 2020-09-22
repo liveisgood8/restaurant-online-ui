@@ -14,13 +14,16 @@ html, body {
 }
 
 html, body, #root {
-  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  background-color: $ro-colors-background !important;
 }
 
 #root {
   display: flex;
   flex-direction: column;
-  background-color: $ro-colors-background;
 }
 
 // Override bootstrap modal dialog borders

@@ -9,7 +9,7 @@ import { DishCardModal } from './DishCardModal';
 interface IMenuDishProps {
   dish: IDish;
   canLike?: boolean;
-  onCart?: (dish: IDish) => void;
+  onCart?: (dish: IDish, count: number) => void;
   onLike?: (dish: IDish) => void;
   onDislike?: (dish: IDish) => void;
 }
@@ -27,10 +27,13 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
         canLike={props.canLike}
         onLike={(): void => props.onLike?.(dish)}
         onDislike={(): void => props.onDislike?.(dish)}
+        onCart={(count: number) => {
+          setDishCardModalVisible(false);
+          props.onCart?.(dish, count);
+        }}
       />
       <div
-        className="component__dish d-flex flex-column ro-basic-shadow-hover p-2"
-        onClick={(): void => setDishCardModalVisible(true)}
+        className="component__dish ro-basic-shadow-hover p-2"
       >
         <DishLikes
           className="ml-auto mr-2"
@@ -39,13 +42,15 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
           onLike={(): void => props.onLike?.(dish)}
           onDislike={(): void => props.onDislike?.(dish)}
         />
-        <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
-        <div className="mx-2">
-          <div className="d-flex align-items-center">
-            <span className="ro-font-light-small">{dish.name}</span>
-            <DishAttributeLabel className="ml-2" label={`${dish.weight} г`} />
+        <div className="d-flex flex-column cursor-pointer" onClick={(): void => setDishCardModalVisible(true)}>
+          <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
+          <div className="mx-2">
+            <div className="d-flex align-items-center">
+              <span className="ro-font-light-small">{dish.name}</span>
+              <DishAttributeLabel className="ml-2" label={`${dish.weight} г`} />
+            </div>
+            <span className="ro-font-regular-small">{dish.price}₽</span>
           </div>
-          <span className="ro-font-regular-small">{dish.price}₽</span>
         </div>
       </div>
     </Fragment>

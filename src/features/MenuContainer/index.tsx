@@ -40,8 +40,8 @@ export const MenuContainer: React.FC = () => {
     }
   }, [categoryId, dispatch]);
 
-  const onPutDishInCart = (dish: IDish) => {
-    dispatch(addPersistentDishInCart(dish));
+  const onPutDishInCart = (dish: IDish, count: number) => {
+    dispatch(addPersistentDishInCart(dish, count));
   };
 
   const onDishLike = (dish: IDish) => {

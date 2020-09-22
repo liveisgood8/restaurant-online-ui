@@ -5,8 +5,14 @@
   color: white;
   padding: 10px 15px;
   border-radius: 30px;
+  outline: none;
+  transition: background-color ease-in 200ms;
 
   &:hover {
     background-color: $ro-colors-toggled;
+  }
+
+  &:focus {
+    outline: none;
   }
 }

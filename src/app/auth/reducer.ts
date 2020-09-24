@@ -1,6 +1,6 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import { IUserMinimalInfo } from '../../api/auth';
-import { addUserBonuses, setAccessToken, setUserInfo } from './actions';
+import { addUserBonuses, setAccessToken, setUserInfo, updateUserInfo } from './actions';
 
 interface IAuthInfoState {
   accessToken: string | null;
@@ -21,6 +21,15 @@ const authInfoReducer = createReducer<IAuthInfoState>({
 const userInfoReducer = createReducer<IUserMinimalInfo | null>(null, (builder) => {
   builder
     .addCase(setUserInfo, (state, action) => action.payload)
+    .addCase(updateUserInfo, (state, action) => {
+      if (!state) {
+        return state;
+      }
+      return {
+        ...state,
+        ...action.payload,
+      };
+    })
     .addCase(addUserBonuses, (state, action) => {
       if (!state) {
         return state;
@@ -29,7 +38,7 @@ const userInfoReducer = createReducer<IUserMinimalInfo | null>(null, (builder) =
         ...state,
         bonuses: state.bonuses + action.payload,
       };
-    })
+    });
 });
 
 export const authReducer = combineReducers({

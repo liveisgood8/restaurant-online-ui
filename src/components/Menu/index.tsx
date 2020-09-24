@@ -22,7 +22,7 @@ export const Menu: React.FC<IMenuProps> = (props) => {
   return (
     <React.Fragment>
       <Container fluid>
-        <div className="d-flex p-3 component__categories-container">
+        <div className="d-flex p-2 component__categories-container">
           {props.categories.map((e, i) => (
             <div key={i} className={cn({ 'ml-3': i !== 0 })}>
               <DishCategory

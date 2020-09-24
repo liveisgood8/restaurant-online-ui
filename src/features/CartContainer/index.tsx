@@ -16,7 +16,7 @@ export const CartContainer: React.FC = () => {
   const [orderWithBonuses, setOrderWithBonuses] = useState<IOrderWithBonuses>();
 
   const onAddInCart = (dish: IDish): void => {
-    dispatch(addPersistentDishInCart(dish));
+    dispatch(addPersistentDishInCart(dish, 1));
   };
 
   const onRemoveFromCart = (dish: IDish): void => {

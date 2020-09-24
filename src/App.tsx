@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import { setAccessToken, setUserInfo } from './app/auth/actions';
 import { getAuthInfo } from './app/auth/utils';
 import { Routes } from './routes';
@@ -18,6 +19,9 @@ const App: React.FC = () => {
   return (
     <React.Fragment>
       <Routes />
+      <ToastContainer
+        autoClose={3000}
+      />
     </React.Fragment>
   );
 };

@@ -1,45 +1,54 @@
 // Thin fonts
-.ro-font-thin-very-small {
-  font-weight: 100;
+@mixin small-font {
   font-size: 0.8rem;
   line-height: 0.9rem;
+}
+
+@mixin big-font {
+  font-size: 1.1rem;
+  line-height: 1.2rem;
 }
 
 .ro-font-thin-small {
-  font-weight: 100;
-  font-size: 1.1rem;
-  line-height: 1.2rem;
+  font-weight: $ro-font-thin-weight;
+  @include small-font();
+}
+
+.ro-font-thin-base {
+  font-weight: $ro-font-thin-weight;
 }
 
 // Light fonts
-.ro-font-light-very-small {
-  font-weight: 300;
-  font-size: 0.8rem;
-  line-height: 0.9rem;
-}
-
 .ro-font-light-small {
-  font-weight: 300;
-  font-size: 1.1rem;
-  line-height: 1.2rem;
+  font-weight: $ro-font-light-weight;
+  @include small-font();
 }
 
-.ro-font-light-middle {
-  font-weight: 300;
-  font-size: 1.8rem;
-  line-height: 1.9rem;
+.ro-font-light-base {
+  font-weight: $ro-font-light-weight;
+}
+
+.ro-font-light-big {
+  font-weight: $ro-font-light-weight;
+  @include big-font();
 }
 
 // Regular fonts
 .ro-font-regular-small {
-  font-weight: 400;
-  font-size: 1.1rem;
-  line-height: 1.2rem;
+  font-weight: $ro-font-regular-weight;
+  @include small-font();
+}
+
+.ro-font-regular-base {
+  font-weight: $ro-font-regular-weight;
 }
 
 // Medium fonts
+.ro-font-medium-base {
+  font-weight: $ro-font-medium-weight;
+}
+
 .ro-font-medium-middle {
-  font-weight: 500;
-  font-size: 1.8rem;
-  line-height: 1.9rem;
+  font-weight: $ro-font-medium-weight;
+  @include big-font();
 }

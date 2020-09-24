@@ -4,11 +4,18 @@ $ro-colors-secondary: #6AB7FF;
 $ro-colors-toggled: #275CC2;
 $ro-colors-base-element-background: #FFFFFF;
 $ro-colors-warning: #FFA000;
-$ro-colors-error: #E64A19;
+$ro-colors-error-normal: #E64A19;
+$ro-colors-error-toggled: #D33300;
+$ro-colors-error-secondary: #E98C6F;
 
 $ro-colors-gray-light: #EFEFEF;
 $ro-colors-gray-medium: #BDBDBD;
 $ro-colors-gray-dark: #8D8D8D;
+
+$ro-font-thin-weight: 100;
+$ro-font-light-weight: 300;
+$ro-font-regular-weight: 400;
+$ro-font-medium-weight: 500;
 
 $ro-colors-dish-card-label: transparentize(#C3C3C3, 0.7);
 

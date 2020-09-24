@@ -1,45 +1,55 @@
 import React, { useState } from 'react';
 import { IAuthRequestBody } from '../../api/payloads/auth';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { TextInput } from '../../components/core/TextInput';
+import { CenteredContainer } from '../../components/core/CenteredContainer';
+import { Button } from '../../components/core/Button';
 
 interface ILoginForm {
   onSubmit: (data: IAuthRequestBody) => void;
 }
 
 export const LoginForm: React.FC<ILoginForm> = ({ onSubmit: onSubmitProp }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+  const [login, setLogin] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    if (!login || !password) {
+      return;
+    }
+
     onSubmitProp({
-      email,
+      login,
       password,
     });
   };
-  
+
   return (
-    <Form onSubmit={onSubmit}>
-      <Form.Group>
-        <Form.Label>Почтовый адрес</Form.Label>
-        <Form.Control 
+    <CenteredContainer centerVertically>
+      <Form className="d-flex flex-column" onSubmit={onSubmit}>
+        <TextInput
+          className="mb-3"
           required
-          type="email"
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
+          value={login}
+          placeholder="Адрес эл. почты или телефон"
+          onChange={setLogin}
         />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Пароль</Form.Label>
-        <Form.Control 
+        <TextInput
+          className="mb-3"
           required
           type="password"
           value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setPassword(e.currentTarget.value)}
+          placeholder="Пароль"
+          onChange={setPassword}
         />
-      </Form.Group>
-      <Button type="submit" variant="success">Войти</Button>
-    </Form>
-  )
+        <Button
+          className="align-self-center"
+          type="submit"
+          text="Вход"
+        />
+      </Form>
+    </CenteredContainer>
+  );
 };
 

@@ -13,6 +13,10 @@
   background-color: $ro-colors-base-element-background;
 }
 
+.ro-bg-error {
+  background-color: $ro-colors-error-normal;
+}
+
 .ro-text-warning {
   color: $ro-colors-warning;
 }
@@ -26,13 +30,13 @@
 }
 
 .ro-text-error {
-  color: $ro-colors-error;
+  color: $ro-colors-error-normal;
 }
 
 .ro-border-error {
-  border: 1px solid $ro-colors-error;
+  border: 1px solid $ro-colors-error-normal;
 }
 
 .ro-vector-fill-error {
-  fill: $ro-colors-error;
+  fill: $ro-colors-error-normal;
 }

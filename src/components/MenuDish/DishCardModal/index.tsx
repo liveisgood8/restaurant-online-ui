@@ -63,7 +63,7 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
                 {dish.carbohydrates && <DishAttributeLabel className="ml-1" label={`у. ${dish.carbohydrates}`}/>}
               </div>
               <div className="mt-2">
-                <span className="ro-font-light-very-small">Description</span>
+                <span className="ro-font-light-small">Description</span>
               </div>
             </div>
             <div className="mt-auto">

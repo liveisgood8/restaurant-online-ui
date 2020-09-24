@@ -15,7 +15,7 @@ export const CartIndicator: React.FC<ICartIndicatorProps> = ({ cartDishesNumber 
     <Link to={RoutePath.CART} className="text-dark text-decoration-none">
       <Bubble>
         <CartIcon width="22" height="22" />
-        <span className="ro-font-thin-small ml-2">{cartDishesNumber}</span>
+        <span className="ro-font-light-base ml-2">{cartDishesNumber}</span>
       </Bubble>
     </Link>
   );

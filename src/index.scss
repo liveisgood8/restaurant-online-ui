@@ -9,6 +9,9 @@ html, body {
   //   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   //   sans-serif;
   font-family: 'Roboto', sans-serif !important;
+  font-size: 20px !important;
+  line-height: 32px !important;
+  font-weight: 300 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -49,3 +52,6 @@ a.deco-none {
   font-size: 0.8rem;
 }
 
+.ro-word-wrap-disabled {
+  white-space: nowrap;
+}

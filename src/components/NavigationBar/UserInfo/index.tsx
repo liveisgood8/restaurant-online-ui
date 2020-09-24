@@ -15,8 +15,8 @@ export const UserInfo: React.FC<IUserInfoProps> = ({ className, userInfo }) => {
   return (
     <Link to={RoutePath.PROFILE} className="text-decoration-none text-dark">
       <Bubble className={className}>
-        <span className="ro-font-regular-small">{userInfo.bonuses}₽</span>
-        <span className="ro-font-light-small ml-2">{userInfo.name || 'Аноним'}</span>
+        <span className="ro-font-medium-base">{userInfo.bonuses}₽</span>
+        <span className="ml-2">{userInfo.name || 'Аноним'}</span>
       </Bubble>
     </Link>
   );

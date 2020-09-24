@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Form } from 'react-bootstrap';
+import cn from 'classnames';
 import { IUserMinimalInfo } from '../../api/auth';
+import { Button } from '../core/Button';
+import { TextInput } from '../core/TextInput';
 
 export interface IUserData {
+  phone: string;
   email: string;
   password?: string;
   name?: string;
-  surname?: string;
 }
 
 interface IRegistrationFormProps {
@@ -27,30 +30,32 @@ const validatePassword = (password: string, passwordConfirm: string): boolean =>
 };
 
 // eslint-disable-next-line no-useless-escape
+const phoneRegex = /^((\+7|7|8)+([0-9]){10})$/;
+// eslint-disable-next-line no-useless-escape
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const UserDataForm: React.FC<IRegistrationFormProps> = ({
   className,
   additionalButtons,
   userInfo,
-  submitButtonText, 
-  isEmailEditDisabled,
+  submitButtonText,
   isPasswordRequired,
   onSubmit,
- }) => {
+}) => {
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [name, setName] = useState<string>();
-  const [surname, setSurname] = useState<string>();
+  const [isPhoneInvalid, setPhoneInvalid] = useState(false);
   const [isEmailInvalid, setEmailInvalid] = useState(false);
   const [isPasswordEquals, setPasswordEquals] = useState(true);
 
   useEffect(() => {
     if (userInfo) {
+      setPhone(userInfo.phone);
       setEmail(userInfo.email);
       setName(userInfo.name);
-      setSurname(userInfo.surname);
     }
   }, [userInfo]);
 
@@ -62,11 +67,22 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
       return (Boolean(password) || Boolean(passwordConfirm)) && isPasswordEquals;
     }
     return true;
-  }
+  };
+
+  const onPhoneChange = (newPhone: string) => {
+    if (newPhone) {
+      setPhoneInvalid(!phoneRegex.test(newPhone));
+    } else {
+      setPhoneInvalid(false);
+    }
+    setPhone(newPhone);
+  };
 
   const onEmailChange = (newEmail: string) => {
     if (newEmail) {
       setEmailInvalid(!emailRegex.test(newEmail));
+    } else {
+      setEmailInvalid(false);
     }
     setEmail(newEmail);
   };
@@ -84,77 +100,82 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmit({
+      phone,
       email,
-      password,
+      password: password === '' ? undefined : password,
       name,
-      surname,
     });
   };
 
   return (
-    <Form className={className} onSubmit={onSubmitForm}>
-      <Form.Group>
-        <Form.Label>Почтовый адрес</Form.Label>
-        <Form.Control
-          required
-          disabled={isEmailEditDisabled}
-          type="email"
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onEmailChange(e.currentTarget.value)}
-        />
-      </Form.Group>
-      {isEmailInvalid && (
-        <Form.Group>
-          <span className="text-danger font-smaller font-weight-light">Некорректный адрес</span>
-        </Form.Group>
+    <Form className={cn(className, 'd-flex', 'flex-column')} onSubmit={onSubmitForm}>
+      {userInfo?.phone ? (
+        <Fragment>
+          <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
+            <span>Ваш номер телефона:</span>
+            <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.phone}</span>
+          </div>
+          <div className="align-self-center mb-4 d-flex d-lg-block flex-column align-items-center">
+            <span>Ваш почтовый адрес:</span>
+            <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.email}</span>
+          </div>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <TextInput
+            className="mb-3"
+            required
+            placeholder="Телефон"
+            showWarning={isPhoneInvalid}
+            warningText={isPhoneInvalid ? 'Некорректный номер' : undefined}
+            value={phone}
+            onChange={onPhoneChange}
+          />
+          <TextInput
+            className="mb-3"
+            required
+            placeholder="Адрес эл. почты"
+            // disabled={isEmailEditDisabled}
+            showWarning={isEmailInvalid}
+            warningText={isEmailInvalid ? 'Некорректный адрес' : undefined}
+            type="email"
+            value={email}
+            onChange={onEmailChange}
+          />
+        </Fragment>
       )}
-      <Form.Group>
-        <Form.Label>Пароль</Form.Label>
-        <Form.Control
-          required
-          type="password"
-          value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPasswordChange(e.currentTarget.value)}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Подтверждение пароля</Form.Label>
-        <Form.Control
-          required
-          type="password"
-          value={passwordConfirm}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPasswordConfirmChange(e.currentTarget.value)}
-        />
-      </Form.Group>
-      {!isPasswordEquals && (
-        <Form.Group>
-          <span className="text-danger font-smaller font-weight-light">Пароли не совпадают</span>
-        </Form.Group>
-      )}
-      <Form.Group>
-        <Form.Label>Имя</Form.Label>
-        <Form.Control
-          value={name || ''}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setName(e.currentTarget.value)}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Фамилия</Form.Label>
-        <Form.Control
-          value={surname || ''}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSurname(e.currentTarget.value)}
-        />
-      </Form.Group>
-      <div className="d-flex">
-        <Button
-          type="submit" 
-          variant="success"
-          disabled={!isDataFilled()}
-          >
-          {submitButtonText}
-        </Button>
-        {additionalButtons}
-      </div>
+
+      <TextInput
+        className="mb-3"
+        required={!userInfo}
+        placeholder="Пароль"
+        type="password"
+        value={password}
+        onChange={onPasswordChange}
+      />
+      <TextInput
+        className="mb-3"
+        required={!userInfo}
+        showWarning={!isPasswordEquals}
+        warningText={!isPasswordEquals ? 'Пароли не совпадают' : undefined}
+        placeholder="Подтверждение пароля"
+        type="password"
+        value={passwordConfirm}
+        onChange={onPasswordConfirmChange}
+      />
+      <TextInput
+        placeholder="Имя"
+        className="mb-4"
+        value={name || ''}
+        onChange={setName}
+      />
+      <Button
+        className="align-self-center"
+        disabled={!isDataFilled()}
+        type="submit"
+        text={submitButtonText}
+      />
+      {additionalButtons}
     </Form>
   );
 };

@@ -18,7 +18,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo })
   return (
     <Navbar className="flex-column flex-md-row">
       <Link to={RoutePath.HOME} className="text-dark text-decoration-none mb-2 mb-md-0">
-        <span className="ro-font-medium-middle">Ресторан</span>
+        <span className="ro-font-medium-big">Ресторан</span>
       </Link>
       <div className="ml-md-auto d-flex">
         {userInfo ? (

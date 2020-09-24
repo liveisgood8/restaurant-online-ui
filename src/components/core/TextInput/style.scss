@@ -3,6 +3,8 @@
 .components__input-holder {
   @include ro-basic-shadow-transition;
 
+  min-height: 2rem;
+
   display: flex;
   background-color: white;
   border-radius: 60px;
@@ -13,6 +15,10 @@
     outline: none;
     padding: 5px 15px;
     width: 100%;
+
+    &::placeholder {
+      font-weight: $ro-font-thin-weight;
+    }
   }
 
   &:focus-within {

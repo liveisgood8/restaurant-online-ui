@@ -1,9 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
+import { toast } from 'react-toastify';
 import { AuthApi, IAuthInfo, IUser, IUserMinimalInfo } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { handleError } from '../../errors/handler';
 import { AxiosInstance, getBearerAuthorizationHeader } from '../../helpers/axios-instance';
+import { showInfoNotification } from '../../helpers/notifications';
 import { RoutePath } from '../../routes/paths';
 import { PartialWithoutId } from '../../types/utils';
 import { AppDispatch, AppThunk } from '../store';
@@ -56,6 +58,7 @@ export const updateUserInfoThunk = (
     dispatch(updateUserInfo({
       name: info.name,
     }));
+    showInfoNotification('Данные учетной записи успешно обновлены 👌');
   } catch (err) {
     handleError(err);
   }

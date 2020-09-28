@@ -23,7 +23,7 @@ export const OrderConfirmation: React.FC<IOrderInfoProps> = ({ orderWithBonuses 
       <div className="mt-3">
         <span className="h3 font-weight-bold">Время заказа: </span>
         <span className="h3 font-weight-light text-primary">
-          {order.createdAt.getHours() + ":" + order.createdAt.getMinutes()}
+          {order.createdAt.getHours() + ':' + order.createdAt.getMinutes()}
         </span>
       </div>
 
@@ -38,5 +38,5 @@ export const OrderConfirmation: React.FC<IOrderInfoProps> = ({ orderWithBonuses 
         <Link to={RoutePath.HOME}>Вернуться на главную страницу</Link>
       </div>
     </CenteredContainer>
-  )
+  );
 };

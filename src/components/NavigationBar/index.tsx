@@ -1,7 +1,6 @@
 import './styles.scss';
 
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
 import { ICartIndicatorProps, CartIndicator } from './CartIndicator';
 import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,7 @@ interface INavigationBarProps {
 
 export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo }) => {
   return (
-    <Navbar className="flex-column flex-md-row">
+    <nav className="d-flex flex-column flex-md-row align-items-center my-3">
       <Link to={RoutePath.HOME} className="text-dark text-decoration-none mb-2 mb-md-0">
         <span className="ro-font-medium-big">Ресторан</span>
       </Link>
@@ -37,6 +36,6 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo })
           {...cart}
         />
       </div>
-    </Navbar>
+    </nav>
   );
 };

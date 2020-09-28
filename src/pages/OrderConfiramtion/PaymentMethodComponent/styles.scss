@@ -1,12 +1,6 @@
 @import '../../../variables.scss';
 
-.cart-dish {
+.payment-method {
   background-color: $ro-colors-base-element-background;
-  padding: 10px 20px;
   border-radius: 25px;
-  
-  .cart-dish__image-wrapper {
-    width: 90px;
-    height: 90px;
-  }
 }

@@ -33,6 +33,7 @@ export interface IOrderWithBonuses {
 }
 
 export enum PaymentMethod {
-  OFFLINE = 0,
-  ONLINE = 1,
+  BY_CASH_TO_THE_COURIER = 0,
+  BY_CARD_TO_THE_COURIER = 1,
+  BY_CARD_ONLINE = 2,
 }

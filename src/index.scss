@@ -2,6 +2,7 @@
 @import 'colors.scss'; 
 @import 'effects.scss'; 
 @import 'fonts.scss'; 
+@import 'react-toastify.scss';
 
 html, body {
   margin: 0;
@@ -46,6 +47,10 @@ a.deco-none {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.text-end {
+  text-align: end;
 }
 
 .ro-text-small {

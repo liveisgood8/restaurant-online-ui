@@ -2,7 +2,7 @@ import './style.scss';
 import { ReactComponent as AlertTriangle } from './alert-triangle.svg';
 import { ReactComponent as AlertCircle } from './alert-circle.svg';
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import cn from 'classnames';
 
 interface ITextInputProps {
@@ -16,11 +16,31 @@ interface ITextInputProps {
   placeholder?: string;
   type?: 'password' | 'email';
   onChange?: (value: string) => void;
+  inputFilter?: (value: string) => boolean;
 }
 
 export const TextInput: React.FC<ITextInputProps> = (props) => {
+  const [value, setValue] = useState(props.value || '');
+  const [oldValue, setOldValue] = useState(props.value || '');
+
+  useEffect(() => {
+    setValue(props.value || '');
+    setOldValue(props.value || '');
+  }, [props.value]);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newValue = e.currentTarget.value;
+    if (props.inputFilter) {
+      const isInputValid = props.inputFilter(newValue);
+      if (isInputValid) {
+        setValue(newValue);
+      } else {
+        setOldValue(newValue);
+        return;
+      }
+    } else {
+      setValue(newValue);
+    }
     props.onChange?.(newValue);
   };
 
@@ -34,7 +54,7 @@ export const TextInput: React.FC<ITextInputProps> = (props) => {
         className="ro-font-light-small"
         required={props.required}
         placeholder={props.placeholder}
-        value={props.value}
+        value={value}
         onChange={onChange}
       />
       <div className="d-flex mr-3 align-self-center align-items-center">

@@ -109,7 +109,7 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
 
   return (
     <Form className={cn(className, 'd-flex', 'flex-column')} onSubmit={onSubmitForm}>
-      {userInfo?.phone ? (
+      {userInfo != null ? (
         <Fragment>
           <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
             <span>Ваш номер телефона:</span>
@@ -135,7 +135,6 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
             className="mb-3"
             required
             placeholder="Адрес эл. почты"
-            // disabled={isEmailEditDisabled}
             showWarning={isEmailInvalid}
             warningText={isEmailInvalid ? 'Некорректный адрес' : undefined}
             type="email"

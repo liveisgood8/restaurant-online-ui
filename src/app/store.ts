@@ -1,12 +1,12 @@
 import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { createBrowserHistory } from 'history'
+import { createBrowserHistory } from 'history';
 import { statusReducer } from './status/reducer';
 import { menuReducer } from '../features/MenuContainer/reducer';
 import { cartReducer } from '../features/CartContainer/reducer';
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { authReducer } from './auth/reducer';
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   status: statusReducer,

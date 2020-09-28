@@ -9,21 +9,33 @@ interface IButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit';
   variant?: 'primary' | 'danger'
+  disableShadow?: boolean;
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   onClick?: () => void;
 }
 
 export const Button: React.FC<IButtonProps> = (props) => {
+  const { icon: Icon } = props;
+
   return (
     <button
       disabled={props.disabled}
       type={props.type}
-      className={cn('components__button', 'ro-basic-shadow', 'ro-font-light-base', {
+      className={cn('components__button', 'ro-font-light-base', {
+        'ro-basic-shadow': !props.disableShadow,
         'components__button_primary': !props.variant || props.variant === 'primary',
         'components__button_danger': props.variant === 'danger',
       }, props.className)}
       onClick={props.onClick}
     >
-      {props.text}
+      <div>
+        {props.text}
+        {Icon && (
+          <span className={cn({ 'ml-2': Boolean(props.text) })}>
+            <Icon />
+          </span>
+        )}
+      </div>
     </button>
   );
 };

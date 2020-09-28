@@ -5,7 +5,7 @@ export interface ICartDish {
   count: number;
 }
 
-export type ICartDishes = { [id: string]: ICartDish }; 
+export type ICartDishes = { [id: string]: ICartDish };
 export interface ICart {
   dishes: ICartDishes;
 }

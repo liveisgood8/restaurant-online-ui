@@ -12,8 +12,9 @@ import { LoginPage } from '../pages/Login';
 import { RegistrationPage } from '../pages/RegistrationPage';
 import { ProfileContainer } from '../features/ProfileContainer';
 import { HomePage } from '../pages/Home';
+import { OrderConfirmationPage } from '../pages/OrderConfiramtion';
 
-export const Routes: React.SFC = () => {
+export const Routes: React.FC = () => {
   return (
     <ConnectedRouter history={history}>
       <Switch>
@@ -22,9 +23,11 @@ export const Routes: React.SFC = () => {
         <RouteWithLayout layout={CartLayout} exact path={RoutePath.HOME} component={HomePage} />
         <RouteWithLayout layout={CartLayout} exact path={RoutePath.PROFILE} component={ProfileContainer} />
         <RouteWithLayout layout={CartLayout} exact path={RoutePath.CART} component={CartContainer} />
+        <RouteWithLayout layout={CartLayout} exact path={RoutePath.ORDER_CONFIRMATION}
+          component={OrderConfirmationPage} />
         <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_DISH_MENU}
           component={AdminMenuContainer} />
       </Switch>
     </ConnectedRouter>
-  )
+  );
 };

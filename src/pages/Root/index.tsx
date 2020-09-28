@@ -1,11 +1,9 @@
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
 
-export const RootLayout: React.SFC = ({ children }) => {
+export const RootLayout: React.FC = ({ children }) => {
   return (
     <React.Fragment>
       {children}
-      <ToastContainer />
     </React.Fragment>
   );
 };

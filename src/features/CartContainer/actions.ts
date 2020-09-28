@@ -6,9 +6,11 @@ import {
   cleanCartInLocalStorage,
 } from './helpers';
 import { IDish } from '../../api/dishes';
+import { ICartDish } from './types';
 
-export const addDishInCart = createAction<IDish>('@@cart/addDish');
-export const removeDishFromCart = createAction<IDish>('@@cart/removeDish');
+export const addDishInCart = createAction<ICartDish>('@@cart/addDish');
+export const removeDishFromCart = createAction<ICartDish>('@@cart/removeDish');
+export const deleteDishFromCart = createAction<IDish>('@@cart/deleteDish');
 export const cleanCart = createAction('@@cart/clean');
 
 export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk => (dispatch: AppDispatch): void => {
@@ -18,7 +20,7 @@ export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk =>
       dishes: {
         [dish.id]: {
           dish,
-          count: 1,
+          count,
         },
       },
     });
@@ -29,12 +31,15 @@ export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk =>
     } else {
       currentCart.dishes[dish.id] = {
         dish,
-        count: 1,
+        count,
       };
     }
     saveCartInLocalStorage(currentCart);
   }
-  dispatch(addDishInCart(dish));
+  dispatch(addDishInCart({
+    dish,
+    count,
+  }));
   // TODO Вынести уведомление в другое место
   // toast.success(`${dish.name} добавлено в корзину!`, {
   //   autoClose: 1500,
@@ -42,24 +47,32 @@ export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk =>
   // });
 };
 
-export const removePersistentDishInCart = (dish: IDish): AppThunk => (dispatch: AppDispatch): void => {
+export const removePersistentDishInCart = (dish: IDish, count: number): AppThunk => (dispatch: AppDispatch): void => {
   const currentCart = getCartFromLocalStorage();
-  if (!currentCart) {
-    return;
-  }
-
-  const currentDish = currentCart.dishes[dish.id];
-  if (!currentDish) {
-    return;
-  } else {
-    if (currentDish.count === 1) {
-      delete currentCart.dishes[dish.id];
-    } else {
-      currentDish.count--;
+  if (currentCart) {
+    const currentDish = currentCart.dishes[dish.id];
+    if (currentDish) {
+      if (!count || currentDish.count === count) {
+        delete currentCart.dishes[dish.id];
+      } else {
+        currentDish.count -= count;
+      }
     }
+    saveCartInLocalStorage(currentCart);
   }
-  saveCartInLocalStorage(currentCart);
-  dispatch(removeDishFromCart(dish));
+  dispatch(removeDishFromCart({
+    dish,
+    count,
+  }));
+};
+
+export const deletePersistentDishInCart = (dish: IDish): AppThunk => (dispatch: AppDispatch): void => {
+  const currentCart = getCartFromLocalStorage();
+  if (currentCart) {
+    delete currentCart.dishes[dish.id];
+    saveCartInLocalStorage(currentCart);
+  }
+  dispatch(deleteDishFromCart(dish));
 };
 
 export const cleanPersistentCart = (): AppThunk => (dispatch: AppDispatch): void => {

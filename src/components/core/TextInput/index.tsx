@@ -21,11 +21,9 @@ interface ITextInputProps {
 
 export const TextInput: React.FC<ITextInputProps> = (props) => {
   const [value, setValue] = useState(props.value || '');
-  const [oldValue, setOldValue] = useState(props.value || '');
 
   useEffect(() => {
     setValue(props.value || '');
-    setOldValue(props.value || '');
   }, [props.value]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -35,7 +33,6 @@ export const TextInput: React.FC<ITextInputProps> = (props) => {
       if (isInputValid) {
         setValue(newValue);
       } else {
-        setOldValue(newValue);
         return;
       }
     } else {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUserMinimalInfo } from '../../api/auth';
 import { logout, updateUserInfoThunk } from '../../app/auth/actions';
 import { RootState } from '../../app/store';
 import { Button } from '../../components/core/Button';

@@ -14,13 +14,13 @@ interface IColumnSize {
   span: number;
 }
 
-export const CenteredContainer: React.SFC<React.PropsWithChildren<ICenteredContainerProps>> = ({ 
+export const CenteredContainer: React.SFC<React.PropsWithChildren<ICenteredContainerProps>> = ({
   className,
   centerVertically,
-  mdColumns, 
+  mdColumns,
   lgColumns,
   children,
- }) => {
+}) => {
   const calculateColumnSize = useCallback((columnSize: number): IColumnSize => {
     if (columnSize % 2 !== 0) {
       throw new Error('Column size must be even');
@@ -33,19 +33,19 @@ export const CenteredContainer: React.SFC<React.PropsWithChildren<ICenteredConta
   }, []);
 
   return (
-    <Container className={cn({'d-flex h-100': centerVertically})}>
-      <Row className={cn({'flex-grow-1': centerVertically})}>
-        <Col 
-          sm={12} 
-          md={calculateColumnSize(mdColumns || 8)} 
+    <Container className={cn({ 'd-flex h-100': centerVertically })}>
+      <Row className={cn({ 'flex-grow-1': centerVertically })}>
+        <Col
+          sm={12}
+          md={calculateColumnSize(mdColumns || 8)}
           lg={calculateColumnSize(lgColumns || 8)}
-          className={cn({'d-flex align-items-center': centerVertically})}
+          className={cn({ 'd-flex align-items-center': centerVertically })}
         >
-          <div className={cn({'w-100': centerVertically}, className)}>
+          <div className={cn({ 'w-100': centerVertically }, className)}>
             {children}
           </div>
         </Col>
       </Row>
     </Container>
-  )
+  );
 };

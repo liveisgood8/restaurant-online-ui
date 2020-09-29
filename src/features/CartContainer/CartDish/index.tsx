@@ -15,7 +15,7 @@ interface ICartDishProps {
 
 export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, onIncrease, onDecrease, onRemove }) => {
   return (
-    <div className="cart-dish d-md-flex align-items-center">
+    <div className="cart-dish d-md-flex align-items-center mb-3">
       <div className="d-flex">
         <div className="cart-dish__image-wrapper">
           <img className="w-100 h-100" src={dish.imageUrl} alt={dish.name} />

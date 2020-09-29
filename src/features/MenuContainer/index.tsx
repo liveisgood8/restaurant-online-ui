@@ -12,6 +12,7 @@ import { addPersistentDishInCart } from '../CartContainer/actions';
 import { useLocation } from 'react-router-dom';
 import { IDish } from '../../api/dishes';
 import { getCategoryIdFromUrlSearch } from '../../helpers/utils';
+import { showSuccessNotification } from '../../helpers/notifications';
 
 export const MenuContainer: React.FC = () => {
   const { search } = useLocation();
@@ -42,6 +43,7 @@ export const MenuContainer: React.FC = () => {
 
   const onPutDishInCart = (dish: IDish, count: number) => {
     dispatch(addPersistentDishInCart(dish, count));
+    showSuccessNotification(`${dish.name} добавлена в корзину!`);
   };
 
   const onDishLike = (dish: IDish) => {

@@ -1,3 +1,5 @@
+import emptyCartImage from './EmptyCart.png';
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IDish } from '../../../api/dishes';
@@ -11,7 +13,6 @@ interface ICartProps {
   onIncreaseDishCount: (dish: IDish) => void;
   onDecreaseDishCount: (dish: IDish) => void;
   onRemoveDish: (dish: IDish) => void;
-  onCleanCart: () => void;
 }
 
 export const Cart: React.FC<ICartProps> = ({
@@ -29,8 +30,20 @@ export const Cart: React.FC<ICartProps> = ({
   };
 
   const calculateBonuses = (): number => {
-    return calculateTotalPrice() * 0.05;
+    return Math.round(calculateTotalPrice() * 0.05);
   };
+
+  if (!dishes.length) {
+    return (
+      <div className="d-flex align-items-center flex-column mt-4">
+        <img className="d-block mb-5 w-100" src={emptyCartImage} alt="empty-cart" />
+        <div>
+          <span className="ro-font-light-big">Ваша корзину пустует</span>
+          <span role="img" aria-label="sad">😔</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="d-flex flex-column">

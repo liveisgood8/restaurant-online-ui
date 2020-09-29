@@ -40,11 +40,6 @@ export const addPersistentDishInCart = (dish: IDish, count: number): AppThunk =>
     dish,
     count,
   }));
-  // TODO Вынести уведомление в другое место
-  // toast.success(`${dish.name} добавлено в корзину!`, {
-  //   autoClose: 1500,
-  //   position: 'top-left',
-  // });
 };
 
 export const removePersistentDishInCart = (dish: IDish, count: number): AppThunk => (dispatch: AppDispatch): void => {

@@ -11,3 +11,7 @@
     @include ro-basic-shadow();
   }
 }
+
+.ro-rounded {
+  border-radius: 30px;
+}

@@ -1,12 +1,9 @@
-import { ICartDish } from '../features/CartContainer/types';
 import { IDish } from './dishes';
 import { AxiosInstance } from '../helpers/axios-instance';
 
 export const OrdersApi = {
-  makeOrder: async (dishes: ICartDish[]): Promise<IOrderWithBonuses> => {
-    const { data } = await AxiosInstance.post<IOrderWithBonuses>('/orders', {
-      entries: dishes,
-    });
+  makeOrder: async (makeOrderRequest: IMakeOrderRequest): Promise<IOrderWithBonuses> => {
+    const { data } = await AxiosInstance.post<IOrderWithBonuses>('/orders', makeOrderRequest);
     return {
       ...data,
       order: {
@@ -17,12 +14,26 @@ export const OrdersApi = {
   },
 };
 
+interface IMakeOrderRequest {
+  street: string;
+  homeNumber: number;
+  entranceNumber: number;
+  floorNumber: number;
+  apartmentNumber: number;
+  paymentMethod: PaymentMethod;
+  entries: {
+    dish: IDish;
+    count: number;
+  }[];
+}
+
 interface IOrderInfo {
   dish: IDish;
 }
 
 export interface IOrder {
   id: number;
+  isApproved: boolean;
   createdAt: Date;
   orderInfos: IOrderInfo[];
 }

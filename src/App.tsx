@@ -21,6 +21,7 @@ const App: React.FC = () => {
       <Routes />
       <ToastContainer
         autoClose={3000}
+        position="bottom-center"
       />
     </React.Fragment>
   );

@@ -5,7 +5,7 @@ import { NumberInput } from '../../../components/core/NumberInput';
 import { TextInput } from '../../../components/core/TextInput';
 import { PaymentMethodComponent } from '../PaymentMethodComponent';
 
-interface IOrderData {
+export interface IOrderData {
   paymentMethod: PaymentMethod;
   street: string;
   homeNumber: number;

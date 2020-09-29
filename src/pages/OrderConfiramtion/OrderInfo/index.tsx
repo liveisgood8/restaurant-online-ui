@@ -26,7 +26,7 @@ export const OrderInfo: React.FC<IOrderInfoProps> = ({ orderWithBonuses }) => {
       <div className="ro-bg-base-element ro-rounded p-4 mb-4">
         <div>
           <span className="ro-font-light-big">Ваш заказ </span>
-          <span className="ro-font-medium-big ro-text-primary">{order.id}</span>
+          <span className="ro-font-medium-big ro-text-primary">#{order.id}</span>
           <span className="ro-font-light-big"> {order.isApproved ? 'уже в пути' : 'ждет подтверждения'}!</span>
         </div>
         <div className="mt-4">

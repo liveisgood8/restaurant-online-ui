@@ -10,8 +10,8 @@ interface IDishAttributeLabelProps {
 
 export const DishAttributeLabel: React.FC<IDishAttributeLabelProps> = ({ className, label }) => {
   return (
-    <div className={cn('dish__label', className)}>
-      <span className="ro-font-light-small">{label}</span>
+    <div className={cn('dish__label mb-1', className)}>
+      <span className="ro-font-light-small ro-word-wrap-disabled">{label}</span>
     </div>
   );
 };

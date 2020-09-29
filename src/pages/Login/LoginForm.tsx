@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { Form } from 'react-bootstrap';
 import { TextInput } from '../../components/core/TextInput';
-import { CenteredContainer } from '../../components/core/CenteredContainer';
 import { Button } from '../../components/core/Button';
 
 interface ILoginForm {
@@ -26,30 +25,28 @@ export const LoginForm: React.FC<ILoginForm> = ({ onSubmit: onSubmitProp }) => {
   };
 
   return (
-    <CenteredContainer centerVertically>
-      <Form className="d-flex flex-column" onSubmit={onSubmit}>
-        <TextInput
-          className="mb-3"
-          required
-          value={login}
-          placeholder="Адрес эл. почты или телефон"
-          onChange={setLogin}
-        />
-        <TextInput
-          className="mb-3"
-          required
-          type="password"
-          value={password}
-          placeholder="Пароль"
-          onChange={setPassword}
-        />
-        <Button
-          className="align-self-center"
-          type="submit"
-          text="Вход"
-        />
-      </Form>
-    </CenteredContainer>
+    <Form className="d-flex flex-column" onSubmit={onSubmit}>
+      <TextInput
+        className="mb-3"
+        required
+        value={login}
+        placeholder="Адрес эл. почты или телефон"
+        onChange={setLogin}
+      />
+      <TextInput
+        className="mb-3"
+        required
+        type="password"
+        value={password}
+        placeholder="Пароль"
+        onChange={setPassword}
+      />
+      <Button
+        className="align-self-center"
+        type="submit"
+        text="Вход"
+      />
+    </Form>
   );
 };
 

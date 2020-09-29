@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import cn from 'classnames';
 
 interface ICenteredContainerProps {
@@ -14,7 +14,7 @@ interface IColumnSize {
   span: number;
 }
 
-export const CenteredContainer: React.SFC<React.PropsWithChildren<ICenteredContainerProps>> = ({
+export const CenteredContainer: React.FC<React.PropsWithChildren<ICenteredContainerProps>> = ({
   className,
   centerVertically,
   mdColumns,
@@ -33,12 +33,12 @@ export const CenteredContainer: React.SFC<React.PropsWithChildren<ICenteredConta
   }, []);
 
   return (
-    <Container className={cn({ 'd-flex h-100': centerVertically })}>
-      <Row className={cn({ 'flex-grow-1': centerVertically })}>
+    <Container fluid>
+      <Row className={cn({ 'h-100': centerVertically })}>
         <Col
           sm={12}
-          md={calculateColumnSize(mdColumns || 8)}
-          lg={calculateColumnSize(lgColumns || 8)}
+          md={calculateColumnSize(mdColumns || 6)}
+          lg={calculateColumnSize(lgColumns || 6)}
           className={cn({ 'd-flex align-items-center': centerVertically })}
         >
           <div className={cn({ 'w-100': centerVertically }, className)}>

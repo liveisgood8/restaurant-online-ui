@@ -54,28 +54,30 @@ export const TextInput: React.FC<ITextInputProps> = (props) => {
         value={value}
         onChange={onChange}
       />
-      <div className="d-flex mr-3 align-self-center align-items-center">
-        {props.showWarning && (
-          <Fragment>
-            <AlertTriangle
-              className="ro-vector-fill-warning"
-            />
-            {props.warningText && (
-              <span className="ro-word-wrap-disabled ml-2 ro-text-warning ro-text-small">{props.warningText}</span>
-            )}
-          </Fragment>
-        )}
-        {props.showError && (
-          <Fragment>
-            <AlertCircle
-              className="ro-vector-fill-error"
-            />
-            {props.errorText && (
-              <span className="ro-word-wrap-disabled ml-2 ro-text-error ro-text-small">{props.errorText}</span>
-            )}
-          </Fragment>
-        )}
-      </div>
+      {(props.showError || props.showWarning) && (
+        <div className="d-flex mr-3 align-self-center align-items-center">
+          {props.showWarning && (
+            <Fragment>
+              <AlertTriangle
+                className="ro-vector-fill-warning"
+              />
+              {props.warningText && (
+                <span className="ro-word-wrap-disabled ml-2 ro-text-warning ro-text-small">{props.warningText}</span>
+              )}
+            </Fragment>
+          )}
+          {props.showError && (
+            <Fragment>
+              <AlertCircle
+                className="ro-vector-fill-error"
+              />
+              {props.errorText && (
+                <span className="ro-word-wrap-disabled ml-2 ro-text-error ro-text-small">{props.errorText}</span>
+              )}
+            </Fragment>
+          )}
+        </div>
+      )}
     </div>
   );
 };

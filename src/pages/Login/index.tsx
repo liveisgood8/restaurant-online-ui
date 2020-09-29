@@ -15,7 +15,10 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <CenteredContainer centerVertically>
+    <CenteredContainer centerVertically className="mt-5">
+      <Link className="ro-font-medium-big text-center text-decoration-none text-dark d-block mb-3" to={RoutePath.HOME}>
+        Ресторан
+      </Link>
       <LoginForm
         onSubmit={onLogin}
       />

@@ -38,7 +38,7 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
       onHide={onHide}
       dialogClassName="components__dish-card-modal"
     >
-      <div className="px-4 py-5 p-md-5">
+      <div className="px-4 py-2 py-md-4 p-md-5">
         <div className="d-flex flex-column flex-md-row align-items-center align-items-md-stretch">
           <div className="dish-card-modal__image-wrapper mt-2 d-flex flex-column align-items-center">
             <img src={dish.imageUrl} alt={dish.name} />
@@ -55,15 +55,15 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
               <div>
                 <span className="ro-font-regular-small">{dish.name}</span>
               </div>
-              <div className="d-flex mt-2">
-                <DishAttributeLabel label={`${dish.weight} г`}/>
-                <DishAttributeLabel className="ml-1" label={`100 ккал`}/>
-                {dish.protein && <DishAttributeLabel className="ml-1" label={`б. ${dish.protein}`}/>}
-                {dish.fat && <DishAttributeLabel className="ml-1" label={`ж. ${dish.fat}`}/>}
-                {dish.carbohydrates && <DishAttributeLabel className="ml-1" label={`у. ${dish.carbohydrates}`}/>}
+              <div className="d-flex mt-2 flex-wrap">
+                <DishAttributeLabel className="mr-1" label={`${dish.weight} г`}/>
+                <DishAttributeLabel className="mr-1" label={`100 ккал`}/>
+                {dish.protein && <DishAttributeLabel className="mr-1" label={`б. ${dish.protein}`}/>}
+                {dish.fat && <DishAttributeLabel className="mr-1" label={`ж. ${dish.fat}`}/>}
+                {dish.carbohydrates && <DishAttributeLabel label={`у. ${dish.carbohydrates}`}/>}
               </div>
               <div className="mt-2">
-                <span className="ro-font-light-small">Description</span>
+                <span className="ro-font-light-small">{dish.description}</span>
               </div>
             </div>
             <div className="mt-auto">

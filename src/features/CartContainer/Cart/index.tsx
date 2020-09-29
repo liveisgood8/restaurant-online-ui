@@ -7,6 +7,7 @@ import { Button } from '../../../components/core/Button';
 import { RoutePath } from '../../../routes/paths';
 import { CartDish } from '../CartDish';
 import { ICartDish } from '../types';
+import { CenteredContainer } from '../../../components/core/CenteredContainer';
 
 interface ICartProps {
   dishes: ICartDish[];
@@ -35,13 +36,13 @@ export const Cart: React.FC<ICartProps> = ({
 
   if (!dishes.length) {
     return (
-      <div className="d-flex align-items-center flex-column mt-4">
-        <img className="d-block mb-5 w-100" src={emptyCartImage} alt="empty-cart" />
+      <CenteredContainer mdColumns={10} lgColumns={8} className="d-flex align-items-center flex-column mt-4">
+        <img className="d-block mb-5 w-75" src={emptyCartImage} alt="empty-cart" />
         <div>
           <span className="ro-font-light-big">Ваша корзину пустует</span>
           <span role="img" aria-label="sad">😔</span>
         </div>
-      </div>
+      </CenteredContainer>
     );
   }
 

@@ -5,6 +5,9 @@ import { DishesApi, IDish, INewDish } from '../../api/dishes';
 import { CategoriesApi, ICategory, INewCategory } from '../../api/categories';
 import { DeepPartialWithId } from '../../types/utils';
 import { apiUrl } from '../../config';
+import { handleError } from '../../errors/handler';
+import { EmojiType } from '../../helpers/emoji/emoji-type';
+import { emojify } from '../../helpers/emoji/emoji-messages';
 
 export const setDishes = createAction<IDish[]>('@@menu/setDishes');
 export const addDish = createAction<IDish>('@@menu/addDish');
@@ -44,8 +47,7 @@ export const addDishThunk = (
     const dish = await DishesApi.add(newDish, image);
     dispatch(addDish(dish));
   } catch (err) {
-    // TODO
-    console.error(err);
+    handleError(err, emojify('Упс, не удалось добавить блюдо', EmojiType.SAD));
   }
 };
 
@@ -56,8 +58,7 @@ export const likeDishThunk = (dishId: number): AppThunk => async (dispatch: AppD
       id: dishId,
     }));
   } catch (err) {
-    // TODO
-    console.error(err);
+    handleError(err, emojify('Упс, не удалось поставить лайк блюду', EmojiType.SAD));
   }
 };
 
@@ -68,14 +69,22 @@ export const dislikeDishThunk = (dishId: number): AppThunk => async (dispatch: A
       id: dishId,
     }));
   } catch (err) {
-    // TODO
-    console.error(err);
+    handleError(err, emojify('Упс, не удалось поставить дизлайк блюду', EmojiType.SAD));
   }
 };
 
 export const [getCategoriesThunk, getCategoriesStatusSelector] = createApiRequestThunk<ICategory[]>({
   actions: {
-    success: setCategories.toString(),
+    success: {
+      type: setCategories.toString(),
+      handler: (dispatch: AppDispatch, categories: ICategory[]): void => {
+        dispatch(setCategories(categories.map((e) => ({
+          ...e,
+          imageUrl: e.imageUrl ? apiUrl + e.imageUrl : undefined,
+        }))));
+      },
+      preventDefault: true,
+    },
   },
   endpoint: '/menu/categories',
   method: 'GET',
@@ -86,13 +95,10 @@ export const addCategoryThunk = (
   image?: File,
 ): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    // TODO Upload image
-
     const category = await CategoriesApi.add(categoryInfo, image);
     dispatch(addCategory(category));
   } catch (err) {
-    // TODO
-    console.error(err);
+    handleError(err, emojify('Упс, не удалось добавить категорию блюд', EmojiType.SAD));
   }
 };
 
@@ -113,8 +119,7 @@ export const updateCategoryThunk = (
     dispatch(updateCategory(newCategory));
     return true;
   } catch (err) {
-    // TODO
-    console.error(err);
+    handleError(err, emojify('Упс, не удалось обновить категорию блюд', EmojiType.SAD));
     return false;
   }
 };

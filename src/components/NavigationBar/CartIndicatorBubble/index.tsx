@@ -10,7 +10,7 @@ export interface ICartIndicatorProps {
   cartDishesNumber: number;
 }
 
-export const CartIndicator: React.FC<ICartIndicatorProps> = ({ cartDishesNumber }) => {
+export const CartIndicatorBubble: React.FC<ICartIndicatorProps> = ({ cartDishesNumber }) => {
   return (
     <Link to={RoutePath.CART} className="text-dark text-decoration-none">
       <Bubble>

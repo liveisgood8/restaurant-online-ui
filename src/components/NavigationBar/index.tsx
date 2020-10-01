@@ -1,12 +1,14 @@
 import './styles.scss';
 
 import React from 'react';
-import { ICartIndicatorProps, CartIndicator } from './CartIndicator';
+import { ICartIndicatorProps, CartIndicatorBubble } from './CartIndicatorBubble';
 import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
 import { IUserMinimalInfo } from '../../api/auth';
-import { UserInfo } from './UserInfo';
+import { UserInfoBubble } from './UserInfoBubble';
 import { Bubble } from './Bubble';
+import { isUserAdmin } from '../../app/auth/utils';
+import { AdminPanelBubble } from './AdminPanelBubble';
 
 interface INavigationBarProps {
   cart: ICartIndicatorProps;
@@ -20,8 +22,13 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo })
         <span className="ro-font-medium-big">Ресторан</span>
       </Link>
       <div className="ml-md-auto d-flex">
+        {userInfo && isUserAdmin(userInfo) && (
+          <AdminPanelBubble
+            className="mr-4"
+          />
+        )}
         {userInfo ? (
-          <UserInfo
+          <UserInfoBubble
             userInfo={userInfo}
             className="mr-4"
           />
@@ -32,7 +39,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo })
             </Bubble>
           </Link>
         )}
-        <CartIndicator
+        <CartIndicatorBubble
           {...cart}
         />
       </div>

@@ -13,12 +13,13 @@ import { useLocation } from 'react-router-dom';
 import { IDish } from '../../api/dishes';
 import { getCategoryIdFromUrlSearch } from '../../helpers/utils';
 import { showSuccessNotification } from '../../helpers/notifications';
+import { isAuthSelector } from '../../app/auth/selectors';
 
 export const MenuContainer: React.FC = () => {
   const { search } = useLocation();
   const categoryId = getCategoryIdFromUrlSearch(search);
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.authInfo.isAuthenticated);
+  const isAuthenticated = useSelector(isAuthSelector);
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
   const isCategoriesLoading = useSelector(getCategoriesStatusSelector);

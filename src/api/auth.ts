@@ -28,9 +28,10 @@ export interface IUser {
   password: string;
   name?: string;
   bonuses: number;
+  authorities: string[];
 }
 
-export type IUserMinimalInfo = Pick<IUser, 'id' | 'phone' | 'email' | 'name' | 'bonuses'>;
+export type IUserMinimalInfo = Pick<IUser, 'id' | 'phone' | 'email' | 'name' | 'bonuses' | 'authorities'>;
 
 export interface IAuthInfo {
   accessToken: string;

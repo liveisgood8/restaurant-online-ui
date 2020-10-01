@@ -18,15 +18,12 @@ export const DishesApi = {
   },
 
   add: async (newDish: INewDish, image?: File): Promise<IDish> => {
-    const response = await AxiosInstance.post('/menu/dishes', newDish);
-
-    const addedDish: IDish = response.data;
-
+    const { data } = await AxiosInstance.post<IDish>('/menu/dishes', newDish);
     if (image) {
-      await DishesApi.uploadImage(addedDish.id, image);
+      await DishesApi.uploadImage(data.id, image);
     }
 
-    return response.data;
+    return data;
   },
 
   update: async (dish: DeepPartialWithId<IDish>, image?: File): Promise<DeepPartialWithId<IDish>> => {

@@ -5,4 +5,20 @@
   padding: 6px 10px;
   border-radius: 20px;
   width: fit-content;
+
+  @mixin emotion-hover-effect($hover-color) {
+    transition: color, fill ease-out 300ms;
+    &:hover {
+      color: $hover-color;
+      fill: $hover-color;
+    }
+  }
+
+  .dish__like-wrapper {
+    @include emotion-hover-effect($ro-colors-success);
+  }
+
+  .dish__dislike-wrapper {
+    @include emotion-hover-effect($ro-colors-error-normal);
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
@@ -19,6 +19,7 @@ import { getCategoriesStatusSelector,
 } from '../MenuContainer/actions';
 import { AdminMenu } from '../../components/AdminMenu';
 import { INewCategory, ICategory } from '../../api/categories';
+import { DeepPartialWithId } from '../../types/utils';
 
 export const AdminMenuContainer: React.FC = () => {
   const { search } = useLocation();
@@ -27,6 +28,7 @@ export const AdminMenuContainer: React.FC = () => {
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
   const isCategoriesLoading = useSelector(getCategoriesStatusSelector);
+  const [dishUpdating, setDishUpdating] = useState(false);
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
@@ -44,7 +46,7 @@ export const AdminMenuContainer: React.FC = () => {
     } else {
       dispatch(clearDishes());
     }
-  }, [categoryId, dispatch])
+  }, [categoryId, dispatch]);
 
   const onAddNewDish = (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => {
     if (!categoryId) {
@@ -71,21 +73,21 @@ export const AdminMenuContainer: React.FC = () => {
     }
   };
 
-  const onChangeDish = async (dish: IDish, image?: File) => {
+  const onUpdateDish = async (dish: DeepPartialWithId<IDish>, image?: File) => {
+    setDishUpdating(true);
     try {
       const newDish = await DishesApi.update(dish, image);
       dispatch(updateDish(newDish));
-      return true;
-    } catch( err) {
+    } catch ( err) {
       // TODO
       console.error(err);
-      return false;
     }
-  }
+    setDishUpdating(false);
+  };
 
   const onAddNewCategory = (category: INewCategory, image?: File) => {
     dispatch(addCategoryThunk(category, image));
-  }
+  };
 
   const onChangeCategory = (category: ICategory, image?: File) => {
     dispatch(updateCategoryThunk(category, image));
@@ -108,14 +110,15 @@ export const AdminMenuContainer: React.FC = () => {
           dishes={dishes}
           categories={categories}
           selectedCategoryId={categoryId}
+          isDishUpdating={dishUpdating}
           onAddNewDish={onAddNewDish}
           onDeleteDish={onDeleteDish}
-          onChangeDish={onChangeDish}
+          onUpdateDish={onUpdateDish}
           onAddNewCategory={onAddNewCategory}
           onChangeCategory={onChangeCategory}
           onDeleteCategory={onDeleteCategory}
         />
       )}
     </React.Fragment>
-  )
+  );
 };

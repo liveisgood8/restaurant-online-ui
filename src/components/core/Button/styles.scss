@@ -35,3 +35,15 @@
     background-color: $ro-colors-error-secondary;
   }
 }
+
+.components__button_success {
+  background-color: $ro-colors-success-normal;
+
+  &:hover, &:focus, &:active {
+    background-color: $ro-colors-success-normal;
+  }
+
+  &:disabled {
+    background-color: $ro-colors-success-secondary;
+  }
+}

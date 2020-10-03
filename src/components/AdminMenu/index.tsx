@@ -4,20 +4,22 @@ import { ICategory, INewCategory } from '../../api/categories';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CategoryEditor } from '../editors/CategoryEditor';
 import { DishEditor } from '../editors/DishEditor';
+import { DeepPartialWithId } from '../../types/utils';
 
 interface IAdminMenuProps {
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number;
+  isDishUpdating?: boolean;
   onAddNewDish: (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => void;
   onDeleteDish: (dish: IDish) => Promise<boolean>;
-  onChangeDish: (dish: IDish, image?: File) => Promise<boolean>;
+  onUpdateDish: (dish: DeepPartialWithId<IDish>, image?: File) => void;
   onAddNewCategory: (category: INewCategory, image?: File) => void;
   onDeleteCategory: (category: ICategory) => void;
   onChangeCategory: (category: ICategory, image?: File) => void;
 }
 
-export const AdminMenu: React.SFC<IAdminMenuProps> = (props) => {
+export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
   return (
     <React.Fragment>
       <Container fluid>
@@ -38,18 +40,18 @@ export const AdminMenu: React.SFC<IAdminMenuProps> = (props) => {
           ))}
         </Row>
         <Row className="justify-content-center align-items-center">
-          {props.selectedCategoryId && (
+          {/* {props.selectedCategoryId && (
             <Col sm={12} md={4} lg={3}>
               <DishEditor onAdd={props.onAddNewDish} />
             </Col>
-          )}
+          )} */}
           {props.dishes.map((e, i) => (
             <Col sm={12} md={4} lg={3} key={i}>
               <DishEditor
+                isUpdating={props.isDishUpdating}
                 dish={e}
                 onDelete={props.onDeleteDish}
-                onChange={props.onChangeDish}
-                onAdd={props.onAddNewDish}
+                onUpdate={props.onUpdateDish}
               />
             </Col>
           ))}

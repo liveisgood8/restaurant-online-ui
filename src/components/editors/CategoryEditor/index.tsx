@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { faPlus, faEdit, faStreetView, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ImageContainer } from '../../core/ImageContainer';
 import { ControlChangeEvent, FormEvent } from '../../../types/ui';
-import { ImageUploader, IFileWithPreviewUrl } from '../../ImageUploader';
+import { IFileWithPreviewUrl } from '../../ImageUploader';
 import { ViewMode } from '../types';
 import { ICategory, INewCategory } from '../../../api/categories';
 import { DishCategory } from '../../DishCategory';
@@ -65,9 +66,22 @@ export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
             onChange={(e: ControlChangeEvent) => setName(e.currentTarget.value)}
             value={name}
           />
-          <ImageUploader
+          {/* <ImageUploader
             initialFilesOrImageUrls={props?.category?.imageUrl || imageFiles}
             onDropFiles={(images) => setImageFiles(images)}
+          /> */}
+          <ImageContainer
+            enableUploading
+            src={props?.category?.imageUrl}
+            onUpload={(file: File): void => {
+              // TODO Сделано только для проверки
+              if (props.category) {
+                props.onChange?.({
+                  ...props.category,
+                  ...getCategoryInfo(),
+                }, file);
+              }
+            }}
           />
           <Button type="submit" className="w-100 mb-2">
             {props.category ? 'Сохранить' : 'Добавить'}
@@ -133,4 +147,4 @@ export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
       {getControlPanel()}
     </div>
   );
-}
+};

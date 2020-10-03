@@ -15,7 +15,7 @@
   }
 
   .dish__like-wrapper {
-    @include emotion-hover-effect($ro-colors-success);
+    @include emotion-hover-effect($ro-colors-success-normal);
   }
 
   .dish__dislike-wrapper {

@@ -12,10 +12,19 @@ interface IMenuDishProps {
   onCart?: (dish: IDish, count: number) => void;
   onLike?: (dish: IDish) => void;
   onDislike?: (dish: IDish) => void;
+  preventDefaultClick?: boolean;
+  onClick?: () => void;
 }
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
   const [isDishCardModalVisible, setDishCardModalVisible] = useState(false);
+
+  const onDishClick = () => {
+    if (!props.preventDefaultClick) {
+      setDishCardModalVisible(true);
+    }
+    props.onClick?.();
+  };
 
   const { dish } = props;
   return (
@@ -42,7 +51,7 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
           onLike={(): void => props.onLike?.(dish)}
           onDislike={(): void => props.onDislike?.(dish)}
         />
-        <div className="d-flex flex-column cursor-pointer" onClick={(): void => setDishCardModalVisible(true)}>
+        <div className="d-flex flex-column cursor-pointer" onClick={onDishClick}>
           <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
           <div className="mx-2">
             <div className="d-flex align-items-center">

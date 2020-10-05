@@ -5,12 +5,14 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { CategoryEditor } from '../editors/CategoryEditor';
 import { DishEditor } from '../editors/DishEditor';
 import { DeepPartialWithId } from '../../types/utils';
+import { MenuDish } from '../MenuDish';
 
 interface IAdminMenuProps {
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number;
   isDishUpdating?: boolean;
+  onDishClick: (dish: IDish) => void;
   onAddNewDish: (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => void;
   onDeleteDish: (dish: IDish) => Promise<boolean>;
   onUpdateDish: (dish: DeepPartialWithId<IDish>, image?: File) => void;
@@ -47,11 +49,10 @@ export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
           )} */}
           {props.dishes.map((e, i) => (
             <Col sm={12} md={4} lg={3} key={i}>
-              <DishEditor
-                isUpdating={props.isDishUpdating}
+              <MenuDish
                 dish={e}
-                onDelete={props.onDeleteDish}
-                onUpdate={props.onUpdateDish}
+                canLike={false}
+                onClick={() => props.onDishClick?.(e)}
               />
             </Col>
           ))}

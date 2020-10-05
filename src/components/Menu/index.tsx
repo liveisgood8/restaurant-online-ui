@@ -13,7 +13,7 @@ interface IMenuProps {
   categories: ICategory[];
   selectedCategoryId?: number;
   canLikeDishes?: boolean;
-  onPutDishInCart: (dish: IDish, count: number) => void;
+  onDishClick: (dish: IDish) => void;
   onDishLike: (dish: IDish) => void;
   onDishDislike: (dish: IDish) => void;
 }
@@ -37,10 +37,10 @@ export const Menu: React.FC<IMenuProps> = (props) => {
             <Col key={i} className="d-flex justify-content-center mb-3" xs={12} sm={6} md={5} lg={4} xl={3}>
               <MenuDish
                 dish={e}
+                onClick={() => props.onDishClick?.(e)}
                 canLike={props.canLikeDishes}
-                onCart={props.onPutDishInCart}
-                onLike={props.onDishLike}
-                onDislike={props.onDishDislike}
+                onLike={() => props.onDishLike?.(e)}
+                onDislike={() => props.onDishDislike?.(e)}
               />
             </Col>
           ))}

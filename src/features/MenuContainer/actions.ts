@@ -9,6 +9,8 @@ import { handleError } from '../../errors/handler';
 import { EmojiType } from '../../helpers/emoji/emoji-type';
 import { emojify } from '../../helpers/emoji/emoji-messages';
 
+export const selectDishById = createAction<number | null>('@@menu/selectDishById');
+
 export const setDishes = createAction<IDish[]>('@@menu/setDishes');
 export const addDish = createAction<IDish>('@@menu/addDish');
 export const updateDish = createAction<DeepPartialWithId<IDish>>('@@menu/updateDish');

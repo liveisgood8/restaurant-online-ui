@@ -17,7 +17,7 @@ export const AdminSidebarContainer: React.SFC = () => {
   };
 
   return (
-    <AdminSidebar 
+    <AdminSidebar
       selectedElement={currentLocationToSidebarElement()}
     />
   );

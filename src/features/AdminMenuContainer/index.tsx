@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
@@ -16,10 +16,12 @@ import { getCategoriesStatusSelector,
   deleteCategoryThunk,
   updateDish,
   deleteDish,
+  selectDishById,
 } from '../MenuContainer/actions';
 import { AdminMenu } from '../../components/AdminMenu';
 import { INewCategory, ICategory } from '../../api/categories';
 import { DeepPartialWithId } from '../../types/utils';
+import { AdminDishCardModalContainer } from './AdminDishCardModalContainer';
 
 export const AdminMenuContainer: React.FC = () => {
   const { search } = useLocation();
@@ -47,6 +49,10 @@ export const AdminMenuContainer: React.FC = () => {
       dispatch(clearDishes());
     }
   }, [categoryId, dispatch]);
+
+  const onDishClick = (dish: IDish) => {
+    dispatch(selectDishById(dish.id));
+  };
 
   const onAddNewDish = (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => {
     if (!categoryId) {
@@ -106,18 +112,22 @@ export const AdminMenuContainer: React.FC = () => {
       {isCategoriesLoading ? (
         <Loading />
       ) : (
-        <AdminMenu
-          dishes={dishes}
-          categories={categories}
-          selectedCategoryId={categoryId}
-          isDishUpdating={dishUpdating}
-          onAddNewDish={onAddNewDish}
-          onDeleteDish={onDeleteDish}
-          onUpdateDish={onUpdateDish}
-          onAddNewCategory={onAddNewCategory}
-          onChangeCategory={onChangeCategory}
-          onDeleteCategory={onDeleteCategory}
-        />
+        <Fragment>
+          <AdminMenu
+            dishes={dishes}
+            categories={categories}
+            selectedCategoryId={categoryId}
+            isDishUpdating={dishUpdating}
+            onDishClick={onDishClick}
+            onAddNewDish={onAddNewDish}
+            onDeleteDish={onDeleteDish}
+            onUpdateDish={onUpdateDish}
+            onAddNewCategory={onAddNewCategory}
+            onChangeCategory={onChangeCategory}
+            onDeleteCategory={onDeleteCategory}
+          />
+          <AdminDishCardModalContainer />
+        </Fragment>
       )}
     </React.Fragment>
   );

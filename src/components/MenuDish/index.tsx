@@ -1,46 +1,23 @@
 import './styles.scss';
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { IDish } from '../../api/dishes';
 import { DishLikes } from './DishLikes';
 import { DishAttributeLabel } from './DishAttributeLabel';
-import { DishCardModal } from './DishCardModal';
 
 interface IMenuDishProps {
   dish: IDish;
   canLike?: boolean;
-  onCart?: (dish: IDish, count: number) => void;
-  onLike?: (dish: IDish) => void;
-  onDislike?: (dish: IDish) => void;
+  onLike?: () => void;
+  onDislike?: () => void;
   preventDefaultClick?: boolean;
   onClick?: () => void;
 }
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
-  const [isDishCardModalVisible, setDishCardModalVisible] = useState(false);
-
-  const onDishClick = () => {
-    if (!props.preventDefaultClick) {
-      setDishCardModalVisible(true);
-    }
-    props.onClick?.();
-  };
-
   const { dish } = props;
   return (
     <Fragment>
-      <DishCardModal
-        isVisible={isDishCardModalVisible}
-        dish={dish}
-        onHide={(): void => setDishCardModalVisible(false)}
-        canLike={props.canLike}
-        onLike={(): void => props.onLike?.(dish)}
-        onDislike={(): void => props.onDislike?.(dish)}
-        onCart={(count: number) => {
-          setDishCardModalVisible(false);
-          props.onCart?.(dish, count);
-        }}
-      />
       <div
         className="component__dish ro-basic-shadow-hover p-2"
       >
@@ -48,10 +25,10 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
           className="ml-auto mr-2"
           likes={dish.likes}
           disabled={!props.canLike}
-          onLike={(): void => props.onLike?.(dish)}
-          onDislike={(): void => props.onDislike?.(dish)}
+          onLike={props.onLike}
+          onDislike={props.onDislike}
         />
-        <div className="d-flex flex-column cursor-pointer" onClick={onDishClick}>
+        <div className="d-flex flex-column cursor-pointer" onClick={props.onClick}>
           <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
           <div className="mx-2">
             <div className="d-flex align-items-center">

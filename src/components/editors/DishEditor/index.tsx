@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { MenuDish } from '../../MenuDish';
 import { IDish } from '../../../api/dishes';
-import { DishCardModal } from '../../MenuDish/DishCardModal';
+import { DishCardModal } from '../../DishCardModal';
 import { DeepPartialWithId } from '../../../types/utils';
 
 interface IDishEditorProps {

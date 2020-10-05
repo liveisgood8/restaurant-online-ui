@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getDishesThunk,
   getCategoriesThunk,
   getCategoriesStatusSelector,
-  clearDishes, likeDishThunk, dislikeDishThunk } from './actions';
+  clearDishes,
+  likeDishThunk,
+  dislikeDishThunk,
+  selectDishById,
+} from './actions';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
-import { addPersistentDishInCart } from '../CartContainer/actions';
 import { useLocation } from 'react-router-dom';
 import { IDish } from '../../api/dishes';
 import { getCategoryIdFromUrlSearch } from '../../helpers/utils';
-import { showSuccessNotification } from '../../helpers/notifications';
 import { isAuthSelector } from '../../app/auth/selectors';
+import { DishCardModalContainer } from './DishCardModalContainer';
 
 export const MenuContainer: React.FC = () => {
   const { search } = useLocation();
@@ -42,9 +45,8 @@ export const MenuContainer: React.FC = () => {
     }
   }, [categoryId, dispatch]);
 
-  const onPutDishInCart = (dish: IDish, count: number) => {
-    dispatch(addPersistentDishInCart(dish, count));
-    showSuccessNotification(`${dish.name} добавлена в корзину!`);
+  const onDishClick = (dish: IDish) => {
+    dispatch(selectDishById(dish.id));
   };
 
   const onDishLike = (dish: IDish) => {
@@ -60,15 +62,18 @@ export const MenuContainer: React.FC = () => {
       {isCategoriesLoading ? (
         <Loading />
       ) : (
-        <Menu
-          dishes={dishes}
-          categories={categories}
-          selectedCategoryId={categoryId}
-          canLikeDishes={isAuthenticated}
-          onPutDishInCart={onPutDishInCart}
-          onDishLike={onDishLike}
-          onDishDislike={onDishDislike}
-        />
+        <Fragment>
+          <Menu
+            dishes={dishes}
+            categories={categories}
+            selectedCategoryId={categoryId}
+            canLikeDishes={isAuthenticated}
+            onDishClick={onDishClick}
+            onDishLike={onDishLike}
+            onDishDislike={onDishDislike}
+          />
+          <DishCardModalContainer />
+        </Fragment>
       )}
     </React.Fragment>
   );

@@ -11,6 +11,7 @@ import {
   deleteCategory,
   likeDish,
   dislikeDish,
+  selectDishById,
 } from './actions';
 import { IDish } from '../../api/dishes';
 import { ICategory } from '../../api/categories';
@@ -41,6 +42,11 @@ const dishesReducer = createReducer<IDish[]>([], (builder) => {
     .addCase(clearDishes, () => []);
 });
 
+const selectedDishReducer = createReducer<number | null>(null, (builder) => {
+  builder
+    .addCase(selectDishById, (state, action) => action.payload);
+});
+
 const categoriesReducer = createReducer<ICategory[]>([], (builder) => {
   builder
     .addCase(setCategories, (state, { payload }) => payload)
@@ -53,6 +59,7 @@ const categoriesReducer = createReducer<ICategory[]>([], (builder) => {
 });
 
 export const menuReducer = combineReducers({
+  selectedDishId: selectedDishReducer,
   dishes: dishesReducer,
   categories: categoriesReducer,
 });

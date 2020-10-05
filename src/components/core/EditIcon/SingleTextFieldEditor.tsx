@@ -16,21 +16,29 @@ export const SingleTextFieldEditor: React.FC<ISingleTextFieldEditorProps> = ({
   isLoading,
 }) => {
   const [value, setValue] = useState('');
+  const [isChanged, setChanged] = useState(false);
 
   useEffect(() => {
     setValue(propValue || '');
+    setChanged(false);
   }, [propValue]);
 
   return (
     <div className="d-flex p-1">
       <TextInput
         value={value}
-        onChange={setValue}
+        onChange={(value: string) => {
+          setValue(value);
+          if (!isChanged) {
+            setChanged(true);
+          }
+        }}
       />
       <Button
         className="ml-2 ro-vector-fill-white"
         variant="success"
         isLoading={isLoading}
+        disabled={!isChanged}
         icon={CheckMarkIcon}
         onClick={() => onSubmit(value)}
       />

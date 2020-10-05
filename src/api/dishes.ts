@@ -34,14 +34,17 @@ export const DishesApi = {
       imageUrl = await DishesApi.uploadImage(dish.id, image);
     }
 
+    if (Object.keys(dish).length > 1) {
+      await AxiosInstance.patch(`/menu/dishes/${dish.id}`, {
+        ...dish,
+        imageUrl: undefined,
+      });
+    }
+
     if (imageUrl) {
       dish.imageUrl = imageUrl;
     }
 
-    await AxiosInstance.patch(`/menu/dishes/${dish.id}`, {
-      ...dish,
-      imageUrl: undefined,
-    });
     return dish;
   },
 

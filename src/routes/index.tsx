@@ -13,21 +13,26 @@ import { RegistrationPage } from '../pages/RegistrationPage';
 import { ProfileContainer } from '../features/ProfileContainer';
 import { HomePage } from '../pages/Home';
 import { OrderConfirmationPage } from '../pages/OrderConfiramtion';
+import { QueryParamProvider } from 'use-query-params';
+import { OAuth2RedirectHandler } from '../features/OAuth2RedirectHandler';
 
 export const Routes: React.FC = () => {
   return (
     <ConnectedRouter history={history}>
-      <Switch>
-        <Route exact path={RoutePath.LOGIN} component={LoginPage} />
-        <Route exact path={RoutePath.REGISTRATION} component={RegistrationPage} />
-        <RouteWithLayout layout={CartLayout} exact path={RoutePath.HOME} component={HomePage} />
-        <RouteWithLayout layout={CartLayout} exact path={RoutePath.PROFILE} component={ProfileContainer} />
-        <RouteWithLayout layout={CartLayout} exact path={RoutePath.CART} component={CartContainer} />
-        <RouteWithLayout layout={CartLayout} exact path={RoutePath.ORDER_CONFIRMATION}
-          component={OrderConfirmationPage} />
-        <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_DISH_MENU}
-          component={AdminMenuContainer} />
-      </Switch>
+      <QueryParamProvider ReactRouterRoute={Route}>
+        <Switch>
+          <Route exact path={RoutePath.LOGIN} component={LoginPage} />
+          <Route exact path={RoutePath.REGISTRATION} component={RegistrationPage} />
+          <Route path={RoutePath.OAUTH2_REDIRECT} component={OAuth2RedirectHandler} />
+          <RouteWithLayout layout={CartLayout} exact path={RoutePath.HOME} component={HomePage} />
+          <RouteWithLayout layout={CartLayout} exact path={RoutePath.PROFILE} component={ProfileContainer} />
+          <RouteWithLayout layout={CartLayout} exact path={RoutePath.CART} component={CartContainer} />
+          <RouteWithLayout layout={CartLayout} exact path={RoutePath.ORDER_CONFIRMATION}
+            component={OrderConfirmationPage} />
+          <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_DISH_MENU}
+            component={AdminMenuContainer} />
+        </Switch>
+      </QueryParamProvider>
     </ConnectedRouter>
   );
 };

@@ -19,7 +19,6 @@ export const DishEditor: React.FC<IDishEditorProps> = (props) => {
       <DishCardModal
         dish={props.dish}
         editableMode
-        isUpdating={props.isUpdating}
         isVisible={isCardVisible}
         onHide={() => setCardVisible(false)}
         onUpdate={props.onUpdate}

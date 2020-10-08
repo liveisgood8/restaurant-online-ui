@@ -1,14 +1,18 @@
 import { toast } from 'react-toastify';
 
-export function showInfoNotification(text: string): void {
+interface INotificationOptions {
+  autoClose?: number | false;
+}
+
+export function showInfoNotification(text: string, options?: INotificationOptions): void {
   toast.info(text, {
-    autoClose: 1500,
+    autoClose: options?.autoClose != null ? options.autoClose : 1500,
   });
 }
 
-export function showSuccessNotification(text: string): void {
+export function showSuccessNotification(text: string, options?: INotificationOptions): void {
   toast.success(text, {
-    autoClose: 1500,
+    autoClose: options?.autoClose != null ? options.autoClose : 1500,
   });
 }
 

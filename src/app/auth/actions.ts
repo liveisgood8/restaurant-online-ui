@@ -1,10 +1,15 @@
 import { createAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
+import { access } from 'fs';
+import { userInfo } from 'os';
 import { AuthApi, IAuthInfo, IUser, IUserMinimalInfo } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { handleError } from '../../errors/handler';
 import { AxiosInstance, getBearerAuthorizationHeader } from '../../helpers/axios-instance';
-import { showSuccessNotification } from '../../helpers/notifications';
+import { emojify } from '../../helpers/emoji/emoji-messages';
+import { EmojiType } from '../../helpers/emoji/emoji-type';
+import { parseJwt } from '../../helpers/jwt';
+import { showInfoNotification, showSuccessNotification } from '../../helpers/notifications';
 import { RoutePath } from '../../routes/paths';
 import { PartialWithoutId } from '../../types/utils';
 import { AppDispatch, AppThunk } from '../store';
@@ -15,20 +20,58 @@ export const setUserInfo = createAction<IUserMinimalInfo | null>('@@auth/set-use
 export const updateUserInfo = createAction<PartialWithoutId<IUserMinimalInfo>>('@@auth/update-user-info');
 export const addUserBonuses = createAction<number>('@@auth/add-bonuses');
 
+function getUserInfoFromToken(token: string): IUserMinimalInfo {
+  const tokenData = parseJwt(token);
+  if (!tokenData.user) {
+    throw new Error('User info is not founded in auth token');
+  }
+  return tokenData.user as IUserMinimalInfo;
+}
+
+function updateAxiosAndStorageAuthInfo(token: string, userInfo: IUserMinimalInfo) {
+  setAuthInfo({
+    accessToken: token,
+    userInfo: userInfo,
+  });
+  AxiosInstance.defaults.headers = {
+    ...AxiosInstance.defaults.headers,
+    ...getBearerAuthorizationHeader(),
+  };
+}
+
 export const login = (authRequestData: IAuthRequestBody): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
     const { data } = await AxiosInstance.post<IAuthInfo>('/auth', authRequestData);
-    setAuthInfo(data);
-    AxiosInstance.defaults.headers = {
-      ...AxiosInstance.defaults.headers,
-      ...getBearerAuthorizationHeader(),
-    };
+    updateAxiosAndStorageAuthInfo(data.accessToken, data.userInfo);
 
     dispatch(setAccessToken(data.accessToken));
-    dispatch(setUserInfo(data.userInfo));
+    dispatch(setUserInfo(getUserInfoFromToken(data.accessToken)));
     dispatch(push(RoutePath.HOME));
   } catch (err) {
-    handleError(err);
+    handleError(err, emojify('Упс, не удалось совершить вход', EmojiType.SAD));
+  }
+};
+
+export const loginByOAuth2 = (
+  token: string,
+  isCredentialsExpired: boolean,
+): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
+  try {
+    const parsedUserInfo = getUserInfoFromToken(token);
+    updateAxiosAndStorageAuthInfo(token, parsedUserInfo);
+
+    dispatch(setAccessToken(token));
+    dispatch(setUserInfo(parsedUserInfo));
+    if (isCredentialsExpired) {
+      dispatch(push(RoutePath.PROFILE));
+      showInfoNotification('Нужно установить личный пароль 🔑', {
+        autoClose: false,
+      });
+    } else {
+      dispatch(push(RoutePath.HOME));
+    }
+  } catch (err) {
+    handleError(err, emojify('Упс, не удалось совершить вход', EmojiType.SAD));
   }
 };
 

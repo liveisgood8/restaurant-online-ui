@@ -3,11 +3,9 @@ import { Form, Button } from 'react-bootstrap';
 import { faPlus, faEdit, faStreetView, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ImageContainer } from '../../core/ImageContainer';
-import { ControlChangeEvent, FormEvent } from '../../../types/ui';
-import { IFileWithPreviewUrl } from '../../ImageUploader';
+import { ControlChangeEvent } from '../../../types/ui';
 import { ViewMode } from '../types';
 import { ICategory, INewCategory } from '../../../api/categories';
-import { DishCategory } from '../../DishCategory';
 
 interface ICategoryEditorProps {
   onAdd: (category: INewCategory, image?: File) => void;
@@ -20,22 +18,6 @@ interface ICategoryEditorProps {
 export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
   const [viewMode, setViewMode] = useState(props?.category ? ViewMode.PREVIEW : ViewMode.ADD);
   const [name, setName] = useState(props?.category?.name || '');
-  const [imageFiles, setImageFiles] = useState<IFileWithPreviewUrl[]>([]);
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const image = imageFiles.length ? imageFiles[0] : undefined;
-    if (props.category) {
-      props.onChange?.({
-        ...props.category,
-        ...getCategoryInfo(),
-      }, image);
-      setViewMode(ViewMode.PREVIEW);
-    } else {
-      props.onAdd(getCategoryInfo(), image);
-      setViewMode(ViewMode.ADD);
-    }
-  };
 
   const getCategoryInfo = (): INewCategory => {
     return {
@@ -57,7 +39,7 @@ export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
   const getEditComponentIfEditMode = () => {
     if (viewMode === ViewMode.EDIT) {
       return (
-        <Form onSubmit={onSubmit} className="p-2">
+        <Form className="p-2">
           <Form.Control
             style={{ fontSize: '0.8rem' }}
             className="mb-3"
@@ -120,30 +102,10 @@ export const CategoryEditor: React.FC<ICategoryEditorProps> = (props) => {
     );
   };
 
-  const getPreviewComponentIfPreviewMode = () => {
-    if (viewMode === ViewMode.PREVIEW) {
-      const imageUrl = imageFiles.length ? imageFiles[0].preview :
-        props?.category?.imageUrl ? props.category.imageUrl : 'Изображение';
-      return (
-        <React.Fragment>
-          <DishCategory
-            category={{
-              ...getCategoryInfo(),
-              id: props?.category?.id || 0,
-              imageUrl,
-            }}
-            isSelected={props.isSelected}
-          />
-        </React.Fragment>
-      );
-    }
-  };
-
   return (
     <div className="border rounded">
       {getAddComponentIfAddMode()}
       {getEditComponentIfEditMode()}
-      {getPreviewComponentIfPreviewMode()}
       {getControlPanel()}
     </div>
   );

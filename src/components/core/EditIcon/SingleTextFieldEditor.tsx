@@ -39,7 +39,7 @@ export const SingleTextFieldEditor: React.FC<ISingleTextFieldEditorProps> = ({
         variant="success"
         isLoading={isLoading}
         disabled={!isChanged}
-        icon={CheckMarkIcon}
+        rightIcon={CheckMarkIcon}
         onClick={() => onSubmit(value)}
       />
     </div>

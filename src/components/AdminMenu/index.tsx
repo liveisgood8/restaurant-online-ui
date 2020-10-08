@@ -3,7 +3,6 @@ import { IDish, INewDish } from '../../api/dishes';
 import { ICategory, INewCategory } from '../../api/categories';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CategoryEditor } from '../editors/CategoryEditor';
-import { DishEditor } from '../editors/DishEditor';
 import { DeepPartialWithId } from '../../types/utils';
 import { MenuDish } from '../MenuDish';
 

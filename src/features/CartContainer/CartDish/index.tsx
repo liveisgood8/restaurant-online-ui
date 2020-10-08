@@ -38,7 +38,7 @@ export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, on
         <Button
           className="ml-3"
           disableShadow
-          icon={TrashIcon}
+          rightIcon={TrashIcon}
           onClick={onRemove}
         />
       </div>

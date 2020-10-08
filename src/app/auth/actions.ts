@@ -1,7 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
-import { access } from 'fs';
-import { userInfo } from 'os';
 import { AuthApi, IAuthInfo, IUser, IUserMinimalInfo } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { handleError } from '../../errors/handler';

@@ -1,3 +1,22 @@
+@import '../../variables.scss';
+
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  
+  @return $string;
+}
+
 #admin-sidebar {
   background-color: #42a5f5;
   position: sticky;
@@ -10,16 +29,42 @@
   padding-top: 2em;
 
   .selected-menu-element {
-    background-color: #0077c2;
+    position: relative;
+    background-color: $ro-colors-background;
     transition: background-color 0.3s ease-out;
+    color: $ro-colors-primary;
+
+    .icon {
+      color: $ro-colors-primary;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      right: 0;
+      position: absolute;
+    }
+
+    $svg-fill-color: '%23' + str-replace(#{$ro-colors-background}, '#', '');
+    &::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path fill="' + $svg-fill-color + '" d="M0 0 Q20 0 20 20 L20 0Z" /></svg>');
+      bottom: -20px;
+    }
+
+    &::after {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path fill="' + $svg-fill-color + '" d="M0 20 Q20 20 20 0 L20 20Z" /></svg>');
+      top: -20px;
+    }
   }
 
   .icon {
     width: 32px;
     height: 32px;
-    color: white;
     margin-top: 1em;
     margin-bottom: 1em;
+    color: white;
     cursor: pointer;
     transition: height 0.15s ease-out;
 

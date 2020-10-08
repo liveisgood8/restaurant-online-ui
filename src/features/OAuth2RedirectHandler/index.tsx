@@ -13,7 +13,7 @@ export const OAuth2RedirectHandler: React.FC = () => {
     if (token && isCredentialsExpired != null) {
       dispatch(loginByOAuth2(token, isCredentialsExpired));
     }
-  }, [token, isCredentialsExpired]);
+  }, [token, isCredentialsExpired, dispatch]);
 
   return (
     <CenteredContainer className="mt-5" centerVertically>

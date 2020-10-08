@@ -3,8 +3,6 @@ import { IAuthRequestBody } from '../../api/payloads/auth';
 import { Form } from 'react-bootstrap';
 import { TextInput } from '../../components/core/TextInput';
 import { Button } from '../../components/core/Button';
-import { Link } from 'react-router-dom';
-import { OAuth2Url } from '../../config';
 
 interface ILoginForm {
   onSubmit: (data: IAuthRequestBody) => void;
@@ -50,23 +48,6 @@ export const LoginForm: React.FC<ILoginForm> = ({ onSubmit: onSubmitProp }) => {
           text="Вход"
         />
       </Form>
-      <div>
-        <a href={OAuth2Url.VK}>
-          <div>
-            <span>Войти через VK</span>
-          </div>
-        </a>
-        <a href={OAuth2Url.GOOGLE}>
-          <div>
-            <span>Войти через Google</span>
-          </div>
-        </a>
-        <a href={OAuth2Url.FACEBOOK}>
-          <div>
-            <span>Войти через Facebook</span>
-          </div>
-        </a>
-      </div>
     </div>
   );
 };

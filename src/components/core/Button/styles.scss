@@ -1,14 +1,22 @@
 @import 'variables.scss';
 
+$base-button-text-color: white;
+
 .components__button {
   border: none;
-  color: white;
+  color: $base-button-text-color;
   padding: 10px 15px;
   border-radius: 30px;
   outline: none;
   transition: background-color ease-in 200ms;
+
   &:focus {
     outline: none;
+  }
+
+  .button__icon {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -45,5 +53,20 @@
 
   &:disabled {
     background-color: $ro-colors-success-secondary;
+  }
+}
+
+
+.components__button_default {
+  background-color: $ro-colors-base-element-background;
+  color: $ro-colors-base-element-opposite;
+
+  &:hover, &:focus, &:active {
+    color: $base-button-text-color;
+    background-color: $ro-colors-toggled;
+  }
+
+  &:disabled {
+    background-color: transparentize($color: $ro-colors-base-element-opposite, $amount: 0.95);
   }
 }

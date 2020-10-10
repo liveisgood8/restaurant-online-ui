@@ -3,39 +3,33 @@ import { IDish, INewDish } from '../../api/dishes';
 import { ICategory, INewCategory } from '../../api/categories';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CategoryEditor } from '../editors/CategoryEditor';
-import { DeepPartialWithId } from '../../types/utils';
 import { MenuDish } from '../MenuDish';
+import { DishCategory } from '../DishCategory';
 
 interface IAdminMenuProps {
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number;
-  isDishUpdating?: boolean;
-  onDishClick: (dish: IDish) => void;
-  onAddNewDish: (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => void;
-  onDeleteDish: (dish: IDish) => Promise<boolean>;
-  onUpdateDish: (dish: DeepPartialWithId<IDish>, image?: File) => void;
-  onAddNewCategory: (category: INewCategory, image?: File) => void;
-  onDeleteCategory: (category: ICategory) => void;
-  onChangeCategory: (category: ICategory, image?: File) => void;
+  onDishEditRequest: (dish: IDish) => void;
+  onCategoryAddRequest: () => void;
+  onCategoryEditRequest: (category: ICategory) => void;
 }
 
 export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
   return (
     <React.Fragment>
       <Container fluid>
-        <Row className="align-items-center mb-3">
+        <Row className="align-items-center mb-3 mt-1">
           <Col xs={6} md={2}>
-            <CategoryEditor onAdd={props.onAddNewCategory} />
+            <CategoryEditor onAdd={props.onCategoryAddRequest} />
           </Col>
           {props.categories.map((e, i) => (
             <Col key={i} xs={6} md={2}>
-              <CategoryEditor
+              <DishCategory
                 category={e}
                 isSelected={e.id === props.selectedCategoryId}
-                onAdd={props.onAddNewCategory}
-                onChange={props.onChangeCategory}
-                onDelete={props.onDeleteCategory}
+                showEditIcon
+                onEdit={() => props.onCategoryEditRequest?.(e)}
               />
             </Col>
           ))}
@@ -51,7 +45,8 @@ export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
               <MenuDish
                 dish={e}
                 canLike={false}
-                onClick={() => props.onDishClick?.(e)}
+                showEditIcon
+                onEdit={() => props.onDishEditRequest?.(e)}
               />
             </Col>
           ))}

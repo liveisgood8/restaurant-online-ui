@@ -6,7 +6,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import cn from 'classnames';
 
 interface ITextInputProps {
-  value?: string;
+  value?: string | null;
   className?: string;
   showWarning?: boolean;
   showError?: boolean;
@@ -14,6 +14,7 @@ interface ITextInputProps {
   errorText?: string;
   required?: boolean;
   placeholder?: string;
+  label?: string;
   type?: 'password' | 'email';
   onChange?: (value: string) => void;
   inputFilter?: (value: string) => boolean;
@@ -42,42 +43,47 @@ export const TextInput: React.FC<ITextInputProps> = (props) => {
   };
 
   return (
-    <div className={cn(props.className, 'components__input-holder', {
-      'ro-border-warning': props.showWarning,
-      'ro-border-error': props.showError,
-    })}>
-      <input
-        type={props.type || 'text'}
-        className="ro-font-light-small"
-        required={props.required}
-        placeholder={props.placeholder}
-        value={value}
-        onChange={onChange}
-      />
-      {(props.showError || props.showWarning) && (
-        <div className="d-flex mr-3 align-self-center align-items-center">
-          {props.showWarning && (
-            <Fragment>
-              <AlertTriangle
-                className="ro-vector-fill-warning"
-              />
-              {props.warningText && (
-                <span className="ro-word-wrap-disabled ml-2 ro-text-warning ro-text-small">{props.warningText}</span>
-              )}
-            </Fragment>
-          )}
-          {props.showError && (
-            <Fragment>
-              <AlertCircle
-                className="ro-vector-fill-error"
-              />
-              {props.errorText && (
-                <span className="ro-word-wrap-disabled ml-2 ro-text-error ro-text-small">{props.errorText}</span>
-              )}
-            </Fragment>
-          )}
-        </div>
+    <div className={props.className}>
+      {props.label && (
+        <span className="ro-font-light-small">{props.label}</span>
       )}
+      <div className={cn('components__input-holder', {
+        'ro-border-warning': props.showWarning,
+        'ro-border-error': props.showError,
+      })}>
+        <input
+          type={props.type || 'text'}
+          className="ro-font-light-small"
+          required={props.required}
+          placeholder={props.placeholder}
+          value={value}
+          onChange={onChange}
+        />
+        {(props.showError || props.showWarning) && (
+          <div className="d-flex mr-3 align-self-center align-items-center">
+            {props.showWarning && (
+              <Fragment>
+                <AlertTriangle
+                  className="ro-vector-fill-warning"
+                />
+                {props.warningText && (
+                  <span className="ro-word-wrap-disabled ml-2 ro-text-warning ro-text-small">{props.warningText}</span>
+                )}
+              </Fragment>
+            )}
+            {props.showError && (
+              <Fragment>
+                <AlertCircle
+                  className="ro-vector-fill-error"
+                />
+                {props.errorText && (
+                  <span className="ro-word-wrap-disabled ml-2 ro-text-error ro-text-small">{props.errorText}</span>
+                )}
+              </Fragment>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

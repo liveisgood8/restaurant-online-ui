@@ -61,7 +61,7 @@ export const DishesApi = {
   },
 };
 
-export interface IDish {
+export interface IDishBase {
   id: number;
   name: string;
   description: string;
@@ -71,6 +71,9 @@ export interface IDish {
   imageUrl?: string;
   weight: number;
   price: number;
+}
+
+export interface IDish extends IDishBase {
   likes: IDishLikes;
 }
 

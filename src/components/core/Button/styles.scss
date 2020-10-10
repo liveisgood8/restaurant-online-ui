@@ -47,8 +47,8 @@ $base-button-text-color: white;
 .components__button_success {
   background-color: $ro-colors-success-normal;
 
-  &:hover, &:focus, &:active {
-    background-color: $ro-colors-success-normal;
+  &:hover {
+    background-color: $ro-colors-success-toggled;
   }
 
   &:disabled {

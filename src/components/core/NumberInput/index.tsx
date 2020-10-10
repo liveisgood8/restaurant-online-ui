@@ -2,8 +2,9 @@ import React from 'react';
 import { TextInput } from '../TextInput';
 
 interface INumberInputProps {
-  value?: string;
+  value?: number | null;
   className?: string;
+  label?: string;
   showWarning?: boolean;
   showError?: boolean;
   warningText?: string;
@@ -17,6 +18,7 @@ export const NumberInput: React.FC<INumberInputProps> = (props) => {
   return (
     <TextInput
       {...props}
+      value={props.value?.toString()}
       inputFilter={(value: string) => /^\d*$/.test(value)}
       onChange={(value: string) => props.onChange?.(+value)}
     />

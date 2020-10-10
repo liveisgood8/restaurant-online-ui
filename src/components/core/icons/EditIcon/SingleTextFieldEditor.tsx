@@ -1,8 +1,8 @@
 import { ReactComponent as CheckMarkIcon } from './check-mark.svg';
 
 import React, { useEffect, useState } from 'react';
-import { Button } from '../Button';
-import { TextInput } from '../TextInput';
+import { Button } from '../../Button';
+import { TextInput } from '../../TextInput';
 
 interface ISingleTextFieldEditorProps {
   value?: string;

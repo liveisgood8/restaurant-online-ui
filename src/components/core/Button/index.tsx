@@ -42,7 +42,7 @@ export const Button: React.FC<IButtonProps> = (props) => {
           <RightIcon className={cn('button__icon', { 'ml-2': Boolean(props.text) })} />
         )}
         {props.isLoading && (
-          <LoadingSpinner style={{ width: '20px', height: '20px' }} />
+          <LoadingSpinner className="ml-2" style={{ width: '20px', height: '20px' }} />
         )}
         {props.children}
       </div>

@@ -21,7 +21,7 @@ import { getCategoriesStatusSelector,
 import { AdminMenu } from '../../components/AdminMenu';
 import { INewCategory, ICategory } from '../../api/categories';
 import { DeepPartialWithId } from '../../types/utils';
-import { AdminDishCardModalContainer } from './AdminDishCardModalContainer';
+import { AdminDishCardModalContainer } from './DishEditCardContainer';
 
 export const AdminMenuContainer: React.FC = () => {
   const { search } = useLocation();
@@ -50,7 +50,7 @@ export const AdminMenuContainer: React.FC = () => {
     }
   }, [categoryId, dispatch]);
 
-  const onDishClick = (dish: IDish) => {
+  const onDishEditRequest = (dish: IDish) => {
     dispatch(selectDishById(dish.id));
   };
 
@@ -117,14 +117,7 @@ export const AdminMenuContainer: React.FC = () => {
             dishes={dishes}
             categories={categories}
             selectedCategoryId={categoryId}
-            isDishUpdating={dishUpdating}
-            onDishClick={onDishClick}
-            onAddNewDish={onAddNewDish}
-            onDeleteDish={onDeleteDish}
-            onUpdateDish={onUpdateDish}
-            onAddNewCategory={onAddNewCategory}
-            onChangeCategory={onChangeCategory}
-            onDeleteCategory={onDeleteCategory}
+            onDishEditRequest={onDishEditRequest}
           />
           <AdminDishCardModalContainer />
         </Fragment>

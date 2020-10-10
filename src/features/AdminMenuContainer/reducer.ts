@@ -1,23 +1,17 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
-import { setDishImageUpdating, setDishPropertiesUpdating } from './actions';
+import { setDishUpdating } from './actions';
 
 interface IDishUpdateState {
-  isImageUpdating: boolean;
-  isPropertiesUpdating?: boolean;
+  isUpdating: boolean;
 }
 
 const dishUpdateReducer = createReducer<IDishUpdateState>({
-  isImageUpdating: false,
-  isPropertiesUpdating: false,
+  isUpdating: false,
 }, (builder) => {
   builder
-    .addCase(setDishImageUpdating, (state, action) => ({
+    .addCase(setDishUpdating, (state, action) => ({
       ...state,
-      isImageUpdating: action.payload,
-    }))
-    .addCase(setDishPropertiesUpdating, (state, action) => ({
-      ...state,
-      isPropertiesUpdating: action.payload,
+      isUpdating: action.payload,
     }));
 });
 

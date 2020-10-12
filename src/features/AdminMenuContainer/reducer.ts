@@ -1,11 +1,11 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
-import { setDishUpdating } from './actions';
+import { setCategoryUpdating, setDishUpdating } from './actions';
 
-interface IDishUpdateState {
+interface IDishesState {
   isUpdating: boolean;
 }
 
-const dishUpdateReducer = createReducer<IDishUpdateState>({
+const dishesReducer = createReducer<IDishesState>({
   isUpdating: false,
 }, (builder) => {
   builder
@@ -15,6 +15,21 @@ const dishUpdateReducer = createReducer<IDishUpdateState>({
     }));
 });
 
+interface ICategoriesState {
+  isUpdating: boolean;
+}
+
+const categoriesReducer = createReducer<ICategoriesState>({
+  isUpdating: false,
+}, (builder) => {
+  builder
+    .addCase(setCategoryUpdating, (state, action) => ({
+      ...state,
+      isUpdating: action.payload,
+    }));
+});
+
 export const adminMenuReducer = combineReducers({
-  dishUpdate: dishUpdateReducer,
+  dishes: dishesReducer,
+  categories: categoriesReducer,
 });

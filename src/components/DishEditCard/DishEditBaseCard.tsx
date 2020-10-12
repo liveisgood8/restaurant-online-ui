@@ -1,12 +1,10 @@
-import './styles.scss';
-
 import React from 'react';
 import { IDish, IDishBase } from '../../api/dishes';
 import { WithoutId } from '../../types/utils';
 import { ModalPlate } from '../core/ModalPlate';
 import { DishEditForm } from './DishEditForm';
 
-export interface IDishEditBaseCard {
+export interface IDishEditBaseCardProps {
   dish?: IDish;
   show?: boolean;
   isLoading?: boolean;
@@ -15,7 +13,7 @@ export interface IDishEditBaseCard {
   onHide?: () => void;
 }
 
-export const DishEditBaseCard: React.FC<IDishEditBaseCard> = (props) => {
+export const DishEditBaseCard: React.FC<IDishEditBaseCardProps> = (props) => {
   return (
     <ModalPlate
       title="Редактирование блюда"

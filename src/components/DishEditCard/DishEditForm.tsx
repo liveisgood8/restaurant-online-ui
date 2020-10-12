@@ -14,7 +14,12 @@ interface IDishEditFormProps {
   onUpdate?: (dish: IDishBase, image?: File) => void;
 }
 
-export const DishEditForm: React.FC<IDishEditFormProps> = ({ dish, isLoading, onCreate, onUpdate }) => {
+export const DishEditForm: React.FC<IDishEditFormProps> = ({
+  dish,
+  isLoading,
+  onCreate,
+  onUpdate,
+}) => {
   const [image, setImage] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string>();
   const [name, setName] = useState<string>();
@@ -162,6 +167,7 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({ dish, isLoading, on
         onChange={setDescription}
       />
       <Button
+        type="submit"
         className="align-self-center mt-3"
         variant="success"
         text="Сохранить информацию"

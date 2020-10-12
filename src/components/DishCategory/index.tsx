@@ -17,30 +17,30 @@ interface IDishCategoryProps {
 
 export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelected, showEditIcon, onEdit }) => {
   return (
-    <Link
-      className="text-decoration-none"
-      to={(location: Location) => ({
-        ...location,
-        search: `?categoryId=${category.id}`,
-      })}
-    >
-      <div className={cn('component__category', { 'component__category_selected': isSelected })}>
-        {showEditIcon && (
-          <Button
-            onClick={onEdit}
-            className="category__edit-button ro-vector-fill-white"
-            variant="success"
-            disableShadow
-            rightIcon={EditIcon}
-          />
-        )}
+    <div className={cn('component__category', { 'component__category_selected': isSelected })}>
+      {showEditIcon && (
+        <Button
+          onClick={onEdit}
+          className="category__edit-button ro-vector-fill-white"
+          variant="success"
+          disableShadow
+          rightIcon={EditIcon}
+        />
+      )}
+      <Link
+        className="text-decoration-none text-color-inherit"
+        to={(location: Location) => ({
+          ...location,
+          search: `?categoryId=${category.id}`,
+        })}
+      >
         <div className="category__image-container">
           <img src={category.imageUrl} className="w-100" alt={category.name} />
         </div>
         <div className="d-flex mt-2 mx-2 align-items-center text-center">
           <span className="ro-font-regular-small category__label">{category.name}</span>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };

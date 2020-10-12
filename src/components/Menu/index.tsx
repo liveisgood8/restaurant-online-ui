@@ -11,7 +11,7 @@ import { MenuDish } from '../MenuDish';
 interface IMenuProps {
   dishes: IDish[];
   categories: ICategory[];
-  selectedCategoryId?: number;
+  selectedCategoryId?: number | null;
   canLikeDishes?: boolean;
   onDishClick: (dish: IDish) => void;
   onDishLike: (dish: IDish) => void;

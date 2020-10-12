@@ -1,12 +1,12 @@
 import React from 'react';
-import { IDish, IDishBase } from '../../api/dishes';
-import { DishEditBaseCard, IDishEditBaseCard } from './DishEditBaseCard';
+import { IDish } from '../../api/dishes';
+import { DishEditBaseCard, IDishEditBaseCardProps } from './DishEditBaseCard';
 
-interface IDishEditCard extends IDishEditBaseCard {
+interface IDishEditCardProps extends Omit<IDishEditBaseCardProps, 'onCreate'> {
   dish: IDish;
 }
 
-export const DishEditCard: React.FC<IDishEditCard> = (props) => {
+export const DishEditCard: React.FC<IDishEditCardProps> = (props) => {
   return (
     <DishEditBaseCard
       {...props}

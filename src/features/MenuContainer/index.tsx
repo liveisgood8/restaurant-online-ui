@@ -12,15 +12,16 @@ import {
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
-import { useLocation } from 'react-router-dom';
 import { IDish } from '../../api/dishes';
-import { getCategoryIdFromUrlSearch } from '../../helpers/utils';
 import { isAuthSelector } from '../../app/auth/selectors';
-import { DishCardModalContainer } from './DishCardModalContainer';
+import { NumberParam, useQueryParam } from 'use-query-params';
+import { DishCardModal } from '../../components/DishCardModal';
+import { addPersistentDishInCart } from '../CartContainer/actions';
+import { showSuccessNotification } from '../../helpers/notifications';
 
 export const MenuContainer: React.FC = () => {
-  const { search } = useLocation();
-  const categoryId = getCategoryIdFromUrlSearch(search);
+  const [categoryId] = useQueryParam('categoryId', NumberParam);
+  const [selectedDishId, setSelectedDishId] = useQueryParam('dishId', NumberParam);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthSelector);
   const dishes = useSelector((state: RootState) => state.menu.dishes);
@@ -46,7 +47,7 @@ export const MenuContainer: React.FC = () => {
   }, [categoryId, dispatch]);
 
   const onDishClick = (dish: IDish) => {
-    dispatch(selectDishById(dish.id));
+    setSelectedDishId(dish.id);
   };
 
   const onDishLike = (dish: IDish) => {
@@ -55,6 +56,31 @@ export const MenuContainer: React.FC = () => {
 
   const onDishDislike = (dish: IDish) => {
     dispatch(dislikeDishThunk(dish.id));
+  };
+
+  const onCart = (dish: IDish, count: number) => {
+    dispatch(addPersistentDishInCart(dish, count));
+    unselectDish();
+    showSuccessNotification(`${dish.name} добавлена в корзину!`);
+  };
+
+  const unselectDish = () => {
+    setSelectedDishId(undefined);
+  };
+
+  const makeDishCardComponent = () => {
+    const selectedDish = dishes.find((e) => e.id === selectedDishId);
+    if (!selectedDish) {
+      return null;
+    }
+    return (
+      <DishCardModal
+        dish={selectedDish}
+        isVisible={true}
+        onHide={unselectDish}
+        onCart={(count) => onCart(selectedDish, count)}
+      />
+    );
   };
 
   return (
@@ -72,7 +98,7 @@ export const MenuContainer: React.FC = () => {
             onDishLike={onDishLike}
             onDishDislike={onDishDislike}
           />
-          <DishCardModalContainer />
+          {makeDishCardComponent()}
         </Fragment>
       )}
     </React.Fragment>

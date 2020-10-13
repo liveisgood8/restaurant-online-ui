@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { createApiRequestThunk } from '../../helpers/fetch';
 import { AppThunk, AppDispatch } from '../../app/store';
-import { DishesApi, IDish, INewDish } from '../../api/dishes';
-import { CategoriesApi, ICategory, INewCategory } from '../../api/categories';
+import { DishesApi, IDish } from '../../api/dishes';
+import { ICategory } from '../../api/categories';
 import { DeepPartialWithId } from '../../types/utils';
 import { apiUrl } from '../../config';
 import { handleError } from '../../errors/handler';
@@ -38,18 +38,6 @@ export const [getDishesThunk, getDishesStatusSelector] = createApiRequestThunk<I
   endpoint: '/menu/dishes?categoryId=:categoryId',
   method: 'GET',
 });
-
-export const addDishThunk = (
-  newDish: INewDish,
-  image?: File,
-): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
-  try {
-    const dish = await DishesApi.add(newDish, image);
-    dispatch(addDish(dish));
-  } catch (err) {
-    handleError(err, emojify('Упс, не удалось добавить блюдо', EmojiType.SAD));
-  }
-};
 
 export const likeDishThunk = (dishId: number): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
@@ -88,24 +76,4 @@ export const [getCategoriesThunk, getCategoriesStatusSelector] = createApiReques
   },
   endpoint: '/menu/categories',
   method: 'GET',
-});
-
-export const addCategoryThunk = (
-  categoryInfo: INewCategory,
-  image?: File,
-): AppThunk => async (dispatch: AppDispatch) => {
-  try {
-    const category = await CategoriesApi.add(categoryInfo, image);
-    dispatch(addCategory(category));
-  } catch (err) {
-    handleError(err, emojify('Упс, не удалось добавить категорию блюд', EmojiType.SAD));
-  }
-};
-
-export const [deleteCategoryThunk] = createApiRequestThunk({
-  actions: {
-    success: deleteCategory.toString(),
-  },
-  endpoint: '/menu/categories/:id',
-  method: 'DELETE',
 });

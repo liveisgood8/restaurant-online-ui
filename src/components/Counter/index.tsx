@@ -1,9 +1,9 @@
 import './styles.scss';
-import { ReactComponent as MinusIcon } from './minus.svg';
-import { ReactComponent as PlusIcon } from './plus.svg';
 
 import React, { CSSProperties } from 'react';
 import cn from 'classnames';
+import MinusIcon from '../core/icons/MinusIcon';
+import PlusIcon from '../core/icons/PlusIcon';
 
 interface ICounterProps {
   className?: string;

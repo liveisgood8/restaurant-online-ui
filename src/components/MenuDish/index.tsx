@@ -5,16 +5,17 @@ import { IDish } from '../../api/dishes';
 import { DishLikes } from './DishLikes';
 import { DishAttributeLabel } from './DishAttributeLabel';
 import { Button } from '../core/Button';
-import { EditIcon } from '../core/icons/EditIcon';
+import EditIcon from '../core/icons/EditIcon';
+import TrashIcon from '../core/icons/TrashIcon';
 
 interface IMenuDishProps {
   dish: IDish;
   canLike?: boolean;
-  showEditIcon?: boolean;
   onLike?: () => void;
   onDislike?: () => void;
   onClick?: () => void;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
@@ -23,15 +24,6 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
     <div
       className="component__dish ro-basic-shadow-hover p-2"
     >
-      {props.showEditIcon && (
-        <Button
-          onClick={props.onEdit}
-          className="dish__edit-button ro-vector-fill-white"
-          variant="success"
-          disableShadow
-          rightIcon={EditIcon}
-        />
-      )}
       <DishLikes
         className="ml-auto mr-2"
         likes={dish.likes}
@@ -49,6 +41,28 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
           <span className="ro-font-regular-small">{dish.price}₽</span>
         </div>
       </div>
+      {(props.onEdit || props.onDelete) && (
+        <div className="d-flex justify-content-end">
+          {props.onEdit && (
+            <Button
+              onClick={props.onEdit}
+              className="ro-vector-fill-white"
+              variant="success"
+              disableShadow
+              rightIcon={EditIcon}
+            />
+          )}
+          {props.onDelete && (
+            <Button
+              onClick={props.onDelete}
+              className="ml-2 ro-vector-fill-white"
+              variant="danger"
+              disableShadow
+              rightIcon={TrashIcon}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

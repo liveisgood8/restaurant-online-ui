@@ -7,15 +7,17 @@ import { NumberInput } from '../core/NumberInput';
 import { TextInput } from '../core/TextInput';
 import { TextArea } from '../core/TextInput/TextArea';
 
-interface IDishEditFormProps {
+export interface IDishEditFormProps {
   dish?: IDish;
   isLoading?: boolean;
+  categoryId: number;
   onCreate?: (dish: WithoutId<IDishBase>, image?: File) => void;
   onUpdate?: (dish: IDishBase, image?: File) => void;
 }
 
 export const DishEditForm: React.FC<IDishEditFormProps> = ({
   dish,
+  categoryId,
   isLoading,
   onCreate,
   onUpdate,
@@ -57,7 +59,7 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
   };
 
   const fireCreate = () => {
-    onCreate?.(getDishInfo());
+    onCreate?.(getDishInfo(), image);
   };
 
   const fireUpdate = () => {
@@ -93,6 +95,9 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
       carbohydrates,
       weight,
       price,
+      category: {
+        id: categoryId,
+      },
     };
   };
 
@@ -159,6 +164,7 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
         />
       </div>
       <TextArea
+        required
         wrapperClassName="mt-2"
         className="dish-editor-card__description-textarea"
         label="Описание блюда"

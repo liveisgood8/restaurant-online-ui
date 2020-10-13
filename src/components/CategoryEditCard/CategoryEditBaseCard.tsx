@@ -16,7 +16,7 @@ export interface ICategoryEditBaseCardProps {
 export const CategoryEditBaseCard: React.FC<ICategoryEditBaseCardProps> = (props) => {
   return (
     <ModalPlate
-      title="Редактирование категории"
+      title={(props.category ? 'Редактирование' : 'Добавление') + ' категории'}
       show={props.show}
       onHide={props.onHide}
     >

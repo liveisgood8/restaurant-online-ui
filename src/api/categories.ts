@@ -4,7 +4,7 @@ import { WithoutId, DeepPartialWithId } from '../types/utils';
 import { IImageUploadResponse } from './payloads/general';
 
 export const CategoriesApi = {
-  add: async (newCategory: INewCategory, image?: File): Promise<ICategory> => {
+  add: async (newCategory: WithoutId<ICategory>, image?: File): Promise<ICategory> => {
     const { data } = await AxiosInstance.post<ICategory>('/menu/categories', newCategory);
     if (image) {
       await CategoriesApi.uploadImage(data.id, image);
@@ -28,6 +28,10 @@ export const CategoriesApi = {
       dishes: undefined,
     });
     return category;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    return AxiosInstance.delete(`/menu/categories/${id}`);
   },
 
   uploadImage: async (categoryId: number, file: File): Promise<string> => {

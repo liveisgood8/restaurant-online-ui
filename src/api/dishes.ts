@@ -19,21 +19,21 @@ export const DishesApi = {
     return apiUrl + data.imageUrl;
   },
 
-  add: async (newDish: INewDish, image?: File): Promise<IDish> => {
+  add: async (newDish: WithoutId<IDishBase>, image?: File): Promise<IDish> => {
     const { data } = await AxiosInstance.post<IDish>('/menu/dishes', newDish);
+
+    let imageUrl;
     if (image) {
-      await DishesApi.uploadImage(data.id, image);
+      imageUrl = await DishesApi.uploadImage(data.id, image);
     }
 
-    return data;
+    return {
+      ...data,
+      imageUrl,
+    };
   },
 
   update: async (dish: DeepPartialWithId<IDish>, image?: File): Promise<DeepPartialWithId<IDish>> => {
-    let imageUrl;
-    if (image) {
-      imageUrl = await DishesApi.uploadImage(dish.id, image);
-    }
-
     if (Object.keys(dish).length > 1) {
       await AxiosInstance.patch(`/menu/dishes/${dish.id}`, {
         ...dish,
@@ -41,11 +41,15 @@ export const DishesApi = {
       });
     }
 
-    if (imageUrl) {
-      dish.imageUrl = imageUrl;
+    let imageUrl;
+    if (image) {
+      imageUrl = await DishesApi.uploadImage(dish.id, image);
     }
 
-    return dish;
+    return {
+      ...dish,
+      imageUrl,
+    };
   },
 
   delete: async (dishId: number): Promise<void> => {
@@ -71,6 +75,9 @@ export interface IDishBase {
   imageUrl?: string;
   weight: number;
   price: number;
+  category: {
+    id: number;
+  }
 }
 
 export interface IDish extends IDishBase {
@@ -82,11 +89,3 @@ export interface IDishLikes {
   likeCount: number;
   dislikeCount: number;
 }
-
-export interface IDishWithCategory extends IDish {
-  category: {
-    id: number;
-  };
-}
-
-export type INewDish = WithoutId<Omit<IDishWithCategory, 'likes'>>;

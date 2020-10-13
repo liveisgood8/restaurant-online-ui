@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ICategory } from '../../api/categories';
-import { IDish, IDishBase } from '../../api/dishes';
 import { WithoutId } from '../../types/utils';
 import { Button } from '../core/Button';
 import { ImageContainer } from '../core/ImageContainer';
-import { NumberInput } from '../core/NumberInput';
 import { TextInput } from '../core/TextInput';
-import { TextArea } from '../core/TextInput/TextArea';
 
 interface ICategoryEditFormProps {
   category?: ICategory;
@@ -46,7 +43,7 @@ export const CategoryEditForm: React.FC<ICategoryEditFormProps> = ({
   };
 
   const fireCreate = () => {
-    onCreate?.(getCategoryInfo());
+    onCreate?.(getCategoryInfo(), image);
   };
 
   const fireUpdate = () => {

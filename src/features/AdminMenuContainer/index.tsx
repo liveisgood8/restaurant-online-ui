@@ -2,8 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
-import { toast } from 'react-toastify';
-import { IDish, INewDish, DishesApi, IDishBase } from '../../api/dishes';
+import { IDish, IDishBase } from '../../api/dishes';
 import { getCategoriesStatusSelector,
   getCategoriesThunk,
   getDishesThunk,
@@ -13,9 +12,11 @@ import { AdminMenu } from '../../components/AdminMenu';
 import { ICategory } from '../../api/categories';
 import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 import { DishEditCard } from '../../components/DishEditCard/DishEditCard';
-import { updateCategoryThunk, updateDishThunk } from './actions';
+import { addCategoryThunk, addDishThunk, deleteCategoryThunk, deleteDishThunk, updateCategoryThunk, updateDishThunk } from './actions';
 import { DishCardModal } from '../../components/DishCardModal';
-import { CategoryEditCard } from '../../components/CategoryEditCard';
+import { CategoryAddCard, CategoryEditCard } from '../../components/CategoryEditCard';
+import { WithoutId } from '../../types/utils';
+import { DishAddCard } from '../../components/DishEditCard';
 
 enum Mode {
   ADD_DISH = 'add-dish',
@@ -33,7 +34,11 @@ export const AdminMenuContainer: React.FC = () => {
   const categories = useSelector((state: RootState) => state.menu.categories);
   const isCategoriesLoading = useSelector(getCategoriesStatusSelector);
   const isDishUpdating = useSelector((state: RootState) => state.adminMenu.dishes.isUpdating);
+  const isDishAdding = useSelector((state: RootState) => state.adminMenu.dishes.isAdding);
+  const isDishAdded = useSelector((state: RootState) => state.adminMenu.dishes.isAdded);
   const isCategoryUpdating = useSelector((state: RootState) => state.adminMenu.categories.isUpdating);
+  const isCategoryAdding = useSelector((state: RootState) => state.adminMenu.categories.isAdding);
+  const isCategoryAdded = useSelector((state: RootState) => state.adminMenu.categories.isAdded);
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
@@ -53,6 +58,16 @@ export const AdminMenuContainer: React.FC = () => {
     }
   }, [selectedCategoryId, dispatch]);
 
+  useEffect(() => {
+    if ((isCategoryAdded && mode === Mode.ADD_CATEGORY) || (isDishAdded && mode === Mode.ADD_DISH)) {
+      setMode(undefined);
+    }
+  }, [isCategoryAdded, isDishAdded, mode, setMode]);
+
+  const onAddNewDish = (dish: WithoutId<IDishBase>, image?: File) => {
+    dispatch(addDishThunk(dish, image));
+  };
+
   const onUpdateDish = (dish: IDishBase, image?: File) => {
     dispatch(updateDishThunk(dish, image));
   };
@@ -61,61 +76,36 @@ export const AdminMenuContainer: React.FC = () => {
     dispatch(updateCategoryThunk(category, image));
   };
 
-  // const onAddNewDish = (dish: Omit<INewDish, 'category' | 'likes'>, image?: File) => {
-  //   if (!categoryId) {
-  //     toast.error('Для добавления блюда необходимо выбрать категорию!');
-  //   } else {
-  //     dispatch(addDishThunk({
-  //       ...dish,
-  //       category: {
-  //         id: selectedCategoryId,
-  //       },
-  //     }, image));
-  //   }
-  // };
-
-  // const onDeleteDish = async (dish: IDish) => {
-  //   try {
-  //     await DishesApi.delete(dish.id);
-  //     dispatch(deleteDish(dish.id));
-  //     return true;
-  //   } catch (err) {
-  //     // TODO
-  //     console.error(err);
-  //     return false;
-  //   }
-  // };
-
-  // const onAddNewCategory = (category: INewCategory, image?: File) => {
-  //   dispatch(addCategoryThunk(category, image));
-  // };
-
-  // const onChangeCategory = (category: ICategory, image?: File) => {
-  //   dispatch(updateCategoryThunk(category, image));
-  // };
-
-  // const onDeleteCategory = (category: ICategory) => {
-  //   dispatch(deleteCategoryThunk({
-  //     endpoint: {
-  //       bindings: { id: category.id },
-  //     },
-  //   }));
-  // };
+  const onAddNewCategory = (category: WithoutId<ICategory>, image?: File) => {
+    dispatch(addCategoryThunk(category, image));
+  };
 
   const onDishPreview = (dish: IDish) => {
     setSelectedDishId(dish.id);
+  };
+
+  const onDishAdd = () => {
+    setMode(Mode.ADD_DISH);
   };
 
   const onDishEdit = (dish: IDish) => {
     setSelectedEditDishId(dish.id);
   };
 
-  const onCategoryAdd = () => {
+  const onDishDelete = (dish: IDish) => {
+    dispatch(deleteDishThunk(dish.id));
+  };
 
+  const onCategoryAdd = () => {
+    setMode(Mode.ADD_CATEGORY);
   };
 
   const onCategoryEdit = (category: ICategory) => {
     setSelectedEditCategoryId(category.id);
+  };
+
+  const onCategoryDelete = (category: ICategory) => {
+    dispatch(deleteCategoryThunk(category.id));
   };
 
   const makeDishPreviewCard = () => {
@@ -138,8 +128,24 @@ export const AdminMenuContainer: React.FC = () => {
     );
   };
 
+  const makeDishAddCard = () => {
+    if (mode !== Mode.ADD_DISH || !selectedCategoryId) {
+      return null;
+    }
+
+    return (
+      <DishAddCard
+        show={true}
+        categoryId={selectedCategoryId}
+        isLoading={isDishAdding}
+        onCreate={onAddNewDish}
+        onHide={() => setMode(undefined)}
+      />
+    );
+  };
+
   const makeDishEditCard = () => {
-    if (!selectedEditDishId) {
+    if (!selectedEditDishId || !selectedCategoryId) {
       return null;
     }
 
@@ -151,6 +157,7 @@ export const AdminMenuContainer: React.FC = () => {
     return (
       <DishEditCard
         dish={selectedDish}
+        categoryId={selectedCategoryId}
         isLoading={isDishUpdating}
         onUpdate={onUpdateDish}
         show={true}
@@ -163,6 +170,7 @@ export const AdminMenuContainer: React.FC = () => {
     return (
       <Fragment>
         {makeDishPreviewCard()}
+        {makeDishAddCard()}
         {makeDishEditCard()}
       </Fragment>
     );
@@ -189,6 +197,30 @@ export const AdminMenuContainer: React.FC = () => {
     );
   };
 
+  const makeCategoryAddCard = () => {
+    if (mode !== Mode.ADD_CATEGORY) {
+      return null;
+    }
+
+    return (
+      <CategoryAddCard
+        show={true}
+        isLoading={isCategoryAdding}
+        onCreate={onAddNewCategory}
+        onHide={() => setMode(undefined)}
+      />
+    );
+  };
+
+  const makeCategoryCard = () => {
+    return (
+      <Fragment>
+        {makeCategoryEditCard()}
+        {makeCategoryAddCard()}
+      </Fragment>
+    );
+  };
+
   return (
     <React.Fragment>
       {isCategoriesLoading ? (
@@ -200,12 +232,15 @@ export const AdminMenuContainer: React.FC = () => {
             categories={categories}
             selectedCategoryId={selectedCategoryId}
             onDishPreview={onDishPreview}
+            onDishAdd={onDishAdd}
             onDishEdit={onDishEdit}
+            onDishDelete={onDishDelete}
             onCategoryAdd={onCategoryAdd}
             onCategoryEdit={onCategoryEdit}
+            onCategoryDelete={onCategoryDelete}
           />
           {makeDishCard()}
-          {makeCategoryEditCard()}
+          {makeCategoryCard()}
         </Fragment>
       )}
     </React.Fragment>

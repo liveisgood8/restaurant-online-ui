@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 interface ITextAreaProps {
   className?: string;
+  required?: boolean;
   wrapperClassName?: string;
   label?: string;
   placeholder?: string;
@@ -29,6 +30,7 @@ export const TextArea: React.FC<ITextAreaProps> = (props) => {
         <span className="ro-font-light-small">{props.label}</span>
       )}
       <textarea
+        required
         className={cn(props.className, 'components__input-holder components__input-holder_textarea ro-font-light-small')}
         placeholder={props.placeholder}
         value={value}

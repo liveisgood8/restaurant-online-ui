@@ -2,7 +2,6 @@
 
 .component__category {
   width: 125px;
-  height: 165px;
   border-radius: 20px;
   background-color: $ro-colors-base-element-background;
   padding: 7px 0;
@@ -18,6 +17,7 @@
     height: 110px;
     margin: 0 7px;
     padding: 20px;
+    overflow: hidden;
   }
 
   .category__label {
@@ -25,12 +25,6 @@
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .category__edit-button {
-    position: absolute;
-    margin-top: -30px;
-    margin-left: -20px;
   }
 
   &:hover {

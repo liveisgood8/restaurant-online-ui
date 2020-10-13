@@ -7,7 +7,6 @@ import {
   clearDishes,
   likeDishThunk,
   dislikeDishThunk,
-  selectDishById,
 } from './actions';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';

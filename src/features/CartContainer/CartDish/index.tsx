@@ -1,11 +1,11 @@
 import './styles.scss';
-import { ReactComponent as TrashIcon } from './trash.svg';
 
 import React from 'react';
 import { ICartDish } from '../types';
 import { DishAttributeLabel } from '../../../components/MenuDish/DishAttributeLabel';
 import { Counter } from '../../../components/Counter';
 import { Button } from '../../../components/core/Button';
+import TrashIcon from '../../../components/core/icons/TrashIcon';
 
 interface ICartDishProps {
   onIncrease: () => void;

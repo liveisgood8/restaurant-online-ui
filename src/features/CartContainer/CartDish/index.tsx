@@ -1,4 +1,5 @@
 import './styles.scss';
+import FallbackDishImage from '../../../images/dish-image-fallback.png';
 
 import React from 'react';
 import { ICartDish } from '../types';
@@ -6,6 +7,7 @@ import { DishAttributeLabel } from '../../../components/MenuDish/DishAttributeLa
 import { Counter } from '../../../components/Counter';
 import { Button } from '../../../components/core/Button';
 import TrashIcon from '../../../components/core/icons/TrashIcon';
+import { ImageContainer } from '../../../components/core/ImageContainer';
 
 interface ICartDishProps {
   onIncrease: () => void;
@@ -17,9 +19,11 @@ export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, on
   return (
     <div className="cart-dish d-md-flex align-items-center mb-3">
       <div className="d-flex">
-        <div className="cart-dish__image-wrapper">
-          <img className="w-100 h-100" src={dish.imageUrl} alt={dish.name} />
-        </div>
+        <ImageContainer
+          className="cart-dish__image-wrapper"
+          src={dish.imageUrl}
+          fallbackSrc={FallbackDishImage}
+        />
         <div className="ml-4">
           <span className="ro-font-regular-base">{dish.name}</span>
           <DishAttributeLabel

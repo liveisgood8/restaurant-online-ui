@@ -1,5 +1,5 @@
 import './styles.scss';
-import FallbackDishImage from './fallback.png';
+import FallbackDishImage from '../../images/dish-image-fallback.png';
 
 import React from 'react';
 import { IDish } from '../../api/dishes';

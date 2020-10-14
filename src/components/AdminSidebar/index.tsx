@@ -58,7 +58,7 @@ export const AdminSidebar: React.FC<IAdminSidebarProps> = ({ selectedElement }) 
           <SideBarElement
             icon={faCube}
             link={RoutePath.ADMIN_ORDERS}
-            text="Оформление заказов"
+            text="Утверждение заказов"
             isSelected={isElementSelected(AdminSidebarElement.ORDER_CONTROL)}
           />
         </ul>

@@ -1,5 +1,5 @@
 import './styles.scss';
-import FoodPackageIcon from './food-package.svg';
+import FallbackCategoryImage from '../../images/category-image-fallback.svg';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -31,7 +31,7 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
         <div className="category__image-container">
           <ImageContainer
             src={category.imageUrl}
-            fallbackSrc={FoodPackageIcon}
+            fallbackSrc={FallbackCategoryImage}
             className="w-100 h-100"
           />
         </div>

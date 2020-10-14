@@ -1,4 +1,5 @@
 import './styles.scss';
+import FallbackDishImage from '../../images/dish-image-fallback.png';
 
 import React, { useState } from 'react';
 import { IDish } from '../../api/dishes';
@@ -46,7 +47,7 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
             <ImageContainer
               className="dish-card-modal__image"
               src={dish.imageUrl}
-              alt={dish.name}
+              fallbackSrc={FallbackDishImage}
             />
             <DishLikes
               className="mt-3"

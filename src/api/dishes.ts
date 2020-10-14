@@ -34,16 +34,15 @@ export const DishesApi = {
   },
 
   update: async (dish: DeepPartialWithId<IDish>, image?: File): Promise<DeepPartialWithId<IDish>> => {
+    let imageUrl = dish.imageUrl;
+    if (image) {
+      imageUrl = await DishesApi.uploadImage(dish.id, image);
+    }
+
     if (Object.keys(dish).length > 1) {
       await AxiosInstance.patch(`/menu/dishes/${dish.id}`, {
         ...dish,
-        imageUrl: undefined,
       });
-    }
-
-    let imageUrl;
-    if (image) {
-      imageUrl = await DishesApi.uploadImage(dish.id, image);
     }
 
     return {

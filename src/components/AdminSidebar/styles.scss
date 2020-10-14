@@ -1,4 +1,7 @@
 @import '../../variables.scss';
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins/_breakpoints';
 
 
 /// Replace `$search` with `$replace` in `$string`
@@ -18,45 +21,18 @@
 }
 
 #admin-sidebar {
+  width: 100%;
   background-color: #42a5f5;
-  position: sticky;
-  width: 100px;
-  height: 100vh;
-  top: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 2em;
+  
+  ul {
+    margin: 0;
+  }
 
   .selected-menu-element {
     position: relative;
-    background-color: $ro-colors-background;
     transition: background-color 0.3s ease-out;
     color: $ro-colors-primary;
-
-    .icon {
-      color: $ro-colors-primary;
-    }
-
-    &::before,
-    &::after {
-      content: "";
-      width: 20px;
-      height: 20px;
-      right: 0;
-      position: absolute;
-    }
-
-    $svg-fill-color: '%23' + str-replace(#{$ro-colors-background}, '#', '');
-    &::before {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path fill="' + $svg-fill-color + '" d="M0 0 Q20 0 20 20 L20 0Z" /></svg>');
-      bottom: -20px;
-    }
-
-    &::after {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path fill="' + $svg-fill-color + '" d="M0 20 Q20 20 20 0 L20 20Z" /></svg>');
-      top: -20px;
-    }
+    background-color: transparentize(#000000, 0.7);
   }
 
   .icon {
@@ -66,11 +42,30 @@
     margin-bottom: 1em;
     color: white;
     cursor: pointer;
-    transition: height 0.15s ease-out;
+  }
+}
 
-    &:hover {
-      width: 42px;
-      height: 42px;
+@include media-breakpoint-up(md) {
+  #admin-sidebar {
+    position: sticky;
+    width: 80px;
+    height: 100vh;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    ul {
+      display: block;
+
+      li {
+        transition: background-color 300ms ease-out;
+
+        &:hover {
+          background-color: transparentize(#000000, 0.85);
+        }
+      }
     }
   }
 }
+

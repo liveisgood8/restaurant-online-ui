@@ -17,7 +17,6 @@ export const ImageUpload: React.FC<IImageUploadProps> = (props) => {
   return (
     <label className={props.className}>
       <span
-        // className="components__button components__button_primary ro-font-light-small cursor-pointer"
         className="text-center text-white"
       >
         Выбрать<br />изображение

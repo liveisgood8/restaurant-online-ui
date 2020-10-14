@@ -95,6 +95,7 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
       carbohydrates,
       weight,
       price,
+      imageUrl,
       category: {
         id: categoryId,
       },

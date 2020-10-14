@@ -1,4 +1,5 @@
 import './styles.scss';
+import FoodPackageIcon from './food-package.svg';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { ICategory } from '../../api/categories';
 import { Button } from '../core/Button';
 import EditIcon from '../core/icons/EditIcon';
 import TrashIcon from '../core/icons/TrashIcon';
+import { ImageContainer } from '../core/ImageContainer';
 
 interface IDishCategoryProps {
   category: ICategory;
@@ -27,7 +29,11 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
         })}
       >
         <div className="category__image-container">
-          <img src={category.imageUrl} className="w-100" alt={category.name} />
+          <ImageContainer
+            src={category.imageUrl}
+            fallbackSrc={FoodPackageIcon}
+            className="w-100 h-100"
+          />
         </div>
         <div className="d-flex mt-2 mx-2 align-items-center text-center pb-2">
           <span className="ro-font-regular-small category__label">{category.name}</span>

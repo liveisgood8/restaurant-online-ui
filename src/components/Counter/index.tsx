@@ -9,16 +9,17 @@ interface ICounterProps {
   className?: string;
   style?: CSSProperties
   value: number;
+  disabled?: boolean;
   onIncrease?: () => void;
   onDecrease?: () => void;
 }
 
-export const Counter: React.FC<ICounterProps> = ({ className, style, value, onIncrease, onDecrease }) => {
+export const Counter: React.FC<ICounterProps> = ({ className, style, value, disabled, onIncrease, onDecrease }) => {
   return (
     <div className={cn('d-flex align-items-center component__counter px-2', className)} style={style}>
-      <MinusIcon className="cursor-pointer" onClick={onDecrease} />
+      <MinusIcon className={cn({ 'cursor-pointer': !disabled })} onClick={disabled ? undefined : onDecrease} />
       <span className="ml-2">{value}</span>
-      <PlusIcon className="cursor-pointer ml-2" onClick={onIncrease} />
+      <PlusIcon className={cn('ml-2', { 'cursor-pointer': !disabled })} onClick={disabled ? undefined : onIncrease} />
     </div>
   );
 };

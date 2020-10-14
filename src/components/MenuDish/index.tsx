@@ -1,4 +1,5 @@
 import './styles.scss';
+import FallbackDishImage from './fallback.png';
 
 import React from 'react';
 import { IDish } from '../../api/dishes';
@@ -7,6 +8,7 @@ import { DishAttributeLabel } from './DishAttributeLabel';
 import { Button } from '../core/Button';
 import EditIcon from '../core/icons/EditIcon';
 import TrashIcon from '../core/icons/TrashIcon';
+import { ImageContainer } from '../core/ImageContainer';
 
 interface IMenuDishProps {
   dish: IDish;
@@ -20,6 +22,7 @@ interface IMenuDishProps {
 
 export const MenuDish: React.FC<IMenuDishProps> = (props) => {
   const { dish } = props;
+
   return (
     <div
       className="component__dish ro-basic-shadow-hover p-2"
@@ -32,7 +35,11 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
         onDislike={props.onDislike}
       />
       <div className="d-flex flex-column cursor-pointer" onClick={props.onClick}>
-        <img className="d-block my-2 align-self-center" src={dish.imageUrl} alt={dish.name} />
+        <ImageContainer
+          className="d-block my-2 align-self-center dish__image"
+          src={dish.imageUrl}
+          fallbackSrc={FallbackDishImage}
+        />
         <div className="mx-2">
           <div className="d-flex align-items-center">
             <span className="ro-font-light-small">{dish.name}</span>

@@ -14,6 +14,10 @@
       opacity: 0.4;
     }
 
+    .no-image-preview__label {
+      display: none;
+    }
+
     .image-upload {
       display: flex;
       justify-content: center;
@@ -22,6 +26,10 @@
 }
 
 .image-container {
+  img {
+    width: 100%;
+  }
+
   .loading-spinner-wrapper {
     position: absolute;
     top: calc(50% - 25px);
@@ -37,5 +45,13 @@
     width: 80%;
     display: none;
     cursor: pointer;
+  }
+  
+  .image-container__no-image-preview {
+    border: 1px solid $ro-colors-gray-medium;
+
+    .no-image-preview__label {
+      color: $ro-colors-gray-medium;
+    }
   }
 }

@@ -64,6 +64,7 @@ export const CategoryEditForm: React.FC<ICategoryEditFormProps> = ({
 
     return {
       name,
+      imageUrl,
     };
   };
 

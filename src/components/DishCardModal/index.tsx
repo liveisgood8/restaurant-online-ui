@@ -77,6 +77,7 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
             </div>
             <div className="mt-3 align-self-end d-flex align-items-center">
               <Counter
+                disabled={disableAddInCartFeature}
                 style={{ height: '30px' }}
                 value={count}
                 onIncrease={(): void => setCount(count + 1)}

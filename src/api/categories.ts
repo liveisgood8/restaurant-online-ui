@@ -13,13 +13,9 @@ export const CategoriesApi = {
   },
 
   update: async (category: DeepPartialWithId<ICategory>, image?: File): Promise<DeepPartialWithId<ICategory>> => {
-    let imageUrl;
+    let imageUrl = category.imageUrl;
     if (image) {
       imageUrl = await CategoriesApi.uploadImage(category.id, image);
-    }
-
-    if (imageUrl) {
-      category.imageUrl = imageUrl;
     }
 
     await AxiosInstance.patch(`/menu/categories/${category.id}`, {
@@ -27,7 +23,10 @@ export const CategoriesApi = {
       imageUrl,
       dishes: undefined,
     });
-    return category;
+    return {
+      ...category,
+      imageUrl,
+    };
   },
 
   delete: async (id: number): Promise<void> => {

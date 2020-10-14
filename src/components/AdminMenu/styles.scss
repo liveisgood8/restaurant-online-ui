@@ -1,4 +1,22 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins/_breakpoints';
+
 .admin-menu__add-button {
   width: 100px;
   height: 100px;
+}
+
+.admin-menu__dish-add-button-wrapper {
+  width: 100%;
+}
+
+@include media-breakpoint-up(md) {
+  .admin-menu__dish-add-button-wrapper {
+    width: auto;
+  }
+}
+
+.admin-menu__dish-card-wrapper {
+  width: 250px;
 }

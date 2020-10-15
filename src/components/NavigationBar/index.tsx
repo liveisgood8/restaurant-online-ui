@@ -4,7 +4,7 @@ import React from 'react';
 import { ICartIndicatorProps, CartIndicatorBubble } from './CartIndicatorBubble';
 import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
-import { IUserMinimalInfo } from '../../api/auth';
+import { IUser } from '../../api/auth';
 import { UserInfoBubble } from './UserInfoBubble';
 import { Bubble } from './Bubble';
 import { isUserAdmin } from '../../app/auth/utils';
@@ -12,7 +12,7 @@ import { AdminPanelBubble } from './AdminPanelBubble';
 
 interface INavigationBarProps {
   cart: ICartIndicatorProps;
-  userInfo?: IUserMinimalInfo | null;
+  userInfo?: IUser | null;
 }
 
 export const NavigationBar: React.FC<INavigationBarProps> = ({ cart, userInfo }) => {

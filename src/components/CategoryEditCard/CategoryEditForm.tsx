@@ -79,7 +79,6 @@ export const CategoryEditForm: React.FC<ICategoryEditFormProps> = ({
         enableUploading
         className="category-editor-card__image align-self-center"
         src={imageUrl}
-        alt={name}
         onUpload={onUploadImage}
       />
       <TextInput

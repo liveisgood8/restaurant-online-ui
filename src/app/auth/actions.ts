@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
-import { AuthApi, IAuthInfo, IUser, IUserMinimalInfo } from '../../api/auth';
+import { AuthApi, IAuthInfo, IUser } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { handleError } from '../../errors/handler';
 import { AxiosInstance, getBearerAuthorizationHeader } from '../../helpers/axios-instance';
@@ -14,19 +14,19 @@ import { AppDispatch, AppThunk } from '../store';
 import { getAuthInfo, setAuthInfo } from './utils';
 
 export const setAccessToken = createAction<string | null>('@@auth/set-info');
-export const setUserInfo = createAction<IUserMinimalInfo | null>('@@auth/set-user-info');
-export const updateUserInfo = createAction<PartialWithoutId<IUserMinimalInfo>>('@@auth/update-user-info');
+export const setUserInfo = createAction<IUser | null>('@@auth/set-user-info');
+export const updateUserInfo = createAction<PartialWithoutId<IUser>>('@@auth/update-user-info');
 export const addUserBonuses = createAction<number>('@@auth/add-bonuses');
 
-function getUserInfoFromToken(token: string): IUserMinimalInfo {
+function getUserInfoFromToken(token: string): IUser {
   const tokenData = parseJwt(token);
   if (!tokenData.user) {
     throw new Error('User info is not founded in auth token');
   }
-  return tokenData.user as IUserMinimalInfo;
+  return tokenData.user as IUser;
 }
 
-function updateAxiosAndStorageAuthInfo(token: string, userInfo: IUserMinimalInfo) {
+function updateAxiosAndStorageAuthInfo(token: string, userInfo: IUser) {
   setAuthInfo({
     accessToken: token,
     userInfo: userInfo,
@@ -74,6 +74,10 @@ export const loginByOAuth2 = (
 };
 
 export const logout = (): AppThunk => (dispatch: AppDispatch): void => {
+  AxiosInstance.defaults.headers = {
+    ...AxiosInstance.defaults.headers,
+    'Authorization': undefined,
+  };
   setAuthInfo(null);
   dispatch(setAccessToken(null));
   dispatch(setUserInfo(null));
@@ -81,7 +85,7 @@ export const logout = (): AppThunk => (dispatch: AppDispatch): void => {
 };
 
 export const updateUserInfoThunk = (
-  info: PartialWithoutId<IUser>,
+  info: IUser,
 ): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
     await AuthApi.updateInfo(info);

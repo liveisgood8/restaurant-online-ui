@@ -1,5 +1,5 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
-import { IUserMinimalInfo } from '../../api/auth';
+import { IUser } from '../../api/auth';
 import { addUserBonuses, setAccessToken, setUserInfo, updateUserInfo } from './actions';
 import { getAuthInfo } from './utils';
 
@@ -21,7 +21,7 @@ const authInfoReducer = createReducer<IAuthInfoState>({
     }));
 });
 
-const userInfoReducer = createReducer<IUserMinimalInfo | null>(authInfo?.userInfo || null, (builder) => {
+const userInfoReducer = createReducer<IUser | null>(authInfo?.userInfo || null, (builder) => {
   builder
     .addCase(setUserInfo, (state, action) => action.payload)
     .addCase(updateUserInfo, (state, action) => {

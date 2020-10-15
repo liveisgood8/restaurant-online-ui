@@ -31,7 +31,7 @@ export const LoginPage: React.FC = () => {
       />
       <div className="mt-4 text-center">
         <span>Нет аккаунта?</span>
-        <Link className="ml-2" to={RoutePath.REGISTRATION}>Зарегистрируйтесь</Link>
+        <Link className="ml-2 text-primary" to={RoutePath.REGISTRATION}>Зарегестрироваться</Link>
       </div>
       <div className="text-center">
         <span className="ro-font-light-small">или</span>

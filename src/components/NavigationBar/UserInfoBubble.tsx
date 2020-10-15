@@ -1,14 +1,14 @@
 import './styles.scss';
 
 import React from 'react';
-import { IUserMinimalInfo } from '../../api/auth';
+import { IUser } from '../../api/auth';
 import { RoutePath } from '../../routes/paths';
 import { Link } from 'react-router-dom';
 import { Bubble } from './Bubble';
 
 interface IUserInfoProps {
   className?: string;
-  userInfo: IUserMinimalInfo;
+  userInfo: IUser;
 }
 
 export const UserInfoBubble: React.FC<IUserInfoProps> = ({ className, userInfo }) => {

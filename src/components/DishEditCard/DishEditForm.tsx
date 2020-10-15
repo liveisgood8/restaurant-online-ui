@@ -113,7 +113,6 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
         enableUploading
         className="dish-editor-card__image align-self-center"
         src={imageUrl}
-        alt={name}
         onUpload={onUploadImage}
       />
       <TextInput

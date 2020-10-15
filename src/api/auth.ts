@@ -1,5 +1,4 @@
 import { AxiosInstance } from '../helpers/axios-instance';
-import { PartialWithoutId } from '../types/utils';
 import { IAuthRequestBody, IRegistrationRequestBody } from './payloads/auth';
 
 export const AuthApi = {
@@ -14,26 +13,24 @@ export const AuthApi = {
   },
 
   updateInfo: async (
-    newInfo: PartialWithoutId<Omit<IUser, 'email' | 'phone' |'bonuses'>>,
-  ): Promise<IUserMinimalInfo> => {
-    const { data } = await AxiosInstance.patch<IUserMinimalInfo>('/auth/user-info', newInfo);
+    newInfo: IUser,
+  ): Promise<IUser> => {
+    const { data } = await AxiosInstance.put<IUser>('/auth/user', newInfo);
     return data;
   },
 };
 
 export interface IUser {
   id: number;
-  phone: string;
+  phone?: string;
   email: string;
-  password: string;
-  name?: string;
+  password?: string;
+  name: string;
   bonuses: number;
   authorities: string[];
 }
 
-export type IUserMinimalInfo = Pick<IUser, 'id' | 'phone' | 'email' | 'name' | 'bonuses' | 'authorities'>;
-
 export interface IAuthInfo {
   accessToken: string;
-  userInfo: IUserMinimalInfo;
+  userInfo: IUser;
 }

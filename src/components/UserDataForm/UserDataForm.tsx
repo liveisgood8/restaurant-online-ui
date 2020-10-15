@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import cn from 'classnames';
-import { IUserMinimalInfo } from '../../api/auth';
+import { IUser } from '../../api/auth';
 import { Button } from '../core/Button';
 import { TextInput } from '../core/TextInput';
 
@@ -15,7 +15,7 @@ export interface IUserData {
 interface IRegistrationFormProps {
   className?: string;
   additionalButtons?: React.ReactElement;
-  userInfo?: IUserMinimalInfo | null;
+  userInfo?: IUser | null;
   submitButtonText: string;
   isEmailEditDisabled?: boolean;
   isPasswordRequired?: boolean;
@@ -53,7 +53,7 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
 
   useEffect(() => {
     if (userInfo) {
-      setPhone(userInfo.phone);
+      setPhone(userInfo.phone || '');
       setEmail(userInfo.email);
       setName(userInfo.name);
     }

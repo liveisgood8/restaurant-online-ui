@@ -1,4 +1,4 @@
-import { IAuthInfo, IUserMinimalInfo } from '../../api/auth';
+import { IAuthInfo, IUser } from '../../api/auth';
 
 const localStorageDataKey = 'authData';
 
@@ -20,6 +20,6 @@ export function getAuthInfo(): IAuthInfo | null {
   return authInfo;
 }
 
-export function isUserAdmin(userInfo: IUserMinimalInfo): boolean {
+export function isUserAdmin(userInfo: IUser): boolean {
   return userInfo.authorities.indexOf('ADMIN') !== -1;
 }

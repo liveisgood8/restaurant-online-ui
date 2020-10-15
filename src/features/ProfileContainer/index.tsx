@@ -11,8 +11,13 @@ export const ProfileContainer: React.FC = () => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   const onUpdateInfo = (newUserData: IUserData): void => {
+    if (!userInfo) {
+      throw new Error('Для обновления информации о пользователе нужно пройти аутентификацию');
+    }
+
     dispatch(updateUserInfoThunk({
-      name: newUserData.name,
+      ...userInfo,
+      name: newUserData.name || userInfo.name,
       password: newUserData.password,
     }));
   };

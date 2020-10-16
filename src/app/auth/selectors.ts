@@ -1,6 +1,10 @@
 import { RootState } from '../store';
 import { isUserAdmin } from './utils';
 
+export function bonusesSelector(state: RootState): number | undefined {
+  return state.auth.userInfo?.bonuses;
+}
+
 export function isAuthSelector(state: RootState): boolean {
   return state.auth.authInfo.isAuthenticated;
 }

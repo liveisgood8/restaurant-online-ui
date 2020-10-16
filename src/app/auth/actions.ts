@@ -7,7 +7,7 @@ import { AxiosInstance, getBearerAuthorizationHeader } from '../../helpers/axios
 import { emojify } from '../../helpers/emoji/emoji-messages';
 import { EmojiType } from '../../helpers/emoji/emoji-type';
 import { parseJwt } from '../../helpers/jwt';
-import { showInfoNotification, showSuccessNotification } from '../../helpers/notifications';
+import { notifications } from '../../helpers/notifications';
 import { RoutePath } from '../../routes/paths';
 import { PartialWithoutId } from '../../types/utils';
 import { AppDispatch, AppThunk } from '../store';
@@ -62,7 +62,7 @@ export const loginByOAuth2 = (
     dispatch(setUserInfo(parsedUserInfo));
     if (isCredentialsExpired) {
       dispatch(push(RoutePath.PROFILE));
-      showInfoNotification('Нужно установить личный пароль 🔑', {
+      notifications.info('Нужно установить личный пароль 🔑', {
         autoClose: false,
       });
     } else {
@@ -102,7 +102,7 @@ export const updateUserInfoThunk = (
     dispatch(updateUserInfo({
       name: info.name,
     }));
-    showSuccessNotification('Данные учетной записи успешно обновлены 👌');
+    notifications.success('Данные учетной записи успешно обновлены 👌');
   } catch (err) {
     handleError(err);
   }

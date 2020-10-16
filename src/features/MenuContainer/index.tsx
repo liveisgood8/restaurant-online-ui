@@ -16,7 +16,7 @@ import { isAuthSelector } from '../../app/auth/selectors';
 import { NumberParam, useQueryParam } from 'use-query-params';
 import { DishCardModal } from '../../components/DishCardModal';
 import { addPersistentDishInCart } from '../CartContainer/actions';
-import { showSuccessNotification } from '../../helpers/notifications';
+import { notifications } from '../../helpers/notifications';
 
 export const MenuContainer: React.FC = () => {
   const [categoryId] = useQueryParam('categoryId', NumberParam);
@@ -60,7 +60,7 @@ export const MenuContainer: React.FC = () => {
   const onCart = (dish: IDish, count: number) => {
     dispatch(addPersistentDishInCart(dish, count));
     unselectDish();
-    showSuccessNotification(`${dish.name} добавлена в корзину!`);
+    notifications.success(`${dish.name} добавлена в корзину!`);
   };
 
   const unselectDish = () => {

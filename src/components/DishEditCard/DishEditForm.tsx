@@ -28,9 +28,9 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
   const [description, setDescription] = useState<string>();
   const [weight, setWeight] = useState<number>();
   const [price, setPrice] = useState<number>();
-  const [protein, setProtein] = useState<number | null>(null);
-  const [fat, setFat] = useState<number| null>(null);
-  const [carbohydrates, setCarbohydrates] = useState<number | null>(null);
+  const [protein, setProtein] = useState<number | null>();
+  const [fat, setFat] = useState<number | null>();
+  const [carbohydrates, setCarbohydrates] = useState<number | null>();
 
   useEffect(() => {
     if (dish) {
@@ -90,9 +90,9 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
     return {
       name,
       description,
-      protein,
-      fat,
-      carbohydrates,
+      protein: protein || null,
+      fat: fat || null,
+      carbohydrates: carbohydrates || null,
       weight,
       price,
       imageUrl,

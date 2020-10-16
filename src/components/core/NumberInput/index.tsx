@@ -11,7 +11,7 @@ interface INumberInputProps {
   errorText?: string;
   required?: boolean;
   placeholder?: string;
-  onChange?: (value: number) => void;
+  onChange?: (value: number | undefined) => void;
 }
 
 export const NumberInput: React.FC<INumberInputProps> = (props) => {
@@ -20,7 +20,7 @@ export const NumberInput: React.FC<INumberInputProps> = (props) => {
       {...props}
       value={props.value?.toString()}
       inputFilter={(value: string) => /^\d*$/.test(value)}
-      onChange={(value: string) => props.onChange?.(+value)}
+      onChange={(value: string) => props.onChange?.(value.length ? +value : undefined)}
     />
   );
 };

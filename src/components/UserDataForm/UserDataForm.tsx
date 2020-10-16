@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { IUser } from '../../api/auth';
 import { Button } from '../core/Button';
 import { TextInput } from '../core/TextInput';
+import { isTelephoneNumberValid } from '../../helpers/telephone-number';
 
 export interface IUserData {
   phone: string;
@@ -29,8 +30,6 @@ const validatePassword = (password: string, passwordConfirm: string): boolean =>
   return Boolean(passwordConfirm) && password === passwordConfirm;
 };
 
-// eslint-disable-next-line no-useless-escape
-const phoneRegex = /^((\+7|7|8)+([0-9]){10})$/;
 // eslint-disable-next-line no-useless-escape
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -71,7 +70,7 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
 
   const onPhoneChange = (newPhone: string) => {
     if (newPhone) {
-      setPhoneInvalid(!phoneRegex.test(newPhone));
+      setPhoneInvalid(!isTelephoneNumberValid(newPhone));
     } else {
       setPhoneInvalid(false);
     }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IOrderWithBonuses, OrdersApi } from '../../api/orders';
+import { IOrderDto, OrdersApi, PaymentMethod } from '../../api/orders';
 import { addUserBonusesThunk } from '../../app/auth/actions';
-import { isAuthSelector } from '../../app/auth/selectors';
+import { bonusesSelector, isAuthSelector } from '../../app/auth/selectors';
 import { RootState } from '../../app/store';
 import { handleError } from '../../errors/handler';
 import { cleanPersistentCart } from '../../features/CartContainer/actions';
@@ -14,18 +14,26 @@ import { OrderInfo } from './OrderInfo';
 export const OrderConfirmationPage: React.FC = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthSelector);
+  const currentBonuses = useSelector(bonusesSelector);
   const cartDishes = useSelector((state: RootState) => state.cart.dishes);
-  const [orderWithBonuses, setOrderWithBonuses] = useState<IOrderWithBonuses>();
+  const [orderData, setOrderData] = useState<IOrderDto>();
 
   const onSubmitOrder = async (orderData: IOrderData): Promise<void> => {
     try {
       const orderInfo = await OrdersApi.makeOrder({
         ...orderData,
-        entries: Object.values(cartDishes),
+        orderParts: Object.values(cartDishes).map((e) => ({
+          dishId: e.dish.id,
+          count: e.count,
+        })),
       });
-      setOrderWithBonuses(orderInfo);
+      setOrderData(orderInfo);
       if (isAuthenticated) {
-        dispatch(addUserBonusesThunk(orderInfo.bonuses));
+        if (orderInfo.receivedBonuses) {
+          dispatch(addUserBonusesThunk(orderInfo.receivedBonuses));
+        } else {
+          console.warn('authenticated but no receivedBonuses in makeOrder answer');
+        }
       }
       dispatch(cleanPersistentCart());
     } catch (err) {
@@ -33,16 +41,17 @@ export const OrderConfirmationPage: React.FC = () => {
     }
   };
 
-  if (orderWithBonuses) {
+  if (orderData) {
     return (
       <OrderInfo
-        orderWithBonuses={orderWithBonuses}
+        orderData={orderData}
       />
     );
   }
 
   return (
     <OrderForm
+      currentBonuses={currentBonuses}
       onSubmit={onSubmitOrder}
     />
   );

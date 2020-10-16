@@ -1,46 +1,35 @@
-import { IDish } from './dishes';
 import { AxiosInstance } from '../helpers/axios-instance';
+import { WithoutId } from '../types/utils';
 
 export const OrdersApi = {
-  makeOrder: async (makeOrderRequest: IMakeOrderRequest): Promise<IOrderWithBonuses> => {
-    const { data } = await AxiosInstance.post<IOrderWithBonuses>('/orders', makeOrderRequest);
+  makeOrder: async (makeOrderRequest: WithoutId<IOrderDto>): Promise<IOrderDto> => {
+    const { data } = await AxiosInstance.post<IOrderDto>('/orders', makeOrderRequest);
     return {
       ...data,
-      order: {
-        ...data.order,
-        createdAt: new Date(data.order.createdAt),
-      },
+      createdAt: new Date(data.createdAt as unknown as number),
     };
   },
 };
 
-interface IMakeOrderRequest {
-  street: string;
-  homeNumber: number;
-  entranceNumber: number;
-  floorNumber: number;
-  apartmentNumber: number;
+export interface IOrderDto {
+  id: number;
   paymentMethod: PaymentMethod;
-  entries: {
-    dish: IDish;
+  phone: string;
+  spentBonuses?: number;
+  receivedBonuses?: number;
+  isApproved?: boolean;
+  orderParts: {
+    dishId: number;
     count: number;
   }[];
-}
-
-interface IOrderInfo {
-  dish: IDish;
-}
-
-export interface IOrder {
-  id: number;
-  isApproved: boolean;
-  createdAt: Date;
-  orderInfos: IOrderInfo[];
-}
-
-export interface IOrderWithBonuses {
-  order: IOrder;
-  bonuses: number;
+  address: {
+    street: string;
+    homeNumber: number;
+    entranceNumber: number;
+    floorNumber: number;
+    apartmentNumber: number;
+  },
+  createdAt?: Date;
 }
 
 export enum PaymentMethod {

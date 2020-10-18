@@ -12,9 +12,10 @@ import { LoginPage } from '../pages/Login';
 import { RegistrationPage } from '../pages/RegistrationPage';
 import { ProfileContainer } from '../features/ProfileContainer';
 import { HomePage } from '../pages/Home';
-import { OrderConfirmationPage } from '../pages/OrderConfiramtion';
+import { OrderConfirmationPage } from '../pages/OrderConfirmation';
 import { QueryParamProvider } from 'use-query-params';
 import { OAuth2RedirectHandler } from '../features/OAuth2RedirectHandler';
+import { AdminOrdersApprovalContainer } from '../features/AdminOrdersApprovalContainer';
 
 export const Routes: React.FC = () => {
   return (
@@ -31,6 +32,8 @@ export const Routes: React.FC = () => {
             component={OrderConfirmationPage} />
           <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_DISH_MENU}
             component={AdminMenuContainer} />
+          <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_ORDERS_CONFIRMATION}
+            component={AdminOrdersApprovalContainer} />
         </Switch>
       </QueryParamProvider>
     </ConnectedRouter>

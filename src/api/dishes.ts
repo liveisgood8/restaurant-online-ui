@@ -19,6 +19,18 @@ export const DishesApi = {
     return apiUrl + data.imageUrl;
   },
 
+  get: async (categoryId: number): Promise<IDish[]> => {
+    const { data } = await AxiosInstance.get<IDish[]>('/menu/dishes', {
+      params: {
+        categoryId,
+      },
+    });
+    return data.map((d) => ({
+      ...d,
+      imageUrl: d.imageUrl ? apiUrl + d.imageUrl : undefined,
+    }));
+  },
+
   add: async (newDish: WithoutId<IDishBase>, image?: File): Promise<IDish> => {
     const { data } = await AxiosInstance.post<IDish>('/menu/dishes', newDish);
 

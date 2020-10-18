@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getDishesThunk,
   getCategoriesThunk,
-  getCategoriesStatusSelector,
   clearDishes,
   likeDishThunk,
   dislikeDishThunk,
@@ -17,6 +16,7 @@ import { NumberParam, useQueryParam } from 'use-query-params';
 import { DishCardModal } from '../../components/DishCardModal';
 import { addPersistentDishInCart } from '../CartContainer/actions';
 import { notifications } from '../../helpers/notifications';
+import { categoriesStatusSelectors } from './selectors';
 
 export const MenuContainer: React.FC = () => {
   const [categoryId] = useQueryParam('categoryId', NumberParam);
@@ -25,7 +25,7 @@ export const MenuContainer: React.FC = () => {
   const isAuthenticated = useSelector(isAuthSelector);
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
-  const isCategoriesLoading = useSelector(getCategoriesStatusSelector);
+  const isCategoriesLoading = useSelector(categoriesStatusSelectors.isFetching);
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
@@ -33,13 +33,7 @@ export const MenuContainer: React.FC = () => {
 
   useEffect(() => {
     if (categoryId) {
-      dispatch(getDishesThunk({
-        endpoint: {
-          bindings: {
-            categoryId,
-          },
-        },
-      }));
+      dispatch(getDishesThunk(categoryId));
     } else {
       dispatch(clearDishes());
     }

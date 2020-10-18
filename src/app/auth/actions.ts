@@ -40,10 +40,12 @@ function updateAxiosAndStorageAuthInfo(token: string, userInfo: IUser) {
 export const login = (authRequestData: IAuthRequestBody): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
     const { data } = await AxiosInstance.post<IAuthInfo>('/auth', authRequestData);
-    updateAxiosAndStorageAuthInfo(data.accessToken, data.userInfo);
+    const parsedUserInfo = getUserInfoFromToken(data.accessToken);
+
+    updateAxiosAndStorageAuthInfo(data.accessToken, parsedUserInfo);
 
     dispatch(setAccessToken(data.accessToken));
-    dispatch(setUserInfo(getUserInfoFromToken(data.accessToken)));
+    dispatch(setUserInfo(parsedUserInfo));
     dispatch(push(RoutePath.HOME));
   } catch (err) {
     handleError(err, emojify('Упс, не удалось совершить вход', EmojiType.SAD));
@@ -108,7 +110,7 @@ export const updateUserInfoThunk = (
   }
 };
 
-export const addUserBonusesThunk = (additionalBonuses: number): AppThunk => (dispatch: AppDispatch): void => {
+export const addUserBonusesThunk = (bonuses: number): AppThunk => (dispatch: AppDispatch): void => {
   const authInfo = getAuthInfo();
   if (!authInfo) {
     throw new Error('Bonuses could not be added when auth info is null');
@@ -118,8 +120,8 @@ export const addUserBonusesThunk = (additionalBonuses: number): AppThunk => (dis
     ...authInfo,
     userInfo: {
       ...authInfo.userInfo,
-      bonuses: authInfo.userInfo.bonuses + additionalBonuses,
+      bonuses: authInfo.userInfo.bonuses + bonuses,
     },
   });
-  dispatch(addUserBonuses(additionalBonuses));
+  dispatch(addUserBonuses(bonuses));
 };

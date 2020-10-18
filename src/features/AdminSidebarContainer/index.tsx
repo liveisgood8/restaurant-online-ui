@@ -11,7 +11,7 @@ export const AdminSidebarContainer: React.SFC = () => {
     switch (currentLocationPath) {
       case RoutePath.ADMIN_DISH_MENU:
         return AdminSidebarElement.DISH_MENU_EDITOR;
-      case RoutePath.ADMIN_ORDERS:
+      case RoutePath.ADMIN_ORDERS_CONFIRMATION:
         return AdminSidebarElement.ORDER_CONTROL;
     }
   };

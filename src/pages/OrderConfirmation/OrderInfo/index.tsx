@@ -30,7 +30,9 @@ export const OrderInfo: React.FC<IOrderInfoProps> = ({ orderData }) => {
         {orderData.createdAt && (
           <div className="mt-4">
             <span className="ro-font-light-big">Вы сделали заказ:</span>
-            <span className="ro-font-medium-big ro-text-primary d-block">{orderData.createdAt.toLocaleString()}</span>
+            <span className="ro-font-medium-big ro-text-primary d-block">
+              {new Date(orderData.createdAt).toLocaleString()}
+            </span>
           </div>
         )}
         {orderData.receivedBonuses != null && orderData.receivedBonuses > 0 && (

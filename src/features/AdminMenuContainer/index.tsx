@@ -3,20 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { IDish, IDishBase } from '../../api/dishes';
-import { getCategoriesStatusSelector,
+import {
   getCategoriesThunk,
   getDishesThunk,
   clearDishes,
 } from '../MenuContainer/actions';
 import { AdminMenu } from '../../components/AdminMenu';
 import { ICategory } from '../../api/categories';
-import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParams } from 'use-query-params';
 import { DishEditCard } from '../../components/DishEditCard/DishEditCard';
-import { addCategoryThunk, addDishThunk, deleteCategoryThunk, deleteDishThunk, updateCategoryThunk, updateDishThunk } from './actions';
+import {
+  addCategoryThunk,
+  addDishThunk,
+  deleteCategoryThunk,
+  deleteDishThunk,
+  updateCategoryThunk,
+  updateDishThunk,
+} from './actions';
 import { DishCardModal } from '../../components/DishCardModal';
 import { CategoryAddCard, CategoryEditCard } from '../../components/CategoryEditCard';
 import { WithoutId } from '../../types/utils';
 import { DishAddCard } from '../../components/DishEditCard';
+import { categoriesStatusSelectors } from '../MenuContainer/selectors';
 
 enum Mode {
   ADD_DISH = 'add-dish',
@@ -24,15 +32,18 @@ enum Mode {
 }
 
 export const AdminMenuContainer: React.FC = () => {
-  const [selectedCategoryId] = useQueryParam('categoryId', NumberParam);
-  const [selectedDishId, setSelectedDishId] = useQueryParam('dishId', NumberParam);
-  const [selectedEditCategoryId, setSelectedEditCategoryId] = useQueryParam('editCategoryId', NumberParam);
-  const [selectedEditDishId, setSelectedEditDishId] = useQueryParam('editDishId', NumberParam);
-  const [mode, setMode] = useQueryParam('mode', StringParam);
+  const [query, setQuery] = useQueryParams({
+    categoryId: NumberParam,
+    selectedDishId: NumberParam,
+    selectedEditCategoryId: NumberParam,
+    selectedEditDishId: NumberParam,
+    mode: StringParam,
+  });
+  const { categoryId: selectedCategoryId, selectedDishId, selectedEditCategoryId, selectedEditDishId, mode } = query;
   const dispatch = useDispatch();
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
-  const isCategoriesLoading = useSelector(getCategoriesStatusSelector);
+  const isCategoriesLoading = useSelector(categoriesStatusSelectors.isFetching);
   const isDishUpdating = useSelector((state: RootState) => state.adminMenu.dishes.isUpdating);
   const isDishAdding = useSelector((state: RootState) => state.adminMenu.dishes.isAdding);
   const isDishAdded = useSelector((state: RootState) => state.adminMenu.dishes.isAdded);
@@ -45,14 +56,9 @@ export const AdminMenuContainer: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(selectedCategoryId);
     if (selectedCategoryId) {
-      dispatch(getDishesThunk({
-        endpoint: {
-          bindings: {
-            categoryId: selectedCategoryId,
-          },
-        },
-      }));
+      dispatch(getDishesThunk(selectedCategoryId));
     } else {
       dispatch(clearDishes());
     }
@@ -60,9 +66,12 @@ export const AdminMenuContainer: React.FC = () => {
 
   useEffect(() => {
     if ((isCategoryAdded && mode === Mode.ADD_CATEGORY) || (isDishAdded && mode === Mode.ADD_DISH)) {
-      setMode(undefined);
+      setQuery(({
+        ...query,
+        mode: undefined,
+      }), 'push');
     }
-  }, [isCategoryAdded, isDishAdded, mode, setMode]);
+  }, [query, setQuery, isCategoryAdded, isDishAdded, mode]);
 
   const onAddNewDish = (dish: WithoutId<IDishBase>, image?: File) => {
     dispatch(addDishThunk(dish, image));
@@ -81,15 +90,27 @@ export const AdminMenuContainer: React.FC = () => {
   };
 
   const onDishPreview = (dish: IDish) => {
-    setSelectedDishId(dish.id);
+    // setSelectedDishId(dish.id);
+    setQuery(({
+      ...query,
+      selectedDishId: dish.id,
+    }), 'push');
   };
 
   const onDishAdd = () => {
-    setMode(Mode.ADD_DISH);
+    // setMode(Mode.ADD_DISH);
+    setQuery(({
+      ...query,
+      mode: Mode.ADD_DISH,
+    }), 'push');
   };
 
   const onDishEdit = (dish: IDish) => {
-    setSelectedEditDishId(dish.id);
+    // setSelectedEditDishId(dish.id);
+    setQuery(({
+      ...query,
+      selectedEditDishId: dish.id,
+    }), 'push');
   };
 
   const onDishDelete = (dish: IDish) => {
@@ -97,11 +118,19 @@ export const AdminMenuContainer: React.FC = () => {
   };
 
   const onCategoryAdd = () => {
-    setMode(Mode.ADD_CATEGORY);
+    // setMode(Mode.ADD_CATEGORY);
+    setQuery(({
+      ...query,
+      mode: Mode.ADD_CATEGORY,
+    }), 'push');
   };
 
   const onCategoryEdit = (category: ICategory) => {
-    setSelectedEditCategoryId(category.id);
+    // setSelectedEditCategoryId(category.id);
+    setQuery(({
+      ...query,
+      selectedEditCategoryId: category.id,
+    }), 'push');
   };
 
   const onCategoryDelete = (category: ICategory) => {
@@ -123,7 +152,10 @@ export const AdminMenuContainer: React.FC = () => {
         dish={selectedDish}
         isVisible={true}
         disableAddInCartFeature
-        onHide={() => setSelectedDishId(undefined)}
+        onHide={() => setQuery(({
+          ...query,
+          selectedDishId: undefined,
+        }), 'push')}
       />
     );
   };
@@ -139,7 +171,10 @@ export const AdminMenuContainer: React.FC = () => {
         categoryId={selectedCategoryId}
         isLoading={isDishAdding}
         onCreate={onAddNewDish}
-        onHide={() => setMode(undefined)}
+        onHide={() => setQuery(({
+          ...query,
+          mode: undefined,
+        }), 'push')}
       />
     );
   };
@@ -161,7 +196,10 @@ export const AdminMenuContainer: React.FC = () => {
         isLoading={isDishUpdating}
         onUpdate={onUpdateDish}
         show={true}
-        onHide={() => setSelectedEditDishId(undefined)}
+        onHide={() => setQuery(({
+          ...query,
+          selectedEditDishId: undefined,
+        }), 'push')}
       />
     );
   };
@@ -192,7 +230,10 @@ export const AdminMenuContainer: React.FC = () => {
         isLoading={isCategoryUpdating}
         onUpdate={onUpdateCategory}
         show={true}
-        onHide={() => setSelectedEditCategoryId(undefined)}
+        onHide={() => setQuery(({
+          ...query,
+          selectedEditCategoryId: undefined,
+        }), 'push')}
       />
     );
   };
@@ -207,7 +248,10 @@ export const AdminMenuContainer: React.FC = () => {
         show={true}
         isLoading={isCategoryAdding}
         onCreate={onAddNewCategory}
-        onHide={() => setMode(undefined)}
+        onHide={() => setQuery(({
+          ...query,
+          mode: undefined,
+        }), 'push')}
       />
     );
   };

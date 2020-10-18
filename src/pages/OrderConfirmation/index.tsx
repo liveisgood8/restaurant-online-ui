@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IOrderDto, OrdersApi, PaymentMethod } from '../../api/orders';
+import { IOrderDto, OrdersApi } from '../../api/orders';
 import { addUserBonusesThunk } from '../../app/auth/actions';
 import { bonusesSelector, isAuthSelector } from '../../app/auth/selectors';
 import { RootState } from '../../app/store';
@@ -31,6 +31,8 @@ export const OrderConfirmationPage: React.FC = () => {
       if (isAuthenticated) {
         if (orderInfo.receivedBonuses) {
           dispatch(addUserBonusesThunk(orderInfo.receivedBonuses));
+        } else if (orderInfo.spentBonuses) {
+          dispatch(addUserBonusesThunk(-orderInfo.spentBonuses));
         } else {
           console.warn('authenticated but no receivedBonuses in makeOrder answer');
         }

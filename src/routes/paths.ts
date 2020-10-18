@@ -6,6 +6,6 @@ export enum RoutePath {
   PROFILE = '/profile',
   ORDER_CONFIRMATION = '/order-confirmation',
   ADMIN_DISH_MENU = '/admin/dish-menu',
-  ADMIN_ORDERS = '/admin/orders',
+  ADMIN_ORDERS_CONFIRMATION = '/admin/orders-confirmation',
   OAUTH2_REDIRECT = '/oauth2/redirect',
 }

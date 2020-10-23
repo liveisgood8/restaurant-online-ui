@@ -86,6 +86,7 @@ export const AdminMenuContainer: React.FC = () => {
   };
 
   const onAddNewCategory = (category: WithoutId<ICategory>, image?: File) => {
+    console.log(category);
     dispatch(addCategoryThunk(category, image));
   };
 

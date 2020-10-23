@@ -1,7 +1,4 @@
 import './styles.scss';
-import { ReactComponent as VkIcon } from './vk.svg';
-import { ReactComponent as GoogleIcon } from './google.svg';
-import { ReactComponent as FacebookIcon } from './facebook.svg';
 
 import React from 'react';
 import { LoginForm } from './LoginForm';
@@ -13,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { RoutePath } from '../../routes/paths';
 import { OAuth2Url } from '../../config';
 import { Button } from '../../components/core/Button';
+import { Icons } from '../../components/core/icons/icons';
 
 export const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,7 +40,7 @@ export const LoginPage: React.FC = () => {
             className="oauth2-button"
             text="Войти через Vk"
             variant="default"
-            leftIcon={VkIcon}
+            leftIcon={Icons.VK}
           />
         </a>
         <a href={OAuth2Url.GOOGLE}>
@@ -50,7 +48,7 @@ export const LoginPage: React.FC = () => {
             className="oauth2-button mt-3"
             text="Войти через Google"
             variant="default"
-            leftIcon={GoogleIcon}
+            leftIcon={Icons.GOOGLE}
           />
         </a>
         <a href={OAuth2Url.FACEBOOK}>
@@ -58,7 +56,7 @@ export const LoginPage: React.FC = () => {
             className="oauth2-button mt-3"
             text="Войти через Facebook"
             variant="default"
-            leftIcon={FacebookIcon}
+            leftIcon={Icons.FACEBOOK}
           />
         </a>
       </div>

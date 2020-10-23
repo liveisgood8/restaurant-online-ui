@@ -6,8 +6,8 @@ import { ICartDish } from '../types';
 import { DishAttributeLabel } from '../../../components/MenuDish/DishAttributeLabel';
 import { Counter } from '../../../components/Counter';
 import { Button } from '../../../components/core/Button';
-import TrashIcon from '../../../components/core/icons/TrashIcon';
 import { ImageContainer } from '../../../components/core/ImageContainer';
+import { Icons } from '../../../components/core/icons/icons';
 
 interface ICartDishProps {
   onIncrease: () => void;
@@ -17,7 +17,7 @@ interface ICartDishProps {
 
 export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, onIncrease, onDecrease, onRemove }) => {
   return (
-    <div className="cart-dish d-md-flex align-items-center mb-3">
+    <div className="cart-dish d-md-flex align-items-center">
       <div className="d-flex">
         <ImageContainer
           className="cart-dish__image-wrapper"
@@ -42,7 +42,7 @@ export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, on
         <Button
           className="ml-3"
           disableShadow
-          rightIcon={TrashIcon}
+          rightIcon={Icons.TRASH}
           onClick={onRemove}
         />
       </div>

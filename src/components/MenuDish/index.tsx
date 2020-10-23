@@ -6,9 +6,8 @@ import { IDish } from '../../api/dishes';
 import { DishLikes } from './DishLikes';
 import { DishAttributeLabel } from './DishAttributeLabel';
 import { Button } from '../core/Button';
-import EditIcon from '../core/icons/EditIcon';
-import TrashIcon from '../core/icons/TrashIcon';
 import { ImageContainer } from '../core/ImageContainer';
+import { Icons } from '../core/icons/icons';
 
 interface IMenuDishProps {
   dish: IDish;
@@ -56,7 +55,7 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
               className="ro-vector-fill-white"
               variant="success"
               disableShadow
-              rightIcon={EditIcon}
+              rightIcon={Icons.PENCIL}
             />
           )}
           {props.onDelete && (
@@ -65,7 +64,7 @@ export const MenuDish: React.FC<IMenuDishProps> = (props) => {
               className="ml-2 ro-vector-fill-white"
               variant="danger"
               disableShadow
-              rightIcon={TrashIcon}
+              rightIcon={Icons.TRASH}
             />
           )}
         </div>

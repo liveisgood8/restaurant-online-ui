@@ -1,8 +1,7 @@
-import { ReactComponent as CloseIcon } from './close.svg';
-
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { Button } from '../Button';
+import { Icons } from '../icons/icons';
 
 interface IModalPlateProps {
   className?: string;
@@ -25,7 +24,7 @@ export const ModalPlate: React.FC<IModalPlateProps> = (props) => {
           disableShadow
           variant="danger"
           className="ml-auto"
-          rightIcon={CloseIcon}
+          rightIcon={Icons.CROSS}
           onClick={props.onHide}
         />
       </div>

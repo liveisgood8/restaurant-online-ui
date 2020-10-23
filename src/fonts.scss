@@ -5,8 +5,8 @@
 }
 
 @mixin big-font {
-  font-size: 1.1rem;
-  line-height: 1.2rem;
+  font-size: 1.45rem;
+  line-height: 1.7rem;
 }
 
 .ro-font-thin-small {
@@ -41,6 +41,11 @@
 
 .ro-font-regular-base {
   font-weight: $ro-font-regular-weight;
+}
+
+.ro-font-regular-big {
+  font-weight: $ro-font-regular-weight;
+  @include big-font();
 }
 
 // Medium fonts

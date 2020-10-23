@@ -1,9 +1,10 @@
 import { AxiosInstance } from '../helpers/axios-instance';
-import { WithoutId } from '../types/utils';
+import { relativeUrlToAbsolute } from '../helpers/utils';
+import { IDish } from './dishes';
 import { MsSinceEpoch } from './types';
 
 export const OrdersApi = {
-  get: async (isApproved?: boolean): Promise<IOrderDto[]> => {
+  getAll: async (isApproved?: boolean): Promise<IOrderDto[]> => {
     const { data } = await AxiosInstance.get<IOrderDto[]>('/orders', {
       params: {
         isApproved,
@@ -12,7 +13,21 @@ export const OrdersApi = {
     return data;
   },
 
-  makeOrder: async (makeOrderRequest: WithoutId<IOrderDto>): Promise<IOrderDto> => {
+  get: async (id: number): Promise<IOrderDto> => {
+    const { data } = await AxiosInstance.get<IOrderDto>(`/orders/${id}`);
+    return {
+      ...data,
+      orderParts: data.orderParts.map((p) => ({
+        ...p,
+        dish: {
+          ...p.dish,
+          imageUrl: p.dish.imageUrl ? relativeUrlToAbsolute(p.dish.imageUrl) : undefined,
+        },
+      })),
+    };
+  },
+
+  makeOrder: async (makeOrderRequest: IMakeOrderDto): Promise<IOrderDto> => {
     const { data } = await AxiosInstance.post<IOrderDto>('/orders', makeOrderRequest);
     return data;
   },
@@ -22,17 +37,10 @@ export const OrdersApi = {
   },
 };
 
-export interface IOrderDto {
-  id: number;
+export interface IBaseOrderDto {
   paymentMethod: PaymentMethod;
   phone: string;
   spentBonuses?: number;
-  receivedBonuses?: number;
-  isApproved?: boolean;
-  orderParts: {
-    dishId: number;
-    count: number;
-  }[];
   address: {
     street: string;
     homeNumber: number;
@@ -40,11 +48,29 @@ export interface IOrderDto {
     floorNumber: number;
     apartmentNumber: number;
   },
+}
+
+export interface IMakeOrderDto extends IBaseOrderDto {
+  orderParts: {
+    dishId: number;
+    count: number;
+  }[];
+}
+
+export interface IOrderDto extends IBaseOrderDto {
+  id: number;
+  receivedBonuses?: number;
+  isApproved?: boolean;
+  orderParts: {
+    dish: IDish;
+    count: number;
+    totalPrice: number;
+  }[];
   createdAt?: MsSinceEpoch;
 }
 
 export enum PaymentMethod {
-  BY_CASH_TO_THE_COURIER = 0,
-  BY_CARD_TO_THE_COURIER = 1,
-  BY_CARD_ONLINE = 2,
+  BY_CASH_TO_THE_COURIER = 'BY_CASH_TO_THE_COURIER',
+  BY_CARD_TO_THE_COURIER = 'BY_CARD_TO_THE_COURIER',
+  BY_CARD_ONLINE = 'BY_CARD_ONLINE',
 }

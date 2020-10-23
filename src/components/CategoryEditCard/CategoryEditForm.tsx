@@ -64,7 +64,7 @@ export const CategoryEditForm: React.FC<ICategoryEditFormProps> = ({
 
     return {
       name,
-      imageUrl,
+      imageUrl: imageUrl?.startsWith('blob:') ? undefined : imageUrl,
     };
   };
 

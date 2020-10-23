@@ -49,15 +49,16 @@ export const Cart: React.FC<ICartProps> = ({
   return (
     <div className="d-flex flex-column">
       <div className="mb-3">
-        {dishes.map((e, i) => (
-          <CartDish
-            key={i}
-            dish={e.dish}
-            count={e.count}
-            onIncrease={(): void => onIncreaseDishCount(e.dish)}
-            onDecrease={(): void => onDecreaseDishCount(e.dish)}
-            onRemove={(): void => onRemoveDish(e.dish)}
-          />
+        {dishes.map((e) => (
+          <div className="mb-2" key={e.dish.id}>
+            <CartDish
+              dish={e.dish}
+              count={e.count}
+              onIncrease={(): void => onIncreaseDishCount(e.dish)}
+              onDecrease={(): void => onDecreaseDishCount(e.dish)}
+              onRemove={(): void => onRemoveDish(e.dish)}
+            />
+          </div>
         ))}
       </div>
       <div className="ml-auto text-end">

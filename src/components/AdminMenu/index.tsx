@@ -7,7 +7,7 @@ import { ICategory } from '../../api/categories';
 import { MenuDish } from '../MenuDish';
 import { DishCategory } from '../DishCategory';
 import { Button } from '../core/Button';
-import PlusIcon from '../core/icons/PlusIcon';
+import { Icons } from '../core/icons/icons';
 
 interface IAdminMenuProps {
   dishes: IDish[];
@@ -30,7 +30,7 @@ export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
           <Button
             className="admin-menu__add-button ro-vector-fill-white"
             disableShadow
-            rightIcon={PlusIcon}
+            rightIcon={Icons.PLUS}
             onClick={props.onCategoryAdd}
           />
           <span className="d-block mt-2 ro-font-light-small text-center">Добавить<br />категорию</span>
@@ -54,7 +54,7 @@ export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
             <Button
               className="admin-menu__add-button ro-vector-fill-white"
               disableShadow
-              rightIcon={PlusIcon}
+              rightIcon={Icons.PLUS}
               onClick={props.onDishAdd}
             />
             <span className="d-block mt-2 ro-font-light-small text-center">Добавить<br />блюдо</span>

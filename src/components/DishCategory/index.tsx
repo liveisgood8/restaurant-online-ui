@@ -7,9 +7,8 @@ import cn from 'classnames';
 import { Location } from 'history';
 import { ICategory } from '../../api/categories';
 import { Button } from '../core/Button';
-import EditIcon from '../core/icons/EditIcon';
-import TrashIcon from '../core/icons/TrashIcon';
 import { ImageContainer } from '../core/ImageContainer';
+import { Icons } from '../core/icons/icons';
 
 interface IDishCategoryProps {
   category: ICategory;
@@ -47,7 +46,7 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
               className="ro-vector-fill-white"
               variant="success"
               disableShadow
-              rightIcon={EditIcon}
+              rightIcon={Icons.PENCIL}
             />
           )}
           {onDelete && (
@@ -56,7 +55,7 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
               className="ro-vector-fill-white"
               variant="danger"
               disableShadow
-              rightIcon={TrashIcon}
+              rightIcon={Icons.TRASH}
             />
           )}
         </div>

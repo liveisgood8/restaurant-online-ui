@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PaymentMethod } from '../../../api/orders';
+import { IBaseOrderDto, PaymentMethod } from '../../../api/orders';
 import { Button } from '../../../components/core/Button';
 import { NumberInput } from '../../../components/core/NumberInput';
 import { TextInput } from '../../../components/core/TextInput';
@@ -7,22 +7,9 @@ import { notifications } from '../../../helpers/notifications';
 import { isTelephoneNumberValid } from '../../../helpers/telephone-number';
 import { PaymentMethodComponent } from '../PaymentMethodComponent';
 
-export interface IOrderData {
-  paymentMethod: PaymentMethod;
-  phone: string;
-  spentBonuses?: number;
-  address: {
-    street: string;
-    homeNumber: number;
-    entranceNumber: number;
-    floorNumber: number;
-    apartmentNumber: number;
-  }
-}
-
 interface IOrderFormProps {
   currentBonuses?: number;
-  onSubmit: (orderData: IOrderData) => void;
+  onSubmit: (baseOrderDto: IBaseOrderDto) => void;
 }
 
 export const OrderForm: React.FC<IOrderFormProps> = ({ currentBonuses, onSubmit }) => {
@@ -88,7 +75,7 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ currentBonuses, onSubmit 
         <PaymentMethodComponent
           onChange={setPaymentMethod}
         />
-        {currentBonuses && (
+        {(currentBonuses != null) && (
           <NumberInput
             className="mt-2"
             placeholder="Использовать бонусы при оплате"

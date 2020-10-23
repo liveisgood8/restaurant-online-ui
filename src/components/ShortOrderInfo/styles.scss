@@ -1,0 +1,33 @@
+@import '../../variables.scss';
+
+.short-order-info_active {
+  background-color: $ro-colors-primary !important;
+
+  .short-order-info__order-id-label {
+    color: $ro-colors-base-element-background !important;
+  }
+
+  .short-order-info__order-label {
+    color: $ro-colors-base-element-background;
+  }
+
+  .short-order-info__time-label {
+    color: $ro-colors-base-element-background;
+  }
+}
+
+.short-order-info {
+  background-color: $ro-colors-base-element-background;
+  border-radius: 25px;
+  padding: 25px;
+
+  .short-order-info__order-id-label {
+    color: $ro-colors-primary;
+  }
+
+  .short-order-info__clock-icon {
+    width: 22px;
+    height: 22px;
+    color: $ro-colors-gray-medium;
+  }
+}

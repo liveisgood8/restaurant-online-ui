@@ -1,5 +1,5 @@
-import { apiUrl } from '../config';
 import { AxiosInstance } from '../helpers/axios-instance';
+import { relativeUrlToAbsolute } from '../helpers/utils';
 import { WithoutId, DeepPartialWithId } from '../types/utils';
 import { IImageUploadResponse } from './payloads/general';
 
@@ -8,16 +8,22 @@ export const CategoriesApi = {
     const { data } = await AxiosInstance.get<ICategory[]>('/menu/categories');
     return data.map((c) => ({
       ...c,
-      imageUrl: c.imageUrl ? apiUrl + c.imageUrl : undefined,
+      imageUrl: c.imageUrl ? relativeUrlToAbsolute(c.imageUrl) : undefined,
     }));
   },
 
   add: async (newCategory: WithoutId<ICategory>, image?: File): Promise<ICategory> => {
     const { data } = await AxiosInstance.post<ICategory>('/menu/categories', newCategory);
+
+    let imageUrl;
     if (image) {
-      await CategoriesApi.uploadImage(data.id, image);
+      imageUrl = await CategoriesApi.uploadImage(data.id, image);
     }
-    return data;
+
+    return {
+      ...data,
+      imageUrl,
+    };
   },
 
   update: async (category: DeepPartialWithId<ICategory>, image?: File): Promise<DeepPartialWithId<ICategory>> => {
@@ -52,7 +58,7 @@ export const CategoriesApi = {
         'Content-Type': `multipart/form-data`,
       },
     });
-    return apiUrl + data.imageUrl;
+    return relativeUrlToAbsolute(data.imageUrl);
   },
 
 };

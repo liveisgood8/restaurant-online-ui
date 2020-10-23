@@ -3,6 +3,8 @@ import './styles.scss';
 import React from 'react';
 import cn from 'classnames';
 import { LoadingSpinner } from '../LoadingSpinner';
+import { Icons } from '../icons/icons';
+import { Icon } from '../icons/Icon';
 
 interface IButtonProps {
   className?: string;
@@ -11,14 +13,14 @@ interface IButtonProps {
   type?: 'button' | 'submit';
   variant?: 'default' | 'primary' | 'danger' | 'success';
   disableShadow?: boolean;
-  leftIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-  rightIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  leftIcon?: Icons;
+  rightIcon?: Icons;
   isLoading?: boolean;
   onClick?: () => void;
 }
 
 export const Button: React.FC<IButtonProps> = (props) => {
-  const { leftIcon: LeftIcon, rightIcon: RightIcon } = props;
+  const { leftIcon, rightIcon } = props;
 
   return (
     <button
@@ -34,17 +36,18 @@ export const Button: React.FC<IButtonProps> = (props) => {
       onClick={props.onClick}
     >
       <div className="d-flex align-items-center justify-content-center">
-        {LeftIcon && (
-          <LeftIcon className={cn('button__icon', { 'mr-2': Boolean(props.text) })} />
+        {leftIcon != null && (
+          <Icon icon={leftIcon} className={cn('button__icon', { 'mr-2': Boolean(props.text) })} />
         )}
-        <span>{props.text}</span>
-        {!props.isLoading && RightIcon && (
-          <RightIcon className={cn('button__icon', { 'ml-2': Boolean(props.text) })} />
+        {props.text && (
+          <span>{props.text}</span>
+        )}
+        {(!props.isLoading && rightIcon != null) && (
+          <Icon icon={rightIcon} className={cn('button__icon', { 'ml-2': Boolean(props.text) })} />
         )}
         {props.isLoading && (
           <LoadingSpinner className="ml-2" style={{ width: '20px', height: '20px' }} />
         )}
-        {props.children}
       </div>
     </button>
   );

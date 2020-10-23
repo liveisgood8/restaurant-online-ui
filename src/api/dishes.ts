@@ -1,5 +1,5 @@
-import { apiUrl } from '../config';
 import { AxiosInstance } from '../helpers/axios-instance';
+import { relativeUrlToAbsolute } from '../helpers/utils';
 import { WithoutId, DeepPartialWithId } from '../types/utils';
 import { IImageUploadResponse } from './payloads/general';
 
@@ -16,7 +16,7 @@ export const DishesApi = {
         'Content-Type': `multipart/form-data`,
       },
     });
-    return apiUrl + data.imageUrl;
+    return relativeUrlToAbsolute(data.imageUrl);
   },
 
   get: async (categoryId: number): Promise<IDish[]> => {
@@ -27,7 +27,7 @@ export const DishesApi = {
     });
     return data.map((d) => ({
       ...d,
-      imageUrl: d.imageUrl ? apiUrl + d.imageUrl : undefined,
+      imageUrl: d.imageUrl ? relativeUrlToAbsolute(d.imageUrl) : undefined,
     }));
   },
 

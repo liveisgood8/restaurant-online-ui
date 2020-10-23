@@ -21,6 +21,7 @@ export interface IStatusActions {
     isUpdating: (state: RootState) => boolean;
     isAdding: (state: RootState) => boolean;
     isDeleting: (state: RootState) => boolean;
+    isSuccess: (requestType: RequestType) => (state: RootState) => boolean;
   }
 }
 
@@ -81,6 +82,7 @@ export function createStatusActions(key: string): IStatusActions {
       isUpdating: (state: RootState): boolean => state.status[key]?.isUpdating || false,
       isAdding: (state: RootState): boolean => state.status[key]?.isAdding || false,
       isDeleting: (state: RootState): boolean => state.status[key]?.isDeleting || false,
+      isSuccess: (requestType) => (state: RootState): boolean => state.status[key]?.[requestType]?.isSuccess || false,
     },
   };
 }

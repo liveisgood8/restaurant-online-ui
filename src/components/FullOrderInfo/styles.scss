@@ -1,0 +1,16 @@
+@import '../../variables.scss';
+
+.order-meta {
+  background-color: $ro-colors-base-element-background;
+  border-radius: 25px;
+  padding: 15px 25px;
+
+  .order-meta__order-id-label {
+    color: $ro-colors-primary;
+  }
+
+  .order-meta__prop-icon {
+    color: $ro-colors-gray-medium;
+    margin-right: 10px;
+  }
+}

@@ -6,6 +6,9 @@ interface IStatus {
   isAdding?: boolean;
   isUpdating?: boolean;
   isDeleting?: boolean;
+  [requestType: number]: {
+    isSuccess?: boolean;
+  }
 }
 
 export interface IRequestStatusState {
@@ -38,7 +41,11 @@ export const statusReducer = (
     return {
       ...state,
       [actionName]: {
+        ...(state[actionName] || {}),
         [statePropertyName]: true,
+        [payload]: {
+          isSuccess: false,
+        },
       },
     };
   }
@@ -47,7 +54,11 @@ export const statusReducer = (
     return {
       ...state,
       [actionName]: {
+        ...(state[actionName] || {}),
         [statePropertyName]: false,
+        [payload]: {
+          isSuccess: isSuccessType(type),
+        },
       },
     };
   }

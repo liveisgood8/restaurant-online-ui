@@ -95,7 +95,7 @@ export const DishEditForm: React.FC<IDishEditFormProps> = ({
       carbohydrates: carbohydrates || null,
       weight,
       price,
-      imageUrl,
+      imageUrl: imageUrl?.startsWith('blob:') ? undefined : imageUrl,
       category: {
         id: categoryId,
       },

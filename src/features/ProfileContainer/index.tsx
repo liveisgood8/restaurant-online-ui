@@ -36,7 +36,7 @@ export const ProfileContainer: React.FC = () => {
   );
 
   return (
-    <CenteredContainer>
+    <CenteredContainer mdColumns={10} lgColumns={8} xlColumns={6}>
       <UserDataForm
         additionalButtons={ExitButton}
         userInfo={userInfo}

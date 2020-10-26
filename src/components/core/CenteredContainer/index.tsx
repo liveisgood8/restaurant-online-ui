@@ -7,6 +7,7 @@ interface ICenteredContainerProps {
   centerVertically?: boolean;
   mdColumns?: number;
   lgColumns?: number;
+  xlColumns?: number;
 }
 
 interface IColumnSize {
@@ -19,6 +20,7 @@ export const CenteredContainer: React.FC<React.PropsWithChildren<ICenteredContai
   centerVertically,
   mdColumns,
   lgColumns,
+  xlColumns,
   children,
 }) => {
   const calculateColumnSize = useCallback((columnSize: number): IColumnSize => {
@@ -39,6 +41,7 @@ export const CenteredContainer: React.FC<React.PropsWithChildren<ICenteredContai
           sm={12}
           md={calculateColumnSize(mdColumns || 6)}
           lg={calculateColumnSize(lgColumns || 6)}
+          xl={calculateColumnSize(xlColumns || 4)}
           className={cn({ 'd-flex align-items-center': centerVertically })}
         >
           <div className={cn({ 'w-100': centerVertically }, className)}>

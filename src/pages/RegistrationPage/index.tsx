@@ -33,7 +33,7 @@ export const RegistrationPage: React.FC = () => {
   }
 
   return (
-    <CenteredContainer className="mt-5" centerVertically>
+    <CenteredContainer mdColumns={6} lgColumns={6} xlColumns={4} centerVertically={true} className="mt-5">
       <Link className="text-decoration-none d-flex justify-content-center mb-4" to={RoutePath.HOME}>
         <Logo />
       </Link>

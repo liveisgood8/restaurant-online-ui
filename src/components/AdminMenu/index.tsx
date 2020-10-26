@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import cn from 'classnames';
 import { IDish } from '../../api/dishes';
 import { ICategory } from '../../api/categories';
@@ -8,8 +8,10 @@ import { MenuDish } from '../MenuDish';
 import { DishCategory } from '../DishCategory';
 import { Button } from '../core/Button';
 import { Icons } from '../core/icons/icons';
+import { Loading } from '../core/Loading';
 
 interface IAdminMenuProps {
+  isDishesLoading?: boolean;
   dishes: IDish[];
   categories: ICategory[];
   selectedCategoryId?: number | null;
@@ -47,30 +49,36 @@ export const AdminMenu: React.FC<IAdminMenuProps> = (props) => {
         ))}
       </div>
       <div className="d-flex justify-content-center justify-content-md-start flex-wrap mt-4">
-        {props.selectedCategoryId && (
-          <div
-            className="d-flex admin-menu__dish-add-button-wrapper align-items-center justify-content-center flex-column mx-3 mb-4"
-          >
-            <Button
-              className="admin-menu__add-button ro-vector-fill-white"
-              disableShadow
-              rightIcon={Icons.PLUS}
-              onClick={props.onDishAdd}
-            />
-            <span className="d-block mt-2 ro-font-light-small text-center">Добавить<br />блюдо</span>
-          </div>
+        {props.isDishesLoading ? (
+          <Loading className="mt-5 w-100" />
+        ) : (
+          <Fragment>
+            {props.selectedCategoryId && (
+              <div
+                className="d-flex admin-menu__dish-add-button-wrapper align-items-center justify-content-center flex-column mx-3 mb-4"
+              >
+                <Button
+                  className="admin-menu__add-button ro-vector-fill-white"
+                  disableShadow
+                  rightIcon={Icons.PLUS}
+                  onClick={props.onDishAdd}
+                />
+                <span className="d-block mt-2 ro-font-light-small text-center">Добавить<br />блюдо</span>
+              </div>
+            )}
+            {props.dishes.map((e, i) => (
+              <div key={i} className="admin-menu__dish-card-wrapper mx-2 mb-4">
+                <MenuDish
+                  dish={e}
+                  canLike={false}
+                  onClick={() => props.onDishPreview?.(e)}
+                  onEdit={() => props.onDishEdit?.(e)}
+                  onDelete={() => props.onDishDelete?.(e)}
+                />
+              </div>
+            ))}
+          </Fragment>
         )}
-        {props.dishes.map((e, i) => (
-          <div key={i} className="admin-menu__dish-card-wrapper mx-2 mb-4">
-            <MenuDish
-              dish={e}
-              canLike={false}
-              onClick={() => props.onDishPreview?.(e)}
-              onEdit={() => props.onDishEdit?.(e)}
-              onDelete={() => props.onDishDelete?.(e)}
-            />
-          </div>
-        ))}
       </div>
     </React.Fragment >
   );

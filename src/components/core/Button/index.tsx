@@ -22,6 +22,8 @@ interface IButtonProps {
 export const Button: React.FC<IButtonProps> = (props) => {
   const { leftIcon, rightIcon } = props;
 
+  console.log(Boolean(props.text));
+
   return (
     <button
       disabled={props.disabled || props.isLoading}
@@ -36,7 +38,7 @@ export const Button: React.FC<IButtonProps> = (props) => {
       onClick={props.onClick}
     >
       <div className="d-flex align-items-center justify-content-center">
-        {leftIcon != null && (
+        {(!props.isLoading && leftIcon != null && rightIcon == null) && (
           <Icon icon={leftIcon} className={cn('button__icon', { 'mr-2': Boolean(props.text) })} />
         )}
         {props.text && (
@@ -46,7 +48,10 @@ export const Button: React.FC<IButtonProps> = (props) => {
           <Icon icon={rightIcon} className={cn('button__icon', { 'ml-2': Boolean(props.text) })} />
         )}
         {props.isLoading && (
-          <LoadingSpinner className="ml-2" style={{ width: '20px', height: '20px' }} />
+          <LoadingSpinner
+            className={cn({ 'ml-2': Boolean(props.text) })}
+            style={{ width: '20px', height: '20px' }}
+          />
         )}
       </div>
     </button>

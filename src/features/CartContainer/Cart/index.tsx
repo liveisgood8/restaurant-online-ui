@@ -8,6 +8,7 @@ import { RoutePath } from '../../../routes/paths';
 import { CartDish } from '../CartDish';
 import { ICartDish } from '../types';
 import { CenteredContainer } from '../../../components/core/CenteredContainer';
+import { bonusify } from '../../../helpers/money';
 
 interface ICartProps {
   dishes: ICartDish[];
@@ -64,7 +65,7 @@ export const Cart: React.FC<ICartProps> = ({
       <div className="ml-auto text-end">
         <div className="mb-3">
           <span className="ro-font-light-base">Бонусы за заказ:</span>
-          <span className="ro-font-medium-base ml-2">{calculateBonuses()}₽</span>
+          <span className="ro-font-medium-base ml-2">{bonusify(calculateBonuses())}</span>
         </div>
         <div className="mb-3">
           <span className="ro-font-light-base">Стоимость заказа:</span>

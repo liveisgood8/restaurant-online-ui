@@ -1,6 +1,6 @@
 import emptyImage from './empty.png';
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NumberParam, useQueryParam } from 'use-query-params';
@@ -13,14 +13,16 @@ import { ShortOrderInfo } from '../../components/ShortOrderInfo';
 import { approveOrder, fetchOrder, getNonApprovedOrders, setCurrentOrderAction } from './actions';
 import { orderApprovalStatusSelectors } from './selectors';
 import { CenteredContainer } from '../../components/core/CenteredContainer';
+import { Loading } from '../../components/core/Loading';
 
 export const AdminOrdersApprovalContainer: React.FC = () => {
   const [orderId, setOrderId] = useQueryParam('orderId', NumberParam);
   const dispatch = useDispatch();
-  const [fetched, setFetched] = useState(false);
   const nonApprovedOrders = useSelector((state: RootState) => state.adminApprovalOrders.nonApprovedOrders);
   const currentOrder = useSelector((state: RootState) => state.adminApprovalOrders.currentOrder);
+  const isFetchingNonApprovedOrders = useSelector(orderApprovalStatusSelectors.isFetching);
   const isFetchingNonApprovedOrdersDone = useSelector(orderApprovalStatusSelectors.isSuccess(RequestType.FETCH));
+  const isApproving = useSelector(orderApprovalStatusSelectors.isUpdating);
   const isApproveSuccess = useSelector(orderApprovalStatusSelectors.isSuccess(RequestType.PARTIAL_UPDATE));
 
   useEffect(() => {
@@ -65,7 +67,6 @@ export const AdminOrdersApprovalContainer: React.FC = () => {
     setOrderId(undefined);
   };
 
-  console.log(isFetchingNonApprovedOrdersDone);
   if (isFetchingNonApprovedOrdersDone && !nonApprovedOrders.length) {
     return (
       <CenteredContainer className="text-center">
@@ -79,27 +80,38 @@ export const AdminOrdersApprovalContainer: React.FC = () => {
     <Container fluid={true}>
       <Row>
         <Col md={12} lg={5} xl={4}>
-          {nonApprovedOrders.map((o) => (
-            <div key={o.id} className="mb-3">
-              <ShortOrderInfo
-                order={o}
-                isActive={o.id === orderId}
-                onExpand={() => handleOrderExpand(o)}
-                onCollapse={handleOrderCollapse}
-              />
-            </div>
-          ))}
+          {(!orderId && isFetchingNonApprovedOrders) ? (
+            <Loading className="m-2 m-md-5" />
+          ) : (
+            <Fragment>
+              {nonApprovedOrders.map((o) => (
+                <div key={o.id} className="mb-3">
+                  <ShortOrderInfo
+                    order={o}
+                    isActive={o.id === orderId}
+                    onExpand={() => handleOrderExpand(o)}
+                    onCollapse={handleOrderCollapse}
+                  />
+                </div>
+              ))}
+            </Fragment>
+          )}
         </Col>
         {currentOrder && (
           <Col lg={7} xl={8}>
-            <FullOrderInfo
-              onApprove={() => handleOrderApprove(currentOrder)}
-              onDishCountIncrease={(dish) => handleOrderDishCountIncrease(currentOrder, dish)}
-              onDishCountDecrease={(dish) => handleOrderDishCountDecrease(currentOrder, dish)}
-              onDishRemove={(dish) => handleOrderDishRemove(currentOrder, dish)}
-              key={currentOrder.id}
-              order={currentOrder}
-            />
+            {(orderId && isFetchingNonApprovedOrders) ? (
+              <Loading className="m-2 m-md-5" />
+            ) : (
+              <FullOrderInfo
+                isApproving={isApproving}
+                onApprove={() => handleOrderApprove(currentOrder)}
+                onDishCountIncrease={(dish) => handleOrderDishCountIncrease(currentOrder, dish)}
+                onDishCountDecrease={(dish) => handleOrderDishCountDecrease(currentOrder, dish)}
+                onDishRemove={(dish) => handleOrderDishRemove(currentOrder, dish)}
+                key={currentOrder.id}
+                order={currentOrder}
+              />
+            )}
           </Col>
         )}
       </Row>

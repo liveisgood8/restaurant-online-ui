@@ -1,9 +1,11 @@
+import { ReactComponent as LogoIcon } from './svgs/logo.svg';
 import { ReactComponent as VkIcon } from './svgs/vk.svg';
 import { ReactComponent as GoogleIcon } from './svgs/google.svg';
 import { ReactComponent as FacebookIcon } from './svgs/facebook.svg';
 import { ReactComponent as MinusIcon } from './svgs/minus.svg';
 import { ReactComponent as PlusIcon } from './svgs/plus.svg';
 import { ReactComponent as ClockIcon } from './svgs/clock.svg';
+import { ReactComponent as BurgerIcon } from './svgs/burger.svg';
 
 import { faAngleDoubleLeft, faAngleDoubleRight, faCheck, faMapMarkerAlt, faPencilAlt, faPhoneAlt, faReceipt, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -44,6 +46,8 @@ const toFontAwesomeIcon = (icon: Icons) => {
 
 const getNativeIconComponent = (icon: Icons) => {
   switch (icon) {
+    case Icons.LOGO:
+      return LogoIcon;
     case Icons.VK:
       return VkIcon;
     case Icons.GOOGLE:
@@ -56,6 +60,8 @@ const getNativeIconComponent = (icon: Icons) => {
       return PlusIcon;
     case Icons.CLOCK:
       return ClockIcon;
+    case Icons.BURGER:
+      return BurgerIcon;
   }
 };
 

@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { IDish, IDishBase } from '../../api/dishes';
 import {
@@ -20,11 +19,14 @@ import {
   updateCategoryThunk,
   updateDishThunk,
 } from './actions';
+import { adminDishesStatusSelector, adminCategoriesStatusSelector } from './selectors';
 import { DishCardModal } from '../../components/DishCardModal';
 import { CategoryAddCard, CategoryEditCard } from '../../components/CategoryEditCard';
 import { WithoutId } from '../../types/utils';
 import { DishAddCard } from '../../components/DishEditCard';
-import { categoriesStatusSelectors } from '../MenuContainer/selectors';
+import { categoriesStatusSelectors, dishesStatusSelectors } from '../MenuContainer/selectors';
+import { Loading } from '../../components/core/Loading';
+import { RequestType } from '../../app/status/helpers';
 
 enum Mode {
   ADD_DISH = 'add-dish',
@@ -43,20 +45,20 @@ export const AdminMenuContainer: React.FC = () => {
   const dispatch = useDispatch();
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
+  const isDishesLoading = useSelector(dishesStatusSelectors.isFetching);
+  const isDishUpdating = useSelector(adminDishesStatusSelector.isUpdating);
+  const isDishAdding = useSelector(adminDishesStatusSelector.isAdding);
+  const isDishAdded = useSelector(adminDishesStatusSelector.isSuccess(RequestType.ADD));
   const isCategoriesLoading = useSelector(categoriesStatusSelectors.isFetching);
-  const isDishUpdating = useSelector((state: RootState) => state.adminMenu.dishes.isUpdating);
-  const isDishAdding = useSelector((state: RootState) => state.adminMenu.dishes.isAdding);
-  const isDishAdded = useSelector((state: RootState) => state.adminMenu.dishes.isAdded);
-  const isCategoryUpdating = useSelector((state: RootState) => state.adminMenu.categories.isUpdating);
-  const isCategoryAdding = useSelector((state: RootState) => state.adminMenu.categories.isAdding);
-  const isCategoryAdded = useSelector((state: RootState) => state.adminMenu.categories.isAdded);
+  const isCategoryUpdating = useSelector(adminCategoriesStatusSelector.isUpdating);
+  const isCategoryAdding = useSelector(adminCategoriesStatusSelector.isFetching);
+  const isCategoryAdded = useSelector(adminCategoriesStatusSelector.isSuccess(RequestType.ADD));
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(selectedCategoryId);
     if (selectedCategoryId) {
       dispatch(getDishesThunk(selectedCategoryId));
     } else {
@@ -86,7 +88,6 @@ export const AdminMenuContainer: React.FC = () => {
   };
 
   const onAddNewCategory = (category: WithoutId<ICategory>, image?: File) => {
-    console.log(category);
     dispatch(addCategoryThunk(category, image));
   };
 
@@ -269,10 +270,11 @@ export const AdminMenuContainer: React.FC = () => {
   return (
     <React.Fragment>
       {isCategoriesLoading ? (
-        <Loading />
+        <Loading className="mt-5" />
       ) : (
         <Fragment>
           <AdminMenu
+            isDishesLoading={isDishesLoading}
             dishes={dishes}
             categories={categories}
             selectedCategoryId={selectedCategoryId}

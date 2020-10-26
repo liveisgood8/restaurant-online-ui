@@ -1,4 +1,5 @@
 export enum Icons {
+  LOGO,
   VK,
   GOOGLE,
   FACEBOOK,
@@ -14,4 +15,5 @@ export enum Icons {
   CHECK,
   DOUBLE_RIGHT_ARROW,
   DOUBLE_LEFT_ARROW,
+  BURGER,
 }

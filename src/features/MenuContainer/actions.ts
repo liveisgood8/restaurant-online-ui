@@ -59,12 +59,12 @@ export const dislikeDishThunk = (dishId: number): AppThunk => async (dispatch: A
 
 export const getCategoriesThunk = (): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    dispatch(dishesStatus.actions.request(RequestType.FETCH));
+    dispatch(categoriesStatus.actions.request(RequestType.FETCH));
     const categories = await CategoriesApi.get();
     dispatch(setCategories(categories));
-    dispatch(dishesStatus.actions.success(RequestType.FETCH));
+    dispatch(categoriesStatus.actions.success(RequestType.FETCH));
   } catch (err) {
-    dispatch(dishesStatus.actions.failure(RequestType.FETCH));
+    dispatch(categoriesStatus.actions.failure(RequestType.FETCH));
     handleError(err, emojify('Упс, не удалось получить список категорий', EmojiType.SAD));
   }
 };

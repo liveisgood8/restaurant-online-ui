@@ -1,3 +1,5 @@
+import './styles.scss';
+
 import React, { Fragment, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import cn from 'classnames';
@@ -107,17 +109,50 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
   };
 
   return (
-    <Form className={cn(className, 'd-flex', 'flex-column')} onSubmit={onSubmitForm}>
+    <Form className={cn(className, 'user-data-form', 'd-flex', 'flex-column')} onSubmit={onSubmitForm}>
+      <div className="text-center">
+        <p className="mb-1 ro-font-medium-base">{userInfo ? 'Редактирование аккаунта' : 'Регистрация аккаунта'}</p>
+        {userInfo ? (
+          <p className="ro-font-thin-small">
+            Для изменения личных данных
+            <br />
+            вы можете отредактировать информацию
+            <br />
+            в любом из доступных полей
+          </p>
+        ) : (
+          <p className="ro-font-thin-small">
+            Для регистрации аккаунта заполните
+            <br />
+            ваши учетные данные и минимальную
+            <br />
+            информацию о себе
+          </p>
+        )}
+
+      </div>
       {userInfo != null ? (
         <Fragment>
-          <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
-            <span>Ваш номер телефона:</span>
-            <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.phone}</span>
-          </div>
           <div className="align-self-center mb-4 d-flex d-lg-block flex-column align-items-center">
             <span>Ваш почтовый адрес:</span>
             <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.email}</span>
           </div>
+          {userInfo.phone ? (
+            <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
+              <span>Ваш номер телефона:</span>
+              <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.phone}</span>
+            </div>
+          ) : (
+            <TextInput
+              className="mb-3"
+              required
+              placeholder="Телефон"
+              showWarning={isPhoneInvalid}
+              warningText={isPhoneInvalid ? 'Некорректный номер' : undefined}
+              value={phone}
+              onChange={onPhoneChange}
+            />
+          )}
         </Fragment>
       ) : (
         <Fragment>

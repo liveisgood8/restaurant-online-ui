@@ -8,6 +8,7 @@ import { IDish } from '../../api/dishes';
 
 interface IFullOrderInfoProps {
   order: IOrderDto;
+  isApproving?: boolean;
   onApprove: () => void;
   onDishCountIncrease: (dish: IDish) => void;
   onDishCountDecrease: (dish: IDish) => void;
@@ -16,6 +17,7 @@ interface IFullOrderInfoProps {
 
 export const FullOrderInfo: React.FC<IFullOrderInfoProps> = ({
   order,
+  isApproving,
   onApprove,
   onDishCountIncrease,
   onDishCountDecrease,
@@ -24,6 +26,7 @@ export const FullOrderInfo: React.FC<IFullOrderInfoProps> = ({
   return (
     <div>
       <OrderMeta
+        isApproving={isApproving}
         order={order}
         onApprove={onApprove}
       />

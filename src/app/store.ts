@@ -5,7 +5,6 @@ import { menuReducer } from '../features/MenuContainer/reducer';
 import { cartReducer } from '../features/CartContainer/reducer';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { authReducer } from './auth/reducer';
-import { adminMenuReducer } from '../features/AdminMenuContainer/reducer';
 import { adminApprovalOrdersReducer } from '../features/AdminOrdersApprovalContainer/reducer';
 
 export const history = createBrowserHistory();
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
   status: statusReducer,
   auth: authReducer,
   menu: menuReducer,
-  adminMenu: adminMenuReducer,
   adminApprovalOrders: adminApprovalOrdersReducer,
   cart: cartReducer,
   router: connectRouter(history),

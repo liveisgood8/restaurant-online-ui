@@ -6,6 +6,7 @@ import { IOrderDto } from '../../../api/orders';
 import { CenteredContainer } from '../../../components/core/CenteredContainer';
 import { RoutePath } from '../../../routes/paths';
 import { Button } from '../../../components/core/Button';
+import { bonusify } from '../../../helpers/money';
 
 interface IOrderInfoProps {
   orderData: IOrderDto;
@@ -38,7 +39,7 @@ export const OrderInfo: React.FC<IOrderInfoProps> = ({ orderData }) => {
         {orderData.receivedBonuses != null && orderData.receivedBonuses > 0 && (
           <div className="mt-4">
             <span className="ro-font-light-big">Вам начислено бонусов:</span>
-            <span className="ro-font-medium-big ro-text-primary d-block">{orderData.receivedBonuses}</span>
+            <span className="ro-font-medium-big ro-text-primary d-block">{bonusify(orderData.receivedBonuses)}</span>
           </div>
         )}
       </div>

@@ -1,11 +1,12 @@
 import React from 'react';
 import { IOrderDto, PaymentMethod } from '../../api/orders';
-import { monetize } from '../../helpers/money';
+import { bonusify, monetize } from '../../helpers/money';
 import { Button } from '../core/Button';
 import { Icon } from '../core/icons/Icon';
 import { Icons } from '../core/icons/icons';
 
 interface IOrderMetaProps {
+  isApproving?: boolean;
   order: IOrderDto;
   onApprove: () => void;
 }
@@ -32,7 +33,7 @@ const getTotalPrice = (order: IOrderDto) => {
   return price;
 };
 
-export const OrderMeta: React.FC<IOrderMetaProps> = ({ order, onApprove }) => {
+export const OrderMeta: React.FC<IOrderMetaProps> = ({ isApproving, order, onApprove }) => {
   return (
     <div className="order-meta d-flex flex-column flex-md-row">
       <div>
@@ -59,7 +60,7 @@ export const OrderMeta: React.FC<IOrderMetaProps> = ({ order, onApprove }) => {
           </div>
           <div className="mt-1">
             <span>Оплачено бонусами:</span>
-            <span className="ml-1 ro-font-medium-base">{monetize(order.spentBonuses)}</span>
+            <span className="ml-1 ro-font-medium-base">{bonusify(order.spentBonuses)}</span>
           </div>
         </div>
       </div>
@@ -69,6 +70,7 @@ export const OrderMeta: React.FC<IOrderMetaProps> = ({ order, onApprove }) => {
         disableShadow={true}
         leftIcon={Icons.CHECK}
         onClick={onApprove}
+        isLoading={isApproving}
       />
     </div>
   );

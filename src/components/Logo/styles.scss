@@ -1,0 +1,13 @@
+@import '../../variables.scss';
+
+.logo {
+  padding: 5px 10px;
+  border-radius: 20px;
+  width: 160px;
+  background-color: $ro-colors-base-element-background;
+
+  .logo__label {
+    margin-left: 10px;
+    color: $ro-colors-primary;
+  }
+}

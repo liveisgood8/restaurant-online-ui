@@ -7,7 +7,6 @@ import {
   likeDishThunk,
   dislikeDishThunk,
 } from './actions';
-import { Loading } from '../../components/Loading';
 import { RootState } from '../../app/store';
 import { Menu } from '../../components/Menu';
 import { IDish } from '../../api/dishes';
@@ -16,7 +15,8 @@ import { NumberParam, useQueryParam } from 'use-query-params';
 import { DishCardModal } from '../../components/DishCardModal';
 import { addPersistentDishInCart } from '../CartContainer/actions';
 import { notifications } from '../../helpers/notifications';
-import { categoriesStatusSelectors } from './selectors';
+import { categoriesStatusSelectors, dishesStatusSelectors } from './selectors';
+import { Loading } from '../../components/core/Loading';
 
 export const MenuContainer: React.FC = () => {
   const [categoryId] = useQueryParam('categoryId', NumberParam);
@@ -26,6 +26,7 @@ export const MenuContainer: React.FC = () => {
   const dishes = useSelector((state: RootState) => state.menu.dishes);
   const categories = useSelector((state: RootState) => state.menu.categories);
   const isCategoriesLoading = useSelector(categoriesStatusSelectors.isFetching);
+  const isDishesLoading = useSelector(dishesStatusSelectors.isFetching);
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
@@ -83,6 +84,7 @@ export const MenuContainer: React.FC = () => {
       ) : (
         <Fragment>
           <Menu
+            isDishesLoading={isDishesLoading}
             dishes={dishes}
             categories={categories}
             selectedCategoryId={categoryId}

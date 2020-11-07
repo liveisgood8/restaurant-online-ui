@@ -23,7 +23,7 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
       <Link
         className="text-decoration-none text-color-inherit"
         to={(location: Location) => ({
-          ...location,
+          pathname: location.pathname,
           search: `?categoryId=${category.id}`,
         })}
       >

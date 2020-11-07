@@ -22,8 +22,6 @@ interface IButtonProps {
 export const Button: React.FC<IButtonProps> = (props) => {
   const { leftIcon, rightIcon } = props;
 
-  console.log(Boolean(props.text));
-
   return (
     <button
       disabled={props.disabled || props.isLoading}

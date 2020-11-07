@@ -23,7 +23,9 @@ export const OrderConfirmationPage: React.FC = () => {
       const orderInfo = await OrdersApi.makeOrder({
         ...baseOrderDto,
         orderParts: Object.values(cartDishes).map((e) => ({
-          dishId: e.dish.id,
+          dish: {
+            id: e.dish.id,
+          },
           count: e.count,
         })),
       });

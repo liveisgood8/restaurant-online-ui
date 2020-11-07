@@ -52,7 +52,9 @@ export interface IBaseOrderDto {
 
 export interface IMakeOrderDto extends IBaseOrderDto {
   orderParts: {
-    dishId: number;
+    dish: {
+      id: number,
+    };
     count: number;
   }[];
 }

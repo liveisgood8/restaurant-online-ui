@@ -8,6 +8,8 @@ import { Counter } from '../../../components/Counter';
 import { Button } from '../../../components/core/Button';
 import { ImageContainer } from '../../../components/core/ImageContainer';
 import { Icons } from '../../../components/core/icons/icons';
+import { TextTooltip } from '../../../components/core/TextTooltip';
+import { monetize } from '../../../helpers/money';
 
 interface ICartDishProps {
   onIncrease: () => void;
@@ -38,7 +40,9 @@ export const CartDish: React.FC<ICartDish & ICartDishProps> = ({ dish, count, on
           onIncrease={onIncrease}
           onDecrease={onDecrease}
         />
-        <span className="ro-font-medium-base ml-3">{`${dish.price}₽`}</span>
+        <TextTooltip placement="right-end" text={monetize(dish.price)}>
+          <span className="ro-font-medium-base ml-2 cart-dish__price">{monetize(dish.price)}</span>
+        </TextTooltip>
         <Button
           className="ml-3"
           disableShadow

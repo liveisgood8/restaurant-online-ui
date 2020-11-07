@@ -9,4 +9,11 @@
     width: 90px;
     height: 90px;
   }
+
+  .cart-dish__price {
+    width: 80px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

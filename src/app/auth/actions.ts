@@ -90,19 +90,19 @@ export const updateUserInfoThunk = (
   info: IUser,
 ): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   try {
-    await AuthApi.updateInfo(info);
+    const newUser = await AuthApi.updateInfo(info);
     const authInfo = getAuthInfo();
-    if (authInfo) {
-      setAuthInfo({
-        ...authInfo,
-        userInfo: {
-          ...authInfo.userInfo,
-          name: info.name,
-        },
-      });
+    if (!authInfo) {
+      throw new Error('Could not update user info because user is not authorized');
     }
+
+    setAuthInfo({
+      ...authInfo,
+      userInfo: newUser,
+    });
+
     dispatch(updateUserInfo({
-      name: info.name,
+      ...newUser,
     }));
     notifications.success('Данные учетной записи успешно обновлены 👌');
   } catch (err) {

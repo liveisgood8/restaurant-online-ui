@@ -18,6 +18,7 @@ export const ProfileContainer: React.FC = () => {
     dispatch(updateUserInfoThunk({
       ...userInfo,
       name: newUserData.name || userInfo.name,
+      phone: newUserData.phone,
       password: newUserData.password,
     }));
   };

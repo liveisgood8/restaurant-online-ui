@@ -133,12 +133,12 @@ export const UserDataForm: React.FC<IRegistrationFormProps> = ({
       </div>
       {userInfo != null ? (
         <Fragment>
-          <div className="align-self-center mb-4 d-flex d-lg-block flex-column align-items-center">
+          <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
             <span>Ваш почтовый адрес:</span>
             <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.email}</span>
           </div>
           {userInfo.phone ? (
-            <div className="align-self-center mb-2 d-flex d-lg-block flex-column align-items-center">
+            <div className="align-self-center mb-4 d-flex d-lg-block flex-column align-items-center">
               <span>Ваш номер телефона:</span>
               <span className="d-block d-lg-inline ro-font-regular-base ml-2">{userInfo.phone}</span>
             </div>

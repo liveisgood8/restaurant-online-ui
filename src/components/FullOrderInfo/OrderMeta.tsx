@@ -29,7 +29,13 @@ const paymentMethodToString = (method: PaymentMethod) => {
 
 const getTotalPrice = (order: IOrderDto) => {
   let price = 0;
-  order.orderParts.forEach((p) => price += p.totalPrice);
+  order.orderParts.forEach((p) => price += p.sellingPrice * p.count);
+
+  price -= order.spentBonuses || 0;
+  if (price < 0) {
+    price = 0;
+  }
+
   return price;
 };
 

@@ -26,13 +26,17 @@ export const getNonApprovedOrders = (): AppThunk => async (dispatch: AppDispatch
   }
 };
 
-export const approveOrder = (id: number): AppThunk => async (dispatch: AppDispatch) => {
+export const approveOrder = (order: IOrderDto): AppThunk => async (dispatch: AppDispatch) => {
   try {
     dispatch(ordersApprovalStatus.actions.request(RequestType.PARTIAL_UPDATE));
-    await OrdersApi.approveOrder(id);
-    dispatch(deleteNonApprovedOrder(id));
+    await OrdersApi.putOrder(order.id, {
+      ...order,
+      isApproved: true,
+    });
+    dispatch(deleteNonApprovedOrder(order.id));
     dispatch(ordersApprovalStatus.actions.success(RequestType.PARTIAL_UPDATE));
-    notifications.success(emojify(`Заказ №${id} успешно подтвержден`, EmojiType.OK));
+
+    notifications.success(emojify(`Заказ №${order.id} успешно подтвержден`, EmojiType.OK));
   } catch (err) {
     dispatch(ordersApprovalStatus.actions.failure(RequestType.PARTIAL_UPDATE));
     handleError(err, emojify('Упс, не удалось подтвердить заказ', EmojiType.SAD));

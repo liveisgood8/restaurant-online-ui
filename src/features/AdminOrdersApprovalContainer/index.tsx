@@ -43,20 +43,30 @@ export const AdminOrdersApprovalContainer: React.FC = () => {
     }
   }, [setOrderId, isApproveSuccess]);
 
-  const handleOrderDishCountIncrease = (order: IOrderDto, dish: IDish) => {
-
-  };
-
-  const handleOrderDishCountDecrease = (order: IOrderDto, dish: IDish) => {
-
+  const addOrderDishCount = (order: IOrderDto, dish: IDish, delta: number) => {
+    dispatch(setCurrentOrderAction({
+      ...order,
+      orderParts: order.orderParts.map((part) => {
+        if (part.dish.id === dish.id) {
+          return {
+            ...part,
+            count: part.count + delta,
+          };
+        }
+        return part;
+      }),
+    }));
   };
 
   const handleOrderDishRemove = (order: IOrderDto, dish: IDish) => {
-
+    dispatch(setCurrentOrderAction({
+      ...order,
+      orderParts: order.orderParts.filter((part) => part.dish.id !== dish.id),
+    }));
   };
 
   const handleOrderApprove = (order: IOrderDto): void => {
-    dispatch(approveOrder(order.id));
+    dispatch(approveOrder(order));
   };
 
   const handleOrderExpand = (order: IOrderDto): void => {
@@ -105,8 +115,8 @@ export const AdminOrdersApprovalContainer: React.FC = () => {
               <FullOrderInfo
                 isApproving={isApproving}
                 onApprove={() => handleOrderApprove(currentOrder)}
-                onDishCountIncrease={(dish) => handleOrderDishCountIncrease(currentOrder, dish)}
-                onDishCountDecrease={(dish) => handleOrderDishCountDecrease(currentOrder, dish)}
+                onDishCountIncrease={(dish) => addOrderDishCount(currentOrder, dish, 1)}
+                onDishCountDecrease={(dish) => addOrderDishCount(currentOrder, dish, -1)}
                 onDishRemove={(dish) => handleOrderDishRemove(currentOrder, dish)}
                 key={currentOrder.id}
                 order={currentOrder}

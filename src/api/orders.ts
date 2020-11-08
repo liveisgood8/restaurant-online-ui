@@ -32,8 +32,9 @@ export const OrdersApi = {
     return data;
   },
 
-  approveOrder: async (id: number): Promise<void> => {
-    return AxiosInstance.post(`/orders/${id}/approve`);
+  putOrder: async (id: number, order: IOrderDto): Promise<IOrderDto> => {
+    const { data } = await AxiosInstance.put<IOrderDto>(`/orders/${id}`, order);
+    return data;
   },
 };
 
@@ -65,8 +66,8 @@ export interface IOrderDto extends IBaseOrderDto {
   isApproved?: boolean;
   orderParts: {
     dish: IDish;
+    sellingPrice: number;
     count: number;
-    totalPrice: number;
   }[];
   createdAt?: MsSinceEpoch;
 }

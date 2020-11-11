@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+
+.plate {
+  @include ro-shadow-transition();
+  @include ro-basic-shadow();
+
+  background-color: $ro-colors-base-element-background;
+  border-radius: 20px;
+}

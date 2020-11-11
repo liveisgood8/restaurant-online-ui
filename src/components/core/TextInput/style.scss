@@ -1,7 +1,7 @@
 @import 'variables.scss';
 
 .components__input-holder {
-  @include ro-basic-shadow-transition;
+  @include ro-shadow-transition;
 
   min-height: 2rem;
 

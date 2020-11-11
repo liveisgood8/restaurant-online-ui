@@ -1,9 +1,21 @@
 import React, { useEffect } from 'react';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { setAccessToken, setUserInfo } from './app/auth/actions';
 import { getAuthInfo } from './app/auth/utils';
 import { Routes } from './routes';
+
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 1,
+    },
+  },
+});
+
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,11 +30,13 @@ const App: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Routes />
-      <ToastContainer
-        autoClose={3000}
-        position="bottom-center"
-      />
+      <ReactQueryCacheProvider queryCache={queryCache}>
+        <Routes />
+        <ToastContainer
+          autoClose={3000}
+          position="bottom-center"
+        />
+      </ReactQueryCacheProvider>
     </React.Fragment>
   );
 };

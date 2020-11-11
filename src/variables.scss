@@ -25,7 +25,7 @@ $ro-colors-dish-card-label: transparentize(#C3C3C3, 0.7);
 
 $ro-effects-base-shadow-transition: box-shadow ease-out 300ms;
 
-@mixin ro-basic-shadow-transition {
+@mixin ro-shadow-transition {
   transition: $ro-effects-base-shadow-transition;
 }
 

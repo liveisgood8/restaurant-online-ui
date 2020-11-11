@@ -16,6 +16,7 @@ import { OrderConfirmationPage } from '../pages/OrderConfirmation';
 import { QueryParamProvider } from 'use-query-params';
 import { OAuth2RedirectHandler } from '../features/OAuth2RedirectHandler';
 import { AdminOrdersApprovalContainer } from '../features/AdminOrdersApprovalContainer';
+import { AdminAnalyticsContainer } from '../features/AdminAnalyticsContainer';
 
 export const Routes: React.FC = () => {
   return (
@@ -34,6 +35,8 @@ export const Routes: React.FC = () => {
             component={AdminMenuContainer} />
           <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_ORDERS_CONFIRMATION}
             component={AdminOrdersApprovalContainer} />
+          <RouteWithLayout layout={AdminLayout} exact path={RoutePath.ADMIN_ANALYTICS}
+            component={AdminAnalyticsContainer} />
         </Switch>
       </QueryParamProvider>
     </ConnectedRouter>

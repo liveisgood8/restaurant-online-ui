@@ -5,7 +5,7 @@
 }
 
 .ro-basic-shadow-hover {
-  @include ro-basic-shadow-transition();
+  @include ro-shadow-transition();
 
   &:hover {
     @include ro-basic-shadow();

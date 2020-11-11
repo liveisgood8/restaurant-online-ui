@@ -2,7 +2,7 @@ import './styles.scss';
 
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUtensils, faCube, IconDefinition, faBars, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faUtensils, faCube, IconDefinition, faBars, faHome, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { RoutePath } from '../../routes/paths';
@@ -11,6 +11,7 @@ import { Collapse } from 'react-bootstrap';
 export enum AdminSidebarElement {
   DISH_MENU_EDITOR,
   ORDER_CONTROL,
+  ANALYTICS,
 }
 
 interface IAdminSidebarProps {
@@ -60,6 +61,12 @@ export const AdminSidebar: React.FC<IAdminSidebarProps> = ({ selectedElement }) 
             link={RoutePath.ADMIN_ORDERS_CONFIRMATION}
             text="Подтверждение заказов"
             isSelected={isElementSelected(AdminSidebarElement.ORDER_CONTROL)}
+          />
+          <SideBarElement
+            icon={faChartBar}
+            link={RoutePath.ADMIN_ANALYTICS}
+            text="Аналитика"
+            isSelected={isElementSelected(AdminSidebarElement.ANALYTICS)}
           />
         </ul>
       </Collapse>

@@ -13,6 +13,8 @@ export const AdminSidebarContainer: React.SFC = () => {
         return AdminSidebarElement.DISH_MENU_EDITOR;
       case RoutePath.ADMIN_ORDERS_CONFIRMATION:
         return AdminSidebarElement.ORDER_CONTROL;
+      case RoutePath.ADMIN_ANALYTICS:
+        return AdminSidebarElement.ANALYTICS;
     }
   };
 

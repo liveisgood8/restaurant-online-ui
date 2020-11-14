@@ -1,6 +1,37 @@
+@import '../../variables.scss';
+@import '~bootstrap/scss/_functions';
+@import '~bootstrap/scss/_variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .color-dot {
   border-radius: 50px;
   width: 16px;
   height: 16px;
   display: inline-block;
 }
+
+.dish-orders-analytics__dishes-column {
+  white-space: nowrap;
+  max-width: 50%;
+
+  .dishes-column__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .dish-orders-analytics__dishes-column {
+    max-width: 300px;
+  }
+}
+
+.analytics__empty {
+  color: $ro-colors-gray-medium;
+
+  .analytics-empty__icon {
+    width: 128px;
+    height: 128px;
+  }
+}
+

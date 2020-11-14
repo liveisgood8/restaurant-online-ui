@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, PieLabelRenderProps } from 'recharts';
 import { IDishOrdersStatistic } from '../../api/analytics';
+import { Loading } from '../core/Loading';
+import { TextTooltip } from '../core/TextTooltip';
 import { Plate } from '../Plate';
 import { ColorDot } from './ColorDot';
+import { Empty } from './Empty';
 
 interface IDishesOrdersAnalyticsProps {
+  topCount: number;
+  loading?: boolean;
   dishesOrderStatistic: IDishOrdersStatistic[];
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+function getRandomColor() {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
+}
 
-export const DishesOrdersAnalytics: React.FC<IDishesOrdersAnalyticsProps> = ({ dishesOrderStatistic }) => {
+export const DishesOrdersAnalytics: React.FC<IDishesOrdersAnalyticsProps> = ({
+  topCount,
+  loading,
+  dishesOrderStatistic,
+}) => {
+  const [colorizedStatistic, setColorizedStatistic] = useState<(IDishOrdersStatistic & { color: string })[]>([]);
+
+  useEffect(() => {
+    setColorizedStatistic(dishesOrderStatistic.map((statistic) => ({
+      ...statistic,
+      color: getRandomColor(),
+    })));
+  }, [dishesOrderStatistic]);
+
   const RADIAN = Math.PI / 180;
 
   const renderCustomizedLabel = (props: PieLabelRenderProps) => {
@@ -33,46 +53,61 @@ export const DishesOrdersAnalytics: React.FC<IDishesOrdersAnalyticsProps> = ({ d
   };
 
   return (
-    <Plate className="py-4 px-5 d-flex">
-      <div>
-        <p className="ro-font-medium-base mb-2">{`Топ ${dishesOrderStatistic.length} блюд`}</p>
-        <PieChart width={160} height={160}>
-          <Pie
-            data={dishesOrderStatistic}
-            dataKey="numberOfOrders"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={80}
-            fill="#8884d8"
-          >
-            {dishesOrderStatistic.map((entry, index) => (
-              <Cell
-                key={index}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </div>
-      <div className="ml-5 d-flex">
-        <div>
-          <p className="ro-font-medium-base">Блюдо</p>
-          {dishesOrderStatistic.map((e, index) => (
-            <div key={e.minimalDish.id}>
-              <ColorDot
-                color={COLORS[index % COLORS.length]}
-              />
-              <span className="ml-2">{e.minimalDish.name}</span>
+    <Plate className="py-4 px-3 px-md-5">
+      <p className="ro-font-medium-base mb-4">{`Статистика заказов по топ ${topCount} блюдам`}</p>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          {colorizedStatistic.length > 0 ? (
+            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+              <div>
+                <PieChart width={160} height={160}>
+                  <Pie
+                    animationBegin={0}
+                    data={colorizedStatistic}
+                    dataKey="ordersCount"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill="#8884d8"
+                  >
+                    {colorizedStatistic.map((e, index) => (
+                      <Cell
+                        key={index}
+                        fill={e.color}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </div>
+              <div className="mt-3 mt-md-0 ml-md-5 d-flex">
+                <div className="dish-orders-analytics__dishes-column">
+                  <p className="ro-font-medium-base">Блюдо</p>
+                  {colorizedStatistic.map((e) => (
+                    <TextTooltip key={e.minimalDish.id} placement="bottom" text={e.minimalDish.name}>
+                      <div className="dishes-column__label">
+                        <ColorDot
+                          color={e.color}
+                        />
+                        <span className="ml-2">{e.minimalDish.name}</span>
+                      </div>
+                    </TextTooltip>
+                  ))}
+                </div>
+                <div className="ml-2 ml-md-5">
+                  <p className="ro-font-medium-base">Количество заказов</p>
+                  {dishesOrderStatistic.map((e) => (
+                    <span className="d-block" key={e.minimalDish.id}>{e.ordersCount}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-        <div className="ml-5">
-          <p className="ro-font-medium-base">Количество заказов</p>
-          {dishesOrderStatistic.map((e) => (
-            <span key={e.minimalDish.id}>{e.numberOfOrders}</span>
-          ))}
-        </div>
-      </div>
+          ) : (
+            <Empty />
+          )}
+        </Fragment>
+      )}
     </Plate>
   );
 };

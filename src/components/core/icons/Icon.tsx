@@ -6,8 +6,19 @@ import { ReactComponent as MinusIcon } from './svgs/minus.svg';
 import { ReactComponent as PlusIcon } from './svgs/plus.svg';
 import { ReactComponent as ClockIcon } from './svgs/clock.svg';
 import { ReactComponent as BurgerIcon } from './svgs/burger.svg';
+import { ReactComponent as BrokeIcon } from './svgs/broke.svg';
 
-import { faAngleDoubleLeft, faAngleDoubleRight, faCheck, faMapMarkerAlt, faPencilAlt, faPhoneAlt, faReceipt, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faCheck,
+  faMapMarkerAlt,
+  faPencilAlt,
+  faPhoneAlt,
+  faReceipt,
+  faTimes,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { CSSProperties, Fragment } from 'react';
 import { Icons } from './icons';
@@ -62,6 +73,8 @@ const getNativeIconComponent = (icon: Icons) => {
       return ClockIcon;
     case Icons.BURGER:
       return BurgerIcon;
+    case Icons.BROKE:
+      return BrokeIcon;
   }
 };
 

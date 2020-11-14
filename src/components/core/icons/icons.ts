@@ -16,4 +16,5 @@ export enum Icons {
   DOUBLE_RIGHT_ARROW,
   DOUBLE_LEFT_ARROW,
   BURGER,
+  BROKE,
 }

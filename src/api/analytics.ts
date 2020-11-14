@@ -13,13 +13,17 @@ class AnalyticsApiClass {
   }
 }
 
+interface IMinimalDish extends Pick<IDish, 'id' | 'name'> {
+  categoryId: number;
+}
+
 export interface IDishOrdersStatistic {
-  minimalDish: Pick<IDish, 'id' | 'name'>;
+  minimalDish: IMinimalDish;
   ordersCount: number;
 }
 
 export interface IDishEmotionsStatistic {
-  minimalDish: Pick<IDish, 'id' | 'name'>;
+  minimalDish: IMinimalDish;
   likesCount: number;
   dislikesCount: number;
 }

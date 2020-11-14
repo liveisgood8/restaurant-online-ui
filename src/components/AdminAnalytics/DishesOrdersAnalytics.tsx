@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PieChart, Pie, Cell, PieLabelRenderProps } from 'recharts';
 import { IDishOrdersStatistic } from '../../api/analytics';
+import { RoutePath } from '../../routes/paths';
 import { Loading } from '../core/Loading';
 import { TextTooltip } from '../core/TextTooltip';
 import { Plate } from '../Plate';
@@ -90,7 +92,11 @@ export const DishesOrdersAnalytics: React.FC<IDishesOrdersAnalyticsProps> = ({
                         <ColorDot
                           color={e.color}
                         />
-                        <span className="ml-2">{e.minimalDish.name}</span>
+                        <Link
+                          to={`${RoutePath.HOME}?categoryId=${e.minimalDish.categoryId}&dishId=${e.minimalDish.id}`}
+                        >
+                          <span className="ml-2">{e.minimalDish.name}</span>
+                        </Link>
                       </div>
                     </TextTooltip>
                   ))}

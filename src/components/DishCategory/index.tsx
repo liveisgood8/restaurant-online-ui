@@ -21,7 +21,7 @@ export const DishCategory: React.FC<IDishCategoryProps> = ({ category, isSelecte
   return (
     <div className={cn('component__category', { 'component__category_selected': isSelected })}>
       <Link
-        className="text-decoration-none text-color-inherit"
+        className="link-no-effects"
         to={(location: Location) => ({
           pathname: location.pathname,
           search: `?categoryId=${category.id}`,

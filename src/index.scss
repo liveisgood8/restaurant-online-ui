@@ -40,16 +40,21 @@ code {
     monospace;
 }
 
-a {
-  color: inherit !important;
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
 
 .text-end {
   text-align: end;
+}
+
+.link-no-effects {
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 .ro-text-small {

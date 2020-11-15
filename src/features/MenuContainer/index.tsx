@@ -12,7 +12,6 @@ import { Menu } from '../../components/Menu';
 import { IDish } from '../../api/dishes';
 import { isAuthSelector } from '../../app/auth/selectors';
 import { NumberParam, useQueryParam } from 'use-query-params';
-import { DishCardModal } from '../../components/DishCardModal';
 import { addPersistentDishInCart } from '../CartContainer/actions';
 import { notifications } from '../../helpers/notifications';
 import { categoriesStatusSelectors, dishesStatusSelectors } from './selectors';
@@ -62,21 +61,6 @@ export const MenuContainer: React.FC = () => {
     setSelectedDishId(undefined);
   };
 
-  const makeDishCardComponent = () => {
-    const selectedDish = dishes.find((e) => e.id === selectedDishId);
-    if (!selectedDish) {
-      return null;
-    }
-    return (
-      <DishCardModal
-        dish={selectedDish}
-        isVisible={true}
-        onHide={unselectDish}
-        onCart={(count) => onCart(selectedDish, count)}
-      />
-    );
-  };
-
   return (
     <React.Fragment>
       {isCategoriesLoading ? (
@@ -88,12 +72,14 @@ export const MenuContainer: React.FC = () => {
             dishes={dishes}
             categories={categories}
             selectedCategoryId={categoryId}
+            selectedDishId={selectedDishId}
             canLikeDishes={isAuthenticated}
+            onDishCardHide={unselectDish}
+            onPutDishInCart={onCart}
             onDishClick={onDishClick}
             onDishLike={onDishLike}
             onDishDislike={onDishDislike}
           />
-          {makeDishCardComponent()}
         </Fragment>
       )}
     </React.Fragment>

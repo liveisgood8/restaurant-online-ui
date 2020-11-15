@@ -19,7 +19,7 @@ interface IDishCardModalProps {
   onLike?: () => void;
   onDislike?: () => void;
   onCart?: (count: number) => void;
-  onHide: () => void;
+  onHide?: () => void;
 }
 
 

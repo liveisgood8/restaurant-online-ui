@@ -25,6 +25,20 @@ export const DishesApi = {
         categoryId,
       },
     });
+
+    return data.map((d) => ({
+      ...d,
+      imageUrl: d.imageUrl ? relativeUrlToAbsolute(d.imageUrl) : undefined,
+    }));
+  },
+
+  getByName: async (name: string): Promise<IDish[]> => {
+    const { data } = await AxiosInstance.get<IDish[]>('/menu/dishes/search', {
+      params: {
+        name,
+      },
+    });
+
     return data.map((d) => ({
       ...d,
       imageUrl: d.imageUrl ? relativeUrlToAbsolute(d.imageUrl) : undefined,

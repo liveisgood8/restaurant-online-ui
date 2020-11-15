@@ -13,6 +13,7 @@ export enum Icons {
   GEO,
   RECEIPT,
   CHECK,
+  SEARCH,
   DOUBLE_RIGHT_ARROW,
   DOUBLE_LEFT_ARROW,
   BURGER,

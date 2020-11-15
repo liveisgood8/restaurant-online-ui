@@ -5,13 +5,13 @@ interface IRouteWithLayoutProps extends RouteProps {
   layout: React.ComponentType<PropsWithChildren<any>> | React.ComponentType<any>;
 }
 
-export const RouteWithLayout: React.SFC<IRouteWithLayoutProps> = ({ layout: Layout, component: Component, ...rest }) => {
+export const RouteWithLayout: React.FC<IRouteWithLayoutProps> = ({ layout: Layout, component: Component, ...rest }) => {
   if (!Component) {
     return null;
   }
 
   return (
-    <Route {...rest} render={(props) => 
+    <Route {...rest} render={(props) =>
       <Layout>
         <Component {...props} />
       </Layout>

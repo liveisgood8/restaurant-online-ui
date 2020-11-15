@@ -13,6 +13,7 @@ interface IButtonProps {
   type?: 'button' | 'submit';
   variant?: 'default' | 'primary' | 'danger' | 'success';
   disableShadow?: boolean;
+  size?: 'small' | 'normal';
   leftIcon?: Icons;
   rightIcon?: Icons;
   isLoading?: boolean;
@@ -28,6 +29,8 @@ export const Button: React.FC<IButtonProps> = (props) => {
       type={props.type}
       className={cn('components__button', 'ro-font-light-base', {
         'ro-basic-shadow': !props.disableShadow,
+        'components__button_small': props.size === 'small',
+        'components__button_normal': !props.size || props.size === 'normal',
         'components__button_primary': !props.variant || props.variant === 'primary',
         'components__button_default': props.variant === 'default',
         'components__button_danger': props.variant === 'danger',

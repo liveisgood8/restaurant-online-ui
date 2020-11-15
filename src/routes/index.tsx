@@ -12,6 +12,7 @@ import { LoginPage } from '../pages/Login';
 import { RegistrationPage } from '../pages/RegistrationPage';
 import { ProfileContainer } from '../features/ProfileContainer';
 import { HomePage } from '../pages/Home';
+import { SearchPage } from '../pages/Search';
 import { OrderConfirmationPage } from '../pages/OrderConfirmation';
 import { QueryParamProvider } from 'use-query-params';
 import { OAuth2RedirectHandler } from '../features/OAuth2RedirectHandler';
@@ -27,6 +28,7 @@ export const Routes: React.FC = () => {
           <Route exact path={RoutePath.REGISTRATION} component={RegistrationPage} />
           <Route path={RoutePath.OAUTH2_REDIRECT} component={OAuth2RedirectHandler} />
           <RouteWithLayout layout={CartLayout} exact path={RoutePath.HOME} component={HomePage} />
+          <RouteWithLayout layout={CartLayout} exact path={RoutePath.SEARCH} component={SearchPage} />
           <RouteWithLayout layout={CartLayout} exact path={RoutePath.PROFILE} component={ProfileContainer} />
           <RouteWithLayout layout={CartLayout} exact path={RoutePath.CART} component={CartContainer} />
           <RouteWithLayout layout={CartLayout} exact path={RoutePath.ORDER_CONFIRMATION}

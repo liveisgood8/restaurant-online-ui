@@ -16,6 +16,7 @@ import {
   faPencilAlt,
   faPhoneAlt,
   faReceipt,
+  faSearch,
   faTimes,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -50,6 +51,8 @@ const toFontAwesomeIcon = (icon: Icons) => {
       return faAngleDoubleRight;
     case Icons.DOUBLE_LEFT_ARROW:
       return faAngleDoubleLeft;
+    case Icons.SEARCH:
+      return faSearch;
     default:
       throw new Error('Unknown icon: ' + icon.toString());
   }

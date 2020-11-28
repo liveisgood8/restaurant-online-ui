@@ -63,11 +63,15 @@ export const DishCardModal: React.FC<IDishCardModalProps> = ({
                 <span className="ro-font-regular-small">{dish.name}</span>
               </div>
               <div className="d-flex mt-2 flex-wrap">
-                <DishAttributeLabel className="mr-1" label={`${dish.weight} г`}/>
-                <DishAttributeLabel className="mr-1" label={`100 ккал`}/>
-                {dish.protein && <DishAttributeLabel className="mr-1" label={`б. ${dish.protein}`}/>}
-                {dish.fat && <DishAttributeLabel className="mr-1" label={`ж. ${dish.fat}`}/>}
-                {dish.carbohydrates && <DishAttributeLabel label={`у. ${dish.carbohydrates}`}/>}
+                <div className="d-flex">
+                  {dish.protein && <DishAttributeLabel className="mr-1" label={`б. ${dish.protein}`}/>}
+                  {dish.fat && <DishAttributeLabel className="mr-1" label={`ж. ${dish.fat}`}/>}
+                  {dish.carbohydrates && <DishAttributeLabel className="mr-1" label={`у. ${dish.carbohydrates}`}/>}
+                </div>
+                <div className="d-flex">
+                  <DishAttributeLabel className="mr-1" label={`${dish.weight} г`}/>
+                  <DishAttributeLabel label={`100 ккал`}/>
+                </div>
               </div>
               <div className="mt-2">
                 <span className="ro-font-light-small">{dish.description}</span>

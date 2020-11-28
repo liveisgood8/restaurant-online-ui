@@ -32,7 +32,7 @@ export const OrderInfo: React.FC<IOrderInfoProps> = ({ orderData }) => {
           <div className="mt-4">
             <span className="ro-font-light-big">Вы сделали заказ:</span>
             <span className="ro-font-medium-big ro-text-primary d-block">
-              {new Date(orderData.createdAt).toLocaleString()}
+              {new Date(orderData.createdAt).toLocaleDateString()}
             </span>
           </div>
         )}

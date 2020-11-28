@@ -87,7 +87,10 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ currentBonuses, onSubmit 
         )}
       </div>
       <div className="mt-4">
-        <span className="ro-font-light-base">Введите адрес доставки</span>
+        <div>
+          <span className="ro-font-light-base">Введите адрес доставки</span>
+          <span className="ro-font-light-base ro-text-error ml-1">*</span>
+        </div>
         <div className="mt-1">
           <TextInput
             required
@@ -124,7 +127,10 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ currentBonuses, onSubmit 
         </div>
       </div>
       <div className="mt-4">
-        <span className="ro-font-light-base">Введите информацию о себе</span>
+        <div>
+          <span className="ro-font-light-base">Введите информацию о себе</span>
+          <span className="ro-font-light-base ro-text-error ml-1">*</span>
+        </div>
         <div className="mt-1">
           <TextInput
             required

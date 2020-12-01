@@ -26,7 +26,7 @@ export interface IUser {
   email: string;
   password?: string;
   name: string;
-  bonuses: number;
+  bonusesBalance: number;
   authorities: string[];
 }
 

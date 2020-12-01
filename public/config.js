@@ -1,0 +1,1 @@
+var API_URL = 'http://localhost:10100/api/v1';

@@ -65,6 +65,10 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ currentBonuses, onSubmit 
       notifications.warning('Необходимо проверить правильность указанного номер телефона');
       return false;
     }
+    if ((!currentBonuses && spentBonuses) || (currentBonuses && spentBonuses && spentBonuses > currentBonuses)) {
+      notifications.warning('Недостаточно бонусов для списания');
+      return false;
+    }
     return true;
   };
 

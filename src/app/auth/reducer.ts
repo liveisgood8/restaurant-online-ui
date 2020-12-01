@@ -39,7 +39,7 @@ const userInfoReducer = createReducer<IUser | null>(authInfo?.userInfo || null, 
       }
       return {
         ...state,
-        bonuses: state.bonuses + action.payload,
+        bonusesBalance: state.bonusesBalance + action.payload,
       };
     });
 });

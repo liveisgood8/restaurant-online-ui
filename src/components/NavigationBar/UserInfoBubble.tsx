@@ -16,7 +16,7 @@ export const UserInfoBubble: React.FC<IUserInfoProps> = ({ className, userInfo }
   return (
     <Link to={RoutePath.PROFILE} className="text-decoration-none text-dark">
       <Bubble className={className}>
-        <span className="ro-font-medium-base">{bonusify(userInfo.bonuses)}</span>
+        <span className="ro-font-medium-base">{bonusify(userInfo.bonusesBalance)}</span>
         <span className="ml-2">{userInfo.name || 'Аноним'}</span>
       </Bubble>
     </Link>

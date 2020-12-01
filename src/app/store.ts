@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware, ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
 import { statusReducer } from './status/reducer';
 import { menuReducer } from '../features/MenuContainer/reducer';
@@ -24,6 +24,7 @@ export const store = configureStore({
 });
 
 export type AppDispatch = typeof store.dispatch;
+export type AppThunkDispatch = ThunkDispatch<RootState, void, AnyAction>;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,

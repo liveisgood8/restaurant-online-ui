@@ -2,7 +2,7 @@ import { RootState } from '../store';
 import { isUserAdmin } from './utils';
 
 export function bonusesSelector(state: RootState): number | undefined {
-  return state.auth.userInfo?.bonuses;
+  return state.auth.userInfo?.bonusesBalance;
 }
 
 export function isAuthSelector(state: RootState): boolean {

@@ -1,8 +1,9 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { AuthApi, IAuthInfo, IUser } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
 import { handleError } from '../../errors/handler';
+import { cleanPersistentCart } from '../../features/CartContainer/actions';
 import { AxiosInstance, getBearerAuthorizationHeader } from '../../helpers/axios-instance';
 import { emojify } from '../../helpers/emoji/emoji-messages';
 import { EmojiType } from '../../helpers/emoji/emoji-type';
@@ -10,7 +11,7 @@ import { parseJwt } from '../../helpers/jwt';
 import { notifications } from '../../helpers/notifications';
 import { RoutePath } from '../../routes/paths';
 import { PartialWithoutId } from '../../types/utils';
-import { AppDispatch, AppThunk } from '../store';
+import { AppDispatch, AppThunk, AppThunkDispatch } from '../store';
 import { getAuthInfo, setAuthInfo } from './utils';
 
 export const setAccessToken = createAction<string | null>('@@auth/set-info');
@@ -80,6 +81,7 @@ export const logout = (): AppThunk => (dispatch: AppDispatch): void => {
     ...AxiosInstance.defaults.headers,
     'Authorization': undefined,
   };
+  (dispatch as AppThunkDispatch)(cleanPersistentCart());
   setAuthInfo(null);
   dispatch(setAccessToken(null));
   dispatch(setUserInfo(null));
@@ -120,7 +122,7 @@ export const addUserBonusesThunk = (bonuses: number): AppThunk => (dispatch: App
     ...authInfo,
     userInfo: {
       ...authInfo.userInfo,
-      bonuses: authInfo.userInfo.bonuses + bonuses,
+      bonusesBalance: authInfo.userInfo.bonusesBalance + bonuses,
     },
   });
   dispatch(addUserBonuses(bonuses));

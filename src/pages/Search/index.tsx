@@ -43,6 +43,10 @@ export const SearchPage: React.FC = (props) => {
 
   return (
     <div>
+      <div className="text-center">
+        <span>Результат поиска по запросу:</span>
+        <span className="ml-2 ro-text-primary ro-font-medium-base">{name}</span>
+      </div>
       <Menu
         categories={[]}
         dishes={data || []}

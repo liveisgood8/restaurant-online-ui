@@ -1,4 +1,4 @@
-import { createAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { AuthApi, IAuthInfo, IUser } from '../../api/auth';
 import { IAuthRequestBody } from '../../api/payloads/auth';
